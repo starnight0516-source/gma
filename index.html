@@ -45,9 +45,46 @@
 </head>
 <body class="text-slate-800 antialiased min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
 
-  <div class="w-full max-w-6xl">
+  <div class="w-full max-w-6xl relative">
+    
+    <!-- API Key Settings Button (Top Right) -->
+    <div class="absolute top-0 right-0 z-50">
+      <button onclick="openApiKeyModal()" class="flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-600 rounded-full shadow-sm border border-slate-200 transition-all font-medium text-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+        </svg>
+        <span id="apiKeyStatusText">設定 API 金鑰</span>
+      </button>
+    </div>
+
+    <!-- API Key Modal -->
+    <div id="apiKeyModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden z-[100] flex items-center justify-center p-4 fade-in">
+      <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full relative">
+        <button onclick="closeApiKeyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+        </button>
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-3 bg-amber-100 text-amber-600 rounded-full">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" /></svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-800">Gemini API 金鑰設定</h3>
+        </div>
+        <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+          為了在 GitHub Pages 上安全運行 AI 功能，本系統採用 BYOK (自備金鑰) 模式。您的金鑰將<strong class="text-amber-600">僅儲存在您的本機瀏覽器中</strong>，絕不會上傳至任何第三方伺服器。
+        </p>
+        <p class="text-slate-500 text-xs mb-4">
+          尚未擁有金鑰？請至 <a href="https://aistudio.google.com/app/apikey" target="_blank" class="text-blue-500 hover:underline font-bold">Google AI Studio</a> 免費取得。
+        </p>
+        <input type="password" id="apiKeyValue" placeholder="AIzaSy..." class="w-full px-4 py-3 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-amber-400 bg-slate-50 text-slate-700 font-mono mb-4">
+        <div class="flex gap-3">
+          <button onclick="saveApiKey()" class="flex-1 px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold rounded-xl shadow-sm transition-colors">儲存金鑰</button>
+          <button onclick="clearApiKey()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold rounded-xl transition-colors">清除</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Header -->
-    <div class="text-center mb-10">
+    <div class="text-center mt-8 mb-10">
       <h1 class="text-3xl md:text-4xl font-black text-blue-900 mb-3 flex justify-center items-center gap-3 tracking-wide">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -172,7 +209,7 @@
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         
         <!-- AI 功能 1：產品分析 -->
-        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 shadow-sm border border-purple-200 h-full flex flex-col">
+        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 shadow-sm border border-purple-200 h-full flex flex-col relative overflow-hidden">
           <div class="flex items-center gap-3 mb-4">
             <div class="p-2.5 bg-purple-600 text-white rounded-xl shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -191,7 +228,7 @@
         </div>
 
         <!-- AI 功能 2：法規智能問答 -->
-        <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-6 md:p-8 shadow-sm border border-sky-200 h-full flex flex-col">
+        <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-6 md:p-8 shadow-sm border border-sky-200 h-full flex flex-col relative overflow-hidden">
           <div class="flex items-center gap-3 mb-4">
             <div class="p-2.5 bg-sky-600 text-white rounded-xl shadow-md">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -278,12 +315,51 @@
   </div>
 
   <script>
-    // --- Gemini API Configuration ---
-    // API key 預設保留為空字串，執行環境會在運行時自動注入。
-    // 💡 提醒：若您將此 HTML 下載至本地端 (Local) 瀏覽器直接開啟，會遇到 HTTP 403 錯誤，
-    // 請將您的 Gemini API Key 手動填入下方的空字串中即可正常使用 AI 功能。
-    const apiKey = ""; 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+    // --- Local Storage API Key Management (BYOK) ---
+    function getStoredApiKey() {
+      // 嘗試從 localStorage 取得使用者設定的金鑰
+      return localStorage.getItem('gma_gemini_api_key') || "";
+    }
+
+    function checkApiKeyStatus() {
+      const statusText = document.getElementById("apiKeyStatusText");
+      if (getStoredApiKey()) {
+        statusText.innerText = "金鑰已設定";
+        statusText.classList.remove("text-slate-600");
+        statusText.classList.add("text-emerald-600");
+      } else {
+        statusText.innerText = "設定 API 金鑰";
+        statusText.classList.remove("text-emerald-600");
+        statusText.classList.add("text-slate-600");
+      }
+    }
+
+    function openApiKeyModal() {
+      document.getElementById("apiKeyValue").value = getStoredApiKey();
+      document.getElementById("apiKeyModal").classList.remove("hidden");
+    }
+
+    function closeApiKeyModal() {
+      document.getElementById("apiKeyModal").classList.add("hidden");
+    }
+
+    function saveApiKey() {
+      const val = document.getElementById("apiKeyValue").value.trim();
+      localStorage.setItem('gma_gemini_api_key', val);
+      checkApiKeyStatus();
+      closeApiKeyModal();
+    }
+
+    function clearApiKey() {
+      localStorage.removeItem('gma_gemini_api_key');
+      document.getElementById("apiKeyValue").value = "";
+      checkApiKeyStatus();
+    }
+
+    // 初始化檢查
+    document.addEventListener("DOMContentLoaded", () => {
+      checkApiKeyStatus();
+    });
 
     // --- Data Base ---
     const gmaData = {
@@ -444,7 +520,7 @@
         docs: ["當地申請人的 NIB (商業登記證) 與 NPWP (稅號)。", "印尼文版說明書、外部照片、當地測試報告與工廠品質手冊。"]
       },
       "PH": {
-        title: "🇵🇭 菲律賓 (Philippines)",
+        title: "🇵🇭 菲律宾 (Philippines)",
         desc: "貿工部 BPS 掌管安規 (發放 PS 或 ICC 標誌)；國家電信委員會 (NTC) 管制無線與電信產品。",
         electrical: { voltage: "220V / 60Hz", plug: "Type A, B, C (美規平行與歐規雙圓)" },
         categories: [
@@ -750,166 +826,40 @@
       }
     };
 
-    function updateDashboard() {
-      const select = document.getElementById("countrySelect");
-      const code = select.value;
-      const emptyState = document.getElementById("emptyState");
-      const dashboard = document.getElementById("resultDashboard");
-      
-      // Reset AI section
-      document.getElementById("aiResultContainer").classList.add("hidden");
-      document.getElementById("aiError").classList.add("hidden");
-      document.getElementById("productInput").value = "";
-      document.getElementById("qaInput").value = "";
+    // ... (rest of the javascript functions below) ...
 
-      if (!code) {
-        emptyState.style.display = "block";
-        dashboard.style.display = "none";
-        return;
-      }
-
-      const data = gmaData[code];
-
-      // 更新 AI 區域的國家名稱
-      document.getElementById("qaCountryName").innerText = data.title;
-
-      // 更新標題、簡介與電氣規格
-      document.getElementById("countryTitle").innerText = data.title;
-      document.getElementById("countryDesc").innerText = data.desc;
-      document.getElementById("localVoltage").innerText = data.electrical.voltage;
-      document.getElementById("localPlug").innerText = data.electrical.plug;
-
-      // 更新分類卡片 (Safety / EMC / RF)
-      const catContainer = document.getElementById("categoriesContainer");
-      catContainer.innerHTML = "";
-      
-      data.categories.forEach(cat => {
-        let bgClass, iconSvg, titleColor, markBg;
-        
-        // 依據類別設定專屬顏色與圖示
-        if (cat.type.includes("Safety") || cat.type.includes("安規")) {
-          bgClass = "bg-red-50 border-red-100";
-          titleColor = "text-red-700";
-          markBg = "text-red-800 bg-white border-red-200";
-          iconSvg = `<svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`;
-        } else if (cat.type.includes("EMC") || cat.type.includes("電磁")) {
-          bgClass = "bg-amber-50 border-amber-100";
-          titleColor = "text-amber-700";
-          markBg = "text-amber-800 bg-white border-amber-200";
-          iconSvg = `<svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`;
-        } else if (cat.type.includes("RF") || cat.type.includes("無線") || cat.type.includes("電信")) {
-          bgClass = "bg-blue-50 border-blue-100";
-          titleColor = "text-blue-700";
-          markBg = "text-blue-800 bg-white border-blue-200";
-          iconSvg = `<svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>`;
-        } else {
-          bgClass = "bg-green-50 border-green-100";
-          titleColor = "text-green-700";
-          markBg = "text-green-800 bg-white border-green-200";
-          iconSvg = `<svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`;
-        }
-
-        let statusBadgeClass = cat.status.includes("強制認證") 
-          ? "bg-red-100 text-red-700 border-red-200" 
-          : cat.status.includes("自願") 
-            ? "bg-blue-100 text-blue-700 border-blue-200" 
-            : "bg-orange-100 text-orange-700 border-orange-200";
-
-        const card = document.createElement("div");
-        card.className = `p-6 rounded-3xl border ${bgClass} flex flex-col h-full shadow-sm hover:shadow-md transition-shadow`;
-        card.innerHTML = `
-          <div class="flex items-center justify-between mb-4 border-b border-black/5 pb-3">
-            <div class="flex items-center gap-2">
-              ${iconSvg}
-              <span class="font-bold ${titleColor} text-base uppercase tracking-wider">${cat.type}</span>
-            </div>
-          </div>
-          
-          <div class="mb-5 flex flex-wrap gap-2 items-center">
-            <span class="inline-block px-4 py-1.5 ${markBg} rounded-xl text-sm font-black shadow-sm border">${cat.mark}</span>
-            <span class="inline-block px-3 py-1 ${statusBadgeClass} rounded-lg text-xs font-bold border">${cat.status}</span>
-          </div>
-          
-          <p class="text-[15px] text-slate-700 leading-relaxed mt-auto font-medium">
-            <span class="font-bold block mb-1.5 opacity-80 ${titleColor}">🔬 測試規定 (Testing)：</span>
-            ${cat.testing}
-          </p>
-        `;
-        catContainer.appendChild(card);
-      });
-
-      // 更新當地代理商
-      document.getElementById("localAgent").innerText = data.agent;
-
-      // 更新申請流程
-      const processList = document.getElementById("processList");
-      processList.innerHTML = "";
-      data.process.forEach((step, index) => {
-        const li = document.createElement("li");
-        li.className = "flex gap-4 items-start";
-        li.innerHTML = `
-          <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-sm font-black mt-0.5 shadow-sm">${index + 1}</span>
-          <span class="pt-0.5">${step}</span>
-        `;
-        processList.appendChild(li);
-      });
-
-      // 更新技術文件
-      const docList = document.getElementById("docList");
-      docList.innerHTML = "";
-      data.docs.forEach(doc => {
-        const li = document.createElement("li");
-        li.innerText = doc;
-        docList.appendChild(li);
-      });
-
-      // UI 切換與動畫
-      emptyState.style.display = "none";
-      dashboard.style.display = "block";
-      
-      dashboard.classList.remove("fade-in");
-      void dashboard.offsetWidth;
-      dashboard.classList.add("fade-in");
-    }
-
-    // --- Utility: Simple Markdown to HTML parser ---
-    function parseMarkdown(md) {
-      let html = md;
-      // Headers
-      html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
-      html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
-      html = html.replace(/^# (.*$)/gim, '<h3>$1</h3>');
-      // Bold
-      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
-      // Lists (Unordered)
-      html = html.replace(/^\* (.*$)/gim, '<li>$1</li>');
-      html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
-      // Wrap lists
-      html = html.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
-      html = html.replace(/<\/ul>\n<ul>/gim, '');
-      // Paragraphs
-      html = html.replace(/^(?!<h|<ul|<li)(.*$)/gim, '<p>$1</p>');
-      return html.trim();
-    }
-
-    // --- Wrapper for API call with Exponential Backoff ---
     async function fetchWithRetry(url, options, maxRetries = 5) {
+      // 在每次呼叫前，動態抓取最新的 User API Key
+      const userKey = getStoredApiKey();
+      if (!userKey) {
+        throw new Error("Missing_API_Key");
+      }
+      
+      // 更新 URL 中的金鑰
+      const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userKey}`;
+
       const delays = [1000, 2000, 4000, 8000, 16000];
       for (let i = 0; i < maxRetries; i++) {
         try {
           const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000); // 15s timeout
+          const timeoutId = setTimeout(() => controller.abort(), 15000); 
           
           const fetchOptions = { ...options, signal: controller.signal };
-          const response = await fetch(url, fetchOptions);
+          const response = await fetch(finalUrl, fetchOptions);
           
           clearTimeout(timeoutId);
           
           if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            if (response.status === 400 || response.status === 403) {
+                throw new Error("Invalid_API_Key");
+            }
+            throw new Error(`HTTP_Error_${response.status}`);
           }
           return await response.json();
         } catch (error) {
+          if (error.message === "Invalid_API_Key" || error.message === "Missing_API_Key") {
+              throw error; // 不需重試金鑰錯誤
+          }
           console.warn(`Attempt ${i + 1} failed:`, error.message);
           if (i === maxRetries - 1) throw error;
           await new Promise(resolve => setTimeout(resolve, delays[i]));
@@ -941,7 +891,6 @@
       btn.classList.add("opacity-70", "cursor-not-allowed");
 
       const countryData = gmaData[code];
-      
       const systemPrompt = `你是一位資深的「全球市場准入 (GMA) 合規顧問」。你的任務是協助硬體製造商評估其產品進入特定國家的法規風險。
 請根據使用者提供的「目標國家法規資料」以及「使用者產品描述」，進行交叉分析，並輸出繁體中文的專業報告。
 報告架構建議：
@@ -950,11 +899,7 @@
 3. **客製化檢查清單**：提供針對該產品的具體行動建議。
 語氣請專業、實用，並善用 Markdown 排版。`;
 
-      const userPrompt = `
-目標國家：${countryData.title}
-國家法規重點資料庫：${JSON.stringify(countryData)}
-使用者準備出口的產品描述：${product}
-請為此產品產出一份進入該國市場的合規建議與重點清單。`;
+      const userPrompt = `目標國家：${countryData.title}\n國家法規重點資料庫：${JSON.stringify(countryData)}\n使用者準備出口的產品描述：${product}\n請為此產品產出一份進入該國市場的合規建議與重點清單。`;
 
       const payload = {
         contents: [{ parts: [{ text: userPrompt }] }],
@@ -962,7 +907,7 @@
       };
 
       try {
-        const data = await fetchWithRetry(apiUrl, {
+        const data = await fetchWithRetry("", { // URL handled in fetchWithRetry
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -971,19 +916,19 @@
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (text) {
-          resultTitle.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <span class="text-purple-900">產品風險分析報告</span>
-          `;
+          resultTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg><span class="text-purple-900">產品風險分析報告</span>`;
           outputDiv.innerHTML = parseMarkdown(text);
           resultContainer.classList.remove("hidden");
-        } else {
-          throw new Error("API 回應格式異常");
         }
       } catch (error) {
-        errorDiv.innerText = `AI 伺服器連線失敗。請確認您的網路環境或 API 金鑰，或稍後再試。 (${error.message})`;
+        if (error.message === "Missing_API_Key") {
+            errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
+            openApiKeyModal();
+        } else if (error.message === "Invalid_API_Key") {
+            errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
+        } else {
+            errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
+        }
         errorDiv.classList.remove("hidden");
       } finally {
         btn.disabled = false;
@@ -1016,16 +961,11 @@
       btn.classList.add("opacity-70", "cursor-not-allowed");
 
       const countryData = gmaData[code];
-      
       const systemPrompt = `你是一位資深的「全球市場准入 (GMA) 合規顧問」。你的任務是針對使用者提出的特定 GMA 法規問題進行精準、專業的解答。
 請根據使用者提供的「目標國家法規資料」以及其問題，給出最正確的實務建議。如果問題超出現有資料範圍，請基於你對該國 GMA 法規的專業知識進行補充，並提醒使用者實務上仍須以當地主管機關最新公告為準。
 語氣請專業、友善，並使用繁體中文及 Markdown 排版。`;
 
-      const userPrompt = `
-目標國家：${countryData.title}
-該國 GMA 法規重點資料：${JSON.stringify(countryData)}
-使用者的問題：${question}
-請針對上述問題給出專業的合規解答。`;
+      const userPrompt = `目標國家：${countryData.title}\n該國 GMA 法規重點資料：${JSON.stringify(countryData)}\n使用者的問題：${question}\n請針對上述問題給出專業的合規解答。`;
 
       const payload = {
         contents: [{ parts: [{ text: userPrompt }] }],
@@ -1033,7 +973,7 @@
       };
 
       try {
-        const data = await fetchWithRetry(apiUrl, {
+        const data = await fetchWithRetry("", { // URL handled in fetchWithRetry
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -1042,19 +982,19 @@
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (text) {
-          resultTitle.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
-            <span class="text-sky-900">AI 專業法規解答</span>
-          `;
+          resultTitle.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg><span class="text-sky-900">AI 專業法規解答</span>`;
           outputDiv.innerHTML = parseMarkdown(text);
           resultContainer.classList.remove("hidden");
-        } else {
-          throw new Error("API 回應格式異常");
         }
       } catch (error) {
-        errorDiv.innerText = `AI 伺服器連線失敗。請確認您的網路環境或 API 金鑰，或稍後再試。 (${error.message})`;
+        if (error.message === "Missing_API_Key") {
+            errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
+            openApiKeyModal();
+        } else if (error.message === "Invalid_API_Key") {
+            errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
+        } else {
+            errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
+        }
         errorDiv.classList.remove("hidden");
       } finally {
         btn.disabled = false;
