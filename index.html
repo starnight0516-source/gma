@@ -20,8 +20,8 @@
     }
     /* AI Loader Animation */
     .loader {
-      border: 3px solid #f3f4f6;
-      border-top: 3px solid #8b5cf6;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-top: 3px solid #ffffff;
       border-radius: 50%;
       width: 20px;
       height: 20px;
@@ -52,9 +52,9 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        全球 GMA 市場准入查詢系統 <span class="text-2xl text-blue-500 font-bold ml-2">PRO</span>
+        全球 GMA 市場准入查詢系統 <span class="text-2xl text-blue-500 font-bold ml-2">PRO + AI</span>
       </h1>
-      <p class="text-slate-500 text-sm md:text-base font-medium">完整涵蓋 Safety / EMC / RF 法規、當地測試門檻及 <span class="text-blue-600 font-bold">電壓插頭硬體規格</span></p>
+      <p class="text-slate-500 text-sm md:text-base font-medium">整合 Gemini AI 技術：提供專屬風險分析與法規智慧問答</p>
     </div>
 
     <!-- 國家選擇器 -->
@@ -122,45 +122,12 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
         </svg>
       </div>
-      <h3 class="text-2xl font-bold text-slate-400">請於上方選單選擇目標國家以顯示詳細規範</h3>
-      <p class="text-slate-400 mt-2">包含電壓插頭規格、認證標誌、當地測試與代理商要求</p>
+      <h3 class="text-2xl font-bold text-slate-400">請於上方選單選擇目標國家以顯示詳細規範與啟動 AI 助理</h3>
     </div>
 
     <!-- 結果展示區塊 -->
     <div id="resultDashboard" class="hidden fade-in space-y-6">
       
-      <!-- AI 產品分析區塊 (GEMINI API 整合) -->
-      <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 shadow-sm border border-purple-200">
-        <div class="flex items-center gap-3 mb-4">
-          <div class="p-2.5 bg-purple-600 text-white rounded-xl shadow-md">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-          </div>
-          <h3 class="text-2xl font-black text-purple-900">AI 合規顧問：產品專屬風險分析</h3>
-        </div>
-        <p class="text-purple-800 font-medium mb-4">告訴我您準備出口的產品，AI 將結合 <span id="aiCountryName" class="font-bold underline"></span> 的當地法規，為您抓出專屬合規痛點與檢查清單。</p>
-        
-        <div class="flex flex-col sm:flex-row gap-3">
-          <input type="text" id="productInput" placeholder="例如：具備 Wi-Fi 與藍牙功能的智慧掃地機器人" class="flex-1 px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-slate-700 font-medium">
-          <button id="aiBtn" onclick="generateAIAnalysis()" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
-            <span>✨ 產生專屬分析</span>
-          </button>
-        </div>
-
-        <div id="aiError" class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl border border-red-200 text-sm font-medium"></div>
-        
-        <div id="aiResultContainer" class="hidden mt-6 bg-white rounded-2xl p-6 shadow-inner border border-purple-100">
-          <h4 class="text-lg font-bold text-purple-800 mb-3 flex items-center gap-2">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-            </svg>
-            AI 智能分析結果
-          </h4>
-          <div id="aiOutput" class="ai-content text-slate-700"></div>
-        </div>
-      </div>
-
       <!-- 國家標題與簡介 (含電氣規格) -->
       <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
@@ -201,8 +168,62 @@
         </div>
       </div>
 
+      <!-- AI 雙引擎區塊 -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- AI 功能 1：產品分析 -->
+        <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 shadow-sm border border-purple-200 h-full flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-2.5 bg-purple-600 text-white rounded-xl shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-black text-purple-900">🔍 AI 產品風險分析</h3>
+          </div>
+          <p class="text-purple-800 font-medium mb-4 flex-1">輸入您的產品描述，AI 將為您抓出專屬合規痛點與檢查清單。</p>
+          <div class="flex flex-col gap-3 mt-auto">
+            <input type="text" id="productInput" placeholder="例如：具備 Wi-Fi 的智慧家電" class="w-full px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-slate-700 font-medium">
+            <button id="aiBtn" onclick="generateAIAnalysis()" class="w-full px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+              <span>產出分析報告</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- AI 功能 2：法規智能問答 -->
+        <div class="bg-gradient-to-br from-sky-50 to-blue-50 rounded-3xl p-6 md:p-8 shadow-sm border border-sky-200 h-full flex flex-col">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-2.5 bg-sky-600 text-white rounded-xl shadow-md">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-black text-sky-900">💬 AI 法規問答助手</h3>
+          </div>
+          <p class="text-sky-800 font-medium mb-4 flex-1">對 <span id="qaCountryName" class="font-bold underline text-sky-900"></span> 的法規還有疑問？直接詢問顧問！</p>
+          <div class="flex flex-col gap-3 mt-auto">
+            <input type="text" id="qaInput" placeholder="例如：若有 FCC 認證，可豁免當地測試嗎？" class="w-full px-4 py-3 rounded-xl border border-sky-200 focus:outline-none focus:ring-2 focus:ring-sky-400 bg-white text-slate-700 font-medium">
+            <button id="qaBtn" onclick="generateAIQA()" class="w-full px-6 py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2">
+              <span>送出提問</span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- AI 錯誤提示區 -->
+      <div id="aiError" class="hidden p-4 bg-red-50 text-red-600 rounded-xl border border-red-200 text-sm font-bold"></div>
+
+      <!-- AI 結果展示區 (動態切換顯示內容) -->
+      <div id="aiResultContainer" class="hidden bg-white rounded-2xl p-6 md:p-8 shadow-inner border border-slate-200">
+        <h4 id="aiResultTitle" class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2 border-b border-slate-100 pb-3">
+          <!-- Title injected by JS -->
+        </h4>
+        <div id="aiOutput" class="ai-content text-slate-700"></div>
+      </div>
+
       <!-- 各領域專業認證與當地測試要求 -->
-      <div>
+      <div class="pt-6">
         <h3 class="text-2xl font-black text-slate-800 mb-5 flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
@@ -258,12 +279,14 @@
 
   <script>
     // --- Gemini API Configuration ---
-    const apiKey = ""; // API key is handled by the execution environment
+    // API key 預設保留為空字串，執行環境會在運行時自動注入。
+    // 💡 提醒：若您將此 HTML 下載至本地端 (Local) 瀏覽器直接開啟，會遇到 HTTP 403 錯誤，
+    // 請將您的 Gemini API Key 手動填入下方的空字串中即可正常使用 AI 功能。
+    const apiKey = ""; 
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
 
     // --- Data Base ---
     const gmaData = {
-      // --- 亞洲與大洋洲 (APAC) ---
       "TW": {
         title: "🇹🇼 台灣 (Taiwan)",
         desc: "電機電子產品主要受經濟部標準檢驗局 (BSMI) 與國家通訊傳播委員會 (NCC) 管制。近年 BSMI 擴大管制儲能系統及影音周邊，且證書多有 3 年效期限制。",
@@ -737,6 +760,7 @@
       document.getElementById("aiResultContainer").classList.add("hidden");
       document.getElementById("aiError").classList.add("hidden");
       document.getElementById("productInput").value = "";
+      document.getElementById("qaInput").value = "";
 
       if (!code) {
         emptyState.style.display = "block";
@@ -747,7 +771,7 @@
       const data = gmaData[code];
 
       // 更新 AI 區域的國家名稱
-      document.getElementById("aiCountryName").innerText = data.title;
+      document.getElementById("qaCountryName").innerText = data.title;
 
       // 更新標題、簡介與電氣規格
       document.getElementById("countryTitle").innerText = data.title;
@@ -893,12 +917,13 @@
       }
     }
 
-    // --- AI Feature Implementation ---
+    // --- AI Feature 1: Product Analysis ---
     async function generateAIAnalysis() {
       const product = document.getElementById("productInput").value.trim();
       const code = document.getElementById("countrySelect").value;
       const errorDiv = document.getElementById("aiError");
       const resultContainer = document.getElementById("aiResultContainer");
+      const resultTitle = document.getElementById("aiResultTitle");
       const outputDiv = document.getElementById("aiOutput");
       const btn = document.getElementById("aiBtn");
 
@@ -909,11 +934,10 @@
       }
       if (!code || !gmaData[code]) return;
 
-      // Update UI for loading state
       errorDiv.classList.add("hidden");
       resultContainer.classList.add("hidden");
       btn.disabled = true;
-      btn.innerHTML = `<span class="loader"></span> <span>AI 分析中...</span>`;
+      btn.innerHTML = `<span class="loader border-t-white"></span> <span>AI 分析中...</span>`;
       btn.classList.add("opacity-70", "cursor-not-allowed");
 
       const countryData = gmaData[code];
@@ -921,9 +945,9 @@
       const systemPrompt = `你是一位資深的「全球市場准入 (GMA) 合規顧問」。你的任務是協助硬體製造商評估其產品進入特定國家的法規風險。
 請根據使用者提供的「目標國家法規資料」以及「使用者產品描述」，進行交叉分析，並輸出繁體中文的專業報告。
 報告架構建議：
-1. **產品特性判定**：判斷該產品是否落入安規、EMC 或 RF 領域（例如：若有 Wi-Fi 必定落入 RF）。
+1. **產品特性判定**：判斷該產品是否落入安規、EMC 或 RF 領域。
 2. **專屬合規痛點**：基於法規資料，指出該產品進入該國最困難的門檻（如當地測試、當地代理商等）。
-3. **客製化檢查清單**：提供 3-5 點針對該產品的行動建議。
+3. **客製化檢查清單**：提供針對該產品的具體行動建議。
 語氣請專業、實用，並善用 Markdown 排版。`;
 
       const userPrompt = `
@@ -947,18 +971,94 @@
         const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
         
         if (text) {
+          resultTitle.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span class="text-purple-900">產品風險分析報告</span>
+          `;
           outputDiv.innerHTML = parseMarkdown(text);
           resultContainer.classList.remove("hidden");
         } else {
           throw new Error("API 回應格式異常");
         }
       } catch (error) {
-        errorDiv.innerText = `AI 伺服器連線失敗。請確認您的網路環境，或稍後再試。 (${error.message})`;
+        errorDiv.innerText = `AI 伺服器連線失敗。請確認您的網路環境或 API 金鑰，或稍後再試。 (${error.message})`;
         errorDiv.classList.remove("hidden");
       } finally {
-        // Reset UI
         btn.disabled = false;
-        btn.innerHTML = `<span>✨ 產生專屬分析</span>`;
+        btn.innerHTML = `<span>產出分析報告</span>`;
+        btn.classList.remove("opacity-70", "cursor-not-allowed");
+      }
+    }
+
+    // --- AI Feature 2: Chat Q&A ---
+    async function generateAIQA() {
+      const question = document.getElementById("qaInput").value.trim();
+      const code = document.getElementById("countrySelect").value;
+      const errorDiv = document.getElementById("aiError");
+      const resultContainer = document.getElementById("aiResultContainer");
+      const resultTitle = document.getElementById("aiResultTitle");
+      const outputDiv = document.getElementById("aiOutput");
+      const btn = document.getElementById("qaBtn");
+
+      if (!question) {
+        errorDiv.innerText = "請輸入您想詢問的法規問題！";
+        errorDiv.classList.remove("hidden");
+        return;
+      }
+      if (!code || !gmaData[code]) return;
+
+      errorDiv.classList.add("hidden");
+      resultContainer.classList.add("hidden");
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loader border-t-white"></span> <span>思考中...</span>`;
+      btn.classList.add("opacity-70", "cursor-not-allowed");
+
+      const countryData = gmaData[code];
+      
+      const systemPrompt = `你是一位資深的「全球市場准入 (GMA) 合規顧問」。你的任務是針對使用者提出的特定 GMA 法規問題進行精準、專業的解答。
+請根據使用者提供的「目標國家法規資料」以及其問題，給出最正確的實務建議。如果問題超出現有資料範圍，請基於你對該國 GMA 法規的專業知識進行補充，並提醒使用者實務上仍須以當地主管機關最新公告為準。
+語氣請專業、友善，並使用繁體中文及 Markdown 排版。`;
+
+      const userPrompt = `
+目標國家：${countryData.title}
+該國 GMA 法規重點資料：${JSON.stringify(countryData)}
+使用者的問題：${question}
+請針對上述問題給出專業的合規解答。`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const data = await fetchWithRetry(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (text) {
+          resultTitle.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+            </svg>
+            <span class="text-sky-900">AI 專業法規解答</span>
+          `;
+          outputDiv.innerHTML = parseMarkdown(text);
+          resultContainer.classList.remove("hidden");
+        } else {
+          throw new Error("API 回應格式異常");
+        }
+      } catch (error) {
+        errorDiv.innerText = `AI 伺服器連線失敗。請確認您的網路環境或 API 金鑰，或稍後再試。 (${error.message})`;
+        errorDiv.classList.remove("hidden");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<span>送出提問</span>`;
         btn.classList.remove("opacity-70", "cursor-not-allowed");
       }
     }
