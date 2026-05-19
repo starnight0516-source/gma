@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>全球市場准入 (GMA) 認證要求查詢系統</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: #f1f5f9;
+    }
+    .fade-in {
+      animation: fadeIn 0.4s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    optgroup { font-weight: 700; color: #1e3a8a; background-color: #e2e8f0; }
+    option { font-weight: 500; color: #334155; background-color: #ffffff; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8">
+
+  <div class="w-full max-w-6xl">
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="text-3xl md:text-4xl font-black text-blue-900 mb-3 flex justify-center items-center gap-3 tracking-wide">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        全球 GMA 市場准入查詢系統 <span class="text-2xl text-blue-500 font-bold ml-2">PRO</span>
+      </h1>
+      <p class="text-slate-500 text-sm md:text-base font-medium">完整涵蓋 Safety / EMC / RF 法規、當地測試門檻及 <span class="text-blue-600 font-bold">電壓插頭硬體規格</span></p>
+    </div>
+
+    <!-- 國家選擇器 -->
+    <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 p-6 sm:p-8 mb-8 mx-auto max-w-3xl relative z-10">
+      <label for="countrySelect" class="block text-lg font-bold text-slate-700 mb-4 text-center tracking-wide">
+        請選擇目標出口國家 / 地區 (支援 34 國)
+      </label>
+      <div class="relative">
+        <select id="countrySelect" onchange="updateDashboard()" class="block w-full appearance-none bg-slate-50 border-2 border-slate-200 text-slate-800 py-4 px-5 pr-8 rounded-2xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-lg font-medium cursor-pointer">
+          <option value="">-- 點擊展開全球市場清單 --</option>
+          
+          <optgroup label="🌏 亞洲與大洋洲 (APAC)">
+            <option value="TW">🇹🇼 台灣 (Taiwan)</option>
+            <option value="CN">🇨🇳 中國大陸 (China)</option>
+            <option value="JP">🇯🇵 日本 (Japan)</option>
+            <option value="KR">🇰🇷 韓國 (South Korea)</option>
+            <option value="IN">🇮🇳 印度 (India)</option>
+            <option value="AU">🇦🇺 澳洲 (Australia)</option>
+            <option value="NZ">🇳🇿 紐西蘭 (New Zealand)</option>
+            <option value="SG">🇸🇬 新加坡 (Singapore)</option>
+            <option value="MY">🇲🇾 馬來西亞 (Malaysia)</option>
+            <option value="TH">🇹🇭 泰國 (Thailand)</option>
+            <option value="VN">🇻🇳 越南 (Vietnam)</option>
+            <option value="ID">🇮🇩 印尼 (Indonesia)</option>
+            <option value="PH">🇵🇭 菲律賓 (Philippines)</option>
+          </optgroup>
+
+          <optgroup label="🌎 美洲地區 (Americas)">
+            <option value="US">🇺🇸 美國 (United States)</option>
+            <option value="CA">🇨🇦 加拿大 (Canada)</option>
+            <option value="BR">🇧🇷 巴西 (Brazil)</option>
+            <option value="MX">🇲🇽 墨西哥 (Mexico)</option>
+            <option value="AR">🇦🇷 阿根廷 (Argentina)</option>
+            <option value="CL">🇨🇱 智利 (Chile)</option>
+            <option value="CO">🇨🇴 哥倫比亞 (Colombia)</option>
+            <option value="PE">🇵🇪 秘魯 (Peru)</option>
+          </optgroup>
+
+          <optgroup label="🌍 歐洲與獨立國協 (Europe & CIS)">
+            <option value="EU">🇪🇺 歐盟 (European Union)</option>
+            <option value="UK">🇬🇧 英國 (United Kingdom)</option>
+            <option value="RU">🇷🇺 俄羅斯/EAEU (Russia/EAEU)</option>
+            <option value="UA">🇺🇦 烏克蘭 (Ukraine)</option>
+            <option value="RS">🇷🇸 塞爾維亞 (Serbia)</option>
+          </optgroup>
+
+          <optgroup label="🏜️ 中東與非洲 (MEA)">
+            <option value="SA">🇸🇦 沙烏地阿拉伯 (Saudi Arabia)</option>
+            <option value="AE">🇦🇪 阿拉伯聯合大公國 (UAE)</option>
+            <option value="ZA">🇿🇦 南非 (South Africa)</option>
+            <option value="EG">🇪🇬 埃及 (Egypt)</option>
+            <option value="IL">🇮🇱 以色列 (Israel)</option>
+            <option value="KW">🇰🇼 科威特 (Kuwait)</option>
+            <option value="NG">🇳🇬 奈及利亞 (Nigeria)</option>
+            <option value="KE">🇰🇪 肯亞 (Kenya)</option>
+            <option value="MA">🇲🇦 摩洛哥 (Morocco)</option>
+          </optgroup>
+        </select>
+        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-5 text-slate-400">
+          <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- 初始空狀態 -->
+    <div id="emptyState" class="text-center py-20">
+      <div class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-blue-100 mb-6 shadow-inner">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+        </svg>
+      </div>
+      <h3 class="text-2xl font-bold text-slate-400">請於上方選單選擇目標國家以顯示詳細規範</h3>
+      <p class="text-slate-400 mt-2">包含電壓插頭規格、認證標誌、當地測試與代理商要求</p>
+    </div>
+
+    <!-- 結果展示區塊 -->
+    <div id="resultDashboard" class="hidden fade-in space-y-6">
+      
+      <!-- 國家標題與簡介 (含電氣規格) -->
+      <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
+        <div class="flex flex-col lg:flex-row justify-between gap-6">
+          <div class="flex-1">
+            <h2 id="countryTitle" class="text-3xl md:text-4xl font-black text-slate-800 mb-3 tracking-tight"></h2>
+            <p id="countryDesc" class="text-slate-600 leading-relaxed text-lg font-medium"></p>
+          </div>
+          
+          <!-- 新增：電氣與插頭規格卡片 -->
+          <div class="flex-shrink-0 bg-blue-50/80 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row gap-6 min-w-[320px]">
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-white rounded-full shadow-sm text-yellow-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-1">市電電壓與頻率</p>
+                <p id="localVoltage" class="text-xl font-black text-blue-900"></p>
+              </div>
+            </div>
+            <div class="hidden sm:block w-px bg-blue-200"></div>
+            <div class="flex items-center gap-4">
+              <div class="p-3 bg-white rounded-full shadow-sm text-blue-500">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <!-- 模擬插頭圖示 -->
+                  <circle cx="9" cy="8" r="2" fill="currentColor"/>
+                  <circle cx="15" cy="8" r="2" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <p class="text-xs font-bold text-blue-500 uppercase tracking-widest mb-1">標準插頭規格</p>
+                <p id="localPlug" class="text-xl font-black text-blue-900"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 各領域專業認證與當地測試要求 -->
+      <div>
+        <h3 class="text-2xl font-black text-slate-800 mb-5 flex items-center gap-3">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+          </svg>
+          各領域合規標誌與測試門檻
+        </h3>
+        <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <!-- JS 動態插入 Safety, EMC, RF 卡片 -->
+        </div>
+      </div>
+
+      <!-- 當地代理商 -->
+      <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-red-50 text-red-600 rounded-xl">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <h3 class="text-2xl font-black text-slate-800">🏢 當地代理商 (Local Representative) 規定</h3>
+        </div>
+        <p id="localAgent" class="text-slate-700 bg-slate-50 p-5 rounded-2xl border border-slate-100 leading-relaxed font-medium text-lg"></p>
+      </div>
+
+      <!-- 申請流程與文件 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- 申請流程 -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800">📋 實務申請與審查流程</h3>
+          </div>
+          <ul id="processList" class="space-y-4 text-slate-700 list-none pl-1 font-medium"></ul>
+        </div>
+
+        <!-- 文件與特殊要求 -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800">📂 應備技術文件與標章打件</h3>
+          </div>
+          <ul id="docList" class="space-y-3 text-slate-700 list-disc pl-5 marker:text-amber-400 font-medium"></ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 專業分類版資料庫：新增 voltage 與 plug 規格，並擴充細節描述
+    const gmaData = {
+      // --- 亞洲與大洋洲 (APAC) ---
+      "TW": {
+        title: "🇹🇼 台灣 (Taiwan)",
+        desc: "電機電子產品主要受經濟部標準檢驗局 (BSMI) 與國家通訊傳播委員會 (NCC) 管制。近年 BSMI 擴大管制儲能系統及影音周邊，且證書多有 3 年效期限制。",
+        electrical: { voltage: "110V / 60Hz", plug: "Type A, B (美規平行與接地)" },
+        categories: [
+          { type: "Safety (安規)", mark: "BSMI", testing: "❌ 不強制當地實測。接受具備 MRA 或 BSMI 認可之海外實驗室報告 (如 UL, TUV 出具之報告)。" },
+          { type: "EMC (電磁相容)", mark: "BSMI", testing: "❌ 不強制當地實測。同安規，接受官方認可之海外合格 EMC 實驗室報告。" },
+          { type: "RF/Telecom (無線)", mark: "NCC", testing: "❌ 不強制當地實測。可憑 FCC/CE 等測試報告向台灣的 RCB (驗證機構) 申請型式認可轉證。" }
+        ],
+        agent: "⚠️ 嚴格強制。三大領域皆規定，證書持有人 (申請商) 必須為在台灣合法登記之公司行號，方能辦理產品驗證登錄 (RPC) 或型式認可。",
+        process: ["判定產品落入 BSMI (RPC/TABI) 或 NCC 管制範圍，確認適用之 CNS/LP0002 標準。", "委託國內外合格實驗室進行安規、EMC 或射頻測試，並編寫測試報告。", "備齊繁體中文文件，提交當地代理商 (持證者) 資料供機構審查。", "獲發證書後，將 BSMI 商品檢驗標識 (字軌如 R3Axxx) 與 NCC 審驗合格標籤 (CCXXxxYYxxxZzW) 永久標示於產品外觀。"],
+        docs: ["繁體中文使用說明書、繁體中文警語與產品銘牌標籤 (Rating Label)。", "產品內部/外部高解析度照片、BOM表、電路圖與方塊圖。", "當地代理商之公司登記證明與授權信。"]
+      },
+      "CN": {
+        title: "🇨🇳 中國大陸 (China)",
+        desc: "CCC 涵蓋安規與 EMC，並要求嚴格的「工廠檢查」。無線產品由 SRRC 管制，接入公網的設備則受 NAL 管理，是全球對「實地當地測試」要求最嚴苛的市場之一。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type A, C, I (國標三扁八字型為主)" },
+        categories: [
+          { type: "Safety (安規)", mark: "CCC (中國強制性產品認證)", testing: "⚠️ 嚴格強制。不接受任何海外 CB/CE 報告，必須將實體樣品寄送至中國境內 CNCA 指定實驗室進行型式試驗。" },
+          { type: "EMC (電磁相容)", mark: "CCC", testing: "⚠️ 嚴格強制。必須在中國境內實驗室與安規一併進行測試。" },
+          { type: "RF/Telecom (無線)", mark: "SRRC / NAL", testing: "⚠️ 嚴格強制。同樣必須送交工信部 (MIIT) 指定之境內實驗室進行核准測試，耗時較長。" }
+        ],
+        agent: "⚠️ 條件性要求。辦理 CCC 時境外製造商可作為申請人，但諸多註冊作業與進網許可 (NAL) 申請往往需要境內授權代理或設立境內公司作為責任主體。",
+        process: ["向 CQC 或其他指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗。", "測試合格後，機構將派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書後 (效期通常為 5 年)，必須合法購買或印製 CCC 標誌，並每年接受後續監督查廠。"],
+        docs: ["全簡體中文的技術規格書、使用者手冊與產品銘牌。", "關鍵零組件清單 (CDF)、電路佈局圖、工廠調查表 (FQI)。", "對於 SRRC 需要提供天線增益與射頻規格申報書。"]
+      },
+      "JP": {
+        title: "🇯🇵 日本 (Japan)",
+        desc: "安規以 PSE (電氣用品安全法) 為主，分為特定(菱形, 需查廠)與非特定(圓形, 自我宣告)。EMC 多屬 VCCI 範圍，無線受 MIC 管制。",
+        electrical: { voltage: "100V / 50Hz (東日本) & 60Hz (西日本)", plug: "Type A, B (與台灣/美國相容)" },
+        categories: [
+          { type: "Safety (安規)", mark: "PSE (菱形/圓形)", testing: "❌ 不強制。可由全球日本登錄的海外認證機構 (RCB, 如 TUV, UL) 進行測試發證，接受 CB 報告轉證。" },
+          { type: "EMC (電磁相容)", mark: "VCCI (自願性)", testing: "❌ 不強制。由製造商於全球 VCCI 註冊之合格實驗室測試後，進行自我宣告註冊。" },
+          { type: "RF/Telecom (無線)", mark: "MIC (俗稱 Giteki 技適)", testing: "❌ 不強制。接受海外合格實驗室出具報告，並交由 RCB 進行審核發證。" }
+        ],
+        agent: "⚠️ 嚴格強制。進入日本市場販售，PSE 法規嚴格要求必須由日本境內註冊的「輸入事業者」(日本進口商) 負責向經濟產業省 (METI) 進行事業屆出備案，並承擔最終法律與召回責任。",
+        process: ["判定產品屬菱形 PSE (需第三方測試與查廠) 或圓形 PSE (自行測試宣告)。", "若具無線功能，向認可機構申請 MIC 認證。", "日本進口商 (輸入事業者) 完成 METI 備案。", "於產品本體打上 PSE 標誌、MIC 技適符號 (包含 R 及 T 碼)，且必須清楚標示該進口商的名稱。"],
+        docs: ["日文使用手冊、構造圖、絕緣材料清單與安規組件表。", "日本進口商出具的合規保證與法務備案文件。"]
+      },
+      "KR": {
+        title: "🇰🇷 韓國 (South Korea)",
+        desc: "KATS 負責產品安全，RRA 負責 EMC 與無線頻譜，兩者皆統一打上 KC (Korea Certification) 標誌，但管制路徑各自獨立。",
+        electrical: { voltage: "220V / 60Hz", plug: "Type C, F (歐規雙圓柱型, 俗稱豬鼻子)" },
+        categories: [
+          { type: "Safety (安規)", mark: "KC Safety", testing: "❌ 條件性豁免。多數產品可接受有效之 CB 測試報告與證書進行書面審查與轉證。" },
+          { type: "EMC (電磁相容)", mark: "KC EMC", testing: "⚠️ 條件強制。除特定簽署 MRA 國家的實驗室外，絕大多數 EMC 必須送至韓國境內的合格實驗室實地測試。" },
+          { type: "RF/Telecom (無線)", mark: "KC RF", testing: "⚠️ 嚴格強制。RF 射頻測試幾乎皆被要求必須在韓國當地的 RRA 認可實驗室進行。" }
+        ],
+        agent: "⚠️ 強制要求。國外製造商若無韓國分公司，必須依法指定一名韓國境內的代理商或進口商 (In-country Representative) 作為證書責任方。",
+        process: ["確認安全認證級別 (Safety Certification 需查廠 / Registration 僅測試 / SDOC 自我宣告)。", "安排樣品寄送至韓國，執行 KC EMC 與 RF 測試。", "針對高風險安全產品執行首次工廠檢查。", "審核通過後，於產品標籤上印製 KC 標誌及對應的認證號碼。"],
+        docs: ["韓文使用手冊、韓文產品警語與 KC 標籤設計圖。", "CB 測試報告(安全)、BOM 表、電路圖。"]
+      },
+      "IN": {
+        title: "🇮🇳 印度 (India)",
+        desc: "印度法規高度破碎化：BIS (CRS) 負責電子產品安全，WPC (ETA) 負責純無線頻譜，而 TEC 負責電信與網通介面(如 Router, Switch)。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, D, M (印度特有大圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "BIS (CRS 註冊)", testing: "⚠️ 嚴格強制。不接受國際 CB 報告，所有列管樣品必須送交印度境內受 BIS 認可的實驗室重新測試。" },
+          { type: "EMC (電磁相容)", mark: "TEC / BIS", testing: "⚠️ 條件強制。若產品落入 TEC 管制範圍 (MTCTE)，EMC 測試強制要求在印度境內實驗室執行。" },
+          { type: "RF/Telecom (無線)", mark: "WPC (ETA) / TEC", testing: "❌ 條件性豁免。WPC 接受海外 CE/FCC 報告申請；但若屬 TEC 網通設備則強制境內測試。" }
+        ],
+        agent: "⚠️ 嚴格強制。所有認證 (BIS/WPC/TEC) 皆強制必須與印度當地的註冊公司簽署合約，指定其為授權代表 (AIR - Authorized Indian Representative)。",
+        process: ["與印度當地公司簽訂 AIR 法務協議。", "將樣品清關送至印度當地實驗室測試 (BIS 與 TEC)。", "取得印度實驗室報告後，將報告與 AIR 資料上傳至 BIS/TEC 官方網站進行審核註冊。", "取得註冊號碼 (Registration No.)，並將 BIS Standard Mark 標示於產品上。"],
+        docs: ["製造商的營業執照 (英文公證版)、商標註冊證明 (Brand Registration)。", "授權印度代表 (AIR) 的宣誓書 (Affidavit) 與正式法律合約。"]
+      },
+      "AU": {
+        title: "🇦🇺 澳洲 (Australia)",
+        desc: "澳洲將安規 (ERAC - 依風險分三級) 與 EMC/無線 (ACMA) 的合規要求，統一整合於一個單一的 RCM (Regulatory Compliance Mark) 標誌之下。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type I (八字扁平型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "RCM", testing: "❌ 不強制。完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
+          { type: "EMC (電磁相容)", mark: "RCM", testing: "❌ 不強制。接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
+          { type: "RF/Telecom (無線)", mark: "RCM", testing: "❌ 不強制。接受海外報告，但須確保使用頻段嚴格符合澳洲 ACMA 的本地規範。" }
+        ],
+        agent: "⚠️ 嚴格強制。境外製造商不能直接持有 RCM 證書。必須由澳洲當地的合法供應商/進口商 (Local Supplier) 登錄為負責任方，並在國家資料庫 (NRS) 註冊。",
+        process: ["於海外取得符合 AS/NZS 與 ACMA 要求的測試報告。", "若為 Level 3 (高風險安全產品)，需額外申請澳洲安全核准證書 (Certificate of Approval)。", "由當地進口商登入國家資料庫 (EESS/NRS) 註冊成為供應商並綁定產品。", "產品標示 RCM 標誌 (無須標示號碼，認標不認號)。"],
+        docs: ["英文版技術說明書、完整測試報告。", "當地進口商負責簽署保存的符合性聲明 (DoC)。"]
+      },
+      "NZ": {
+        title: "🇳🇿 紐西蘭 (New Zealand)",
+        desc: "法規與標準(AS/NZS)與澳洲高度同步，簽署有雙邊互認協議，同樣使用 RCM 標誌作為合規宣告。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type I (八字扁平型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "RCM", testing: "❌ 不強制。接受海外合格實驗室出具之 CB 或 AS/NZS 報告。" },
+          { type: "EMC (電磁相容)", mark: "RCM", testing: "❌ 不強制。接受海外 EMC 報告。" },
+          { type: "RF/Telecom (無線)", mark: "RCM (RSM 管制)", testing: "❌ 不強制。接受海外報告 (需確保符合 RSM 規定的頻段)。" }
+        ],
+        agent: "⚠️ 強制要求。需由紐西蘭當地供應商負責合規註冊與維護文件。",
+        process: ["進行測試取得 AS/NZS 報告 (通常與澳洲一併處理)。", "紐西蘭供應商在資料庫進行註冊與自我宣告。", "標示 RCM 標誌。"],
+        docs: ["英文測試報告與技術檔案 (TCF)。", "當地供應商簽署之符合性聲明 (DoC)。"]
+      },
+      "SG": {
+        title: "🇸🇬 新加坡 (Singapore)",
+        desc: "消費性家電安規受 Enterprise Singapore (ESG) 的 CPS Scheme 管制 (貼 Safety Mark)；網通及無線產品則由 IMDA 管理。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "Safety Mark", testing: "❌ 不強制。只要產品在 33 類管制清單內，通常可直接提交合格的 CB 報告與證書進行書面轉證。" },
+          { type: "EMC (電磁相容)", mark: "IMDA", testing: "❌ 不強制。接受 CE 或 FCC 之 EMC 測試報告。" },
+          { type: "RF/Telecom (無線)", mark: "IMDA", testing: "❌ 不強制。憑海外射頻報告即可向 IMDA 辦理設備線上註冊 (Equipment Registration)。" }
+        ],
+        agent: "⚠️ 嚴格強制。無論是 Safety Mark 還是 IMDA，所有申請商 (Applicant) 都必須是持有 ACRA 註冊號碼的新加坡本地公司。",
+        process: ["確認產品是否落入 ESG (33 類高風險) 或 IMDA 管制清單。", "由當地進口商提交 CB 或 RF 報告至新加坡認可的驗證機構 (CAB)。", "審核通過取得證書 (效期 3 年)，於產品或包裝加貼 Safety Mark 或 IMDA 標籤。"],
+        docs: ["3 年內有效之 CB 證書與測試報告、英文手冊。", "當地申請商的 ACRA 營業註冊證明 (Bizfile)。"]
+      },
+      "MY": {
+        title: "🇲🇾 馬來西亞 (Malaysia)",
+        desc: "安規與能效受能源委員會 (Suruhanjaya Tenaga, ST) 監管，需取得 COA；無線通訊與 EMC 則由 SIRIM QAS 負責驗證。",
+        electrical: { voltage: "240V / 50Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "ST COA", testing: "❌ 不強制當地。大多接受國際 CB 報告或經認可之 ILAC 實驗室報告。" },
+          { type: "EMC (電磁相容)", mark: "SIRIM", testing: "❌ 不強制當地。通常接受合格的 CE EMC 測試報告 (須具 ILAC 資格)。" },
+          { type: "RF/Telecom (無線)", mark: "SIRIM", testing: "⚠️ 條件性強制。一般 BT/Wi-Fi 設備可直接接受海外 CE 報告；但若是 5G、VoLTE 或是具備 IPv6 功能之通訊設備，則強制要求送至馬來西亞當地實驗室實測。" }
+        ],
+        agent: "⚠️ 嚴格強制。ST 與 SIRIM 的申請商必須是馬來西亞當地註冊的法人公司 (通常為進口商或分銷商)。",
+        process: ["由當地代理商透過官方線上系統 (e-ComM 或 e-Permit) 提交申請。", "依規定安排書面審查或送樣測試。", "獲發證書 (通常 1 年效期，需年審)，必須向主管機關購買 SIRIM / ST 專屬標籤貼紙並黏貼於產品上。"],
+        docs: ["完整 CB 測試報告與 CE 報告。", "馬來西亞代理商的授權書 (LoA) 與公司註冊文件 (SSM)。"]
+      },
+      "TH": {
+        title: "🇹🇭 泰國 (Thailand)",
+        desc: "安規由泰國工業標準局 (TISI) 掌管 (包含查廠與當地測試)；電信/無線產品由 NBTC 管制。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type A, B, C, O (泰國有專屬 Type O 圓柱帶接地插頭)" },
+        categories: [
+          { type: "Safety (安規)", mark: "TISI (強制性/自願性)", testing: "⚠️ 嚴格強制。TISI 強制要求實體樣品必須在泰國當地的認可實驗室進行測試，不接受海外報告。" },
+          { type: "EMC (電磁相容)", mark: "TISI / NBTC", testing: "⚠️ 嚴格強制。若產品屬 TISI 管制，EMC 亦須在境內實驗室測試。" },
+          { type: "RF/Telecom (無線)", mark: "NBTC", testing: "⚠️ 條件性要求。Class A/B 設備接受 CE/FCC 報告審查，但特定設備 (如部分行動通訊) 需境內實測。" }
+        ],
+        agent: "⚠️ 強制要求。TISI 及 NBTC 證書持有人必須為泰國當地註冊之進口商或代理商 (Local Importer)。",
+        process: ["由進口商向 TISI/NBTC 提出申請，並將樣品清關送至泰國當地實驗室。", "TISI 會安排泰國官員至海外製造工廠進行稽核 (或接受特定機構查廠報告)。", "取得認證後，產品必須印製 TISI (含專屬 QR 碼) 與 NBTC 的合格標籤。"],
+        docs: ["泰文版使用手冊與包裝標籤設計稿。", "工廠 ISO 9001 證書、當地進口商的營業執照 (DBD) 與稅務證明。"]
+      },
+      "VN": {
+        title: "🇻🇳 越南 (Vietnam)",
+        desc: "科學技術部 (MOST) 與 MOIT 掌管安規/EMC/能效 (貼 CR Mark)；資訊通信部 (MIC) 負責管制無線網通產品。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type A, C, F (雙圓柱或雙扁平皆常見)" },
+        categories: [
+          { type: "Safety (安規)", mark: "CR Mark", testing: "⚠️ 嚴格強制。列入強制目錄之產品 (如家電、IT電源) 必須在越南當地指定實驗室測試。" },
+          { type: "EMC (電磁相容)", mark: "CR Mark / MIC", testing: "⚠️ 嚴格強制。EMC 同樣要求在越南當地實驗室進行實機測試。" },
+          { type: "RF/Telecom (無線)", mark: "MIC", testing: "⚠️ 嚴格強制。凡具無線/電信介面設備，MIC 均強制要求送至越南境內實機測試，不可僅憑 CE 報告。" }
+        ],
+        agent: "⚠️ 嚴格強制。必須由越南當地合法註冊的公司 (進口商或代表) 提出申請與聲明。",
+        process: ["將樣品(通常需先申請進口許可)寄送至越南當地認可實驗室進行測試。", "向主管機關提交測試報告與當地代理商的符合性聲明 (SDoC)。", "核發型式認可證書 (Type Approval Certificate)，效期通常 2-3 年。", "產品打上 ICT 標誌 (針對 MIC) 或 CR 標誌。"],
+        docs: ["越南當地申請人之商業登記證與符合性聲明表。", "英文/越南文技術文件、產品銘牌照片與天線規格。"]
+      },
+      "ID": {
+        title: "🇮🇩 印尼 (Indonesia)",
+        desc: "家電與 IT 產品安全受 SNI 體系管制(含實地查廠)；無線與通訊設備受郵政與資訊科技總局 (SDPPI) 管制。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, F (歐規雙圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SNI", testing: "⚠️ 嚴格強制。高度管制，要求樣品必須寄送至印尼境內的政府認可實驗室測試，並強制要求工廠檢查。" },
+          { type: "EMC (電磁相容)", mark: "SDPPI", testing: "⚠️ 條件性強制。SDPPI 接受其官方公告之「海外認可實驗室 (HKI 名單)」的 EMC 報告；若出證實驗室不在名單內，則強制要求印尼當地實測。" },
+          { type: "RF/Telecom (無線)", mark: "SDPPI", testing: "⚠️ 條件性強制。同 EMC，若海外實驗室具備 SDPPI 認可資格則免當地測試；否則一律強制寄送樣品至印尼境內實驗室實機測試。" }
+        ],
+        agent: "⚠️ 嚴格強制。申請商必須是印尼境內註冊的進口商、分銷商或官方代表，且須持有 NIB 號碼。",
+        process: ["當地進口商提交申請，並安排樣品進口至印尼實驗室。", "針對 SNI，印尼官方驗證機構會派員至海外工廠執行查核。", "測試與審查通過後，核發證書 (通常 3 年效期)，產品必須印製 SNI 標誌與 SDPPI 證書編號。"],
+        docs: ["當地申請人的 NIB (商業登記證) 與 NPWP (稅號)。", "印尼文版說明書、外部照片、當地測試報告與工廠品質手冊。"]
+      },
+      "PH": {
+        title: "🇵🇭 菲律賓 (Philippines)",
+        desc: "貿工部 BPS 掌管安規 (發放 PS 或 ICC 標誌)；國家電信委員會 (NTC) 管制無線與電信產品。",
+        electrical: { voltage: "220V / 60Hz", plug: "Type A, B, C (美規平行與歐規雙圓)" },
+        categories: [
+          { type: "Safety (安規)", mark: "BPS (PS/ICC)", testing: "❌ 不強制當地。通常接受符合資格之海外實驗室發出的 CB 測試報告進行審查。" },
+          { type: "EMC (電磁相容)", mark: "NTC", testing: "❌ 不強制。接受海外之 CE 或 FCC 報告。" },
+          { type: "RF/Telecom (無線)", mark: "NTC", testing: "❌ 不強制。一般接受海外具資格實驗室發出的 RF 報告進行書面審查轉證。" }
+        ],
+        agent: "⚠️ 強制要求。必須由菲律賓當地的法人公司、經銷商或進口商作為申請者 (Applicant)。",
+        process: ["備齊海外測試報告 (如 CE/CB/FCC)。", "由菲律賓進口商向 NTC / BPS 提交文件審查。", "若屬強制安規清單，BPS 可能會執行抵港批次驗貨 (ICC) 或工廠查核 (PS 標誌)。", "取得證書後於產品標示對應標誌與號碼。"],
+        docs: ["英文手冊、技術規格書與天線增益圖。", "菲律賓進口商營業執照 (SEC/DTI) 及授權信。"]
+      },
+
+      // --- 美洲地區 (Americas) ---
+      "US": {
+        title: "🇺🇸 美國 (United States)",
+        desc: "安規為 OSHA 認可之 NRTL 把關 (實務上為買家強制要求)；EMC 與無線則受聯邦通訊委員會 (FCC) 嚴格的聯邦法律強制管制。",
+        electrical: { voltage: "120V / 60Hz", plug: "Type A, B (美規平行與接地)" },
+        categories: [
+          { type: "Safety (安規)", mark: "NRTL (如UL/cTUVus)", testing: "❌ 不強制當地。可由全球各地的 NRTL 認可實驗室進行測試並發證。" },
+          { type: "EMC (電磁相容)", mark: "FCC (SDoC/Certification)", testing: "⚠️ 條件要求。若需 Certification，測試必須於 FCC 列名認可 (FCC-recognized) 之實驗室執行 (全球皆有，不限美國本土)。" },
+          { type: "RF/Telecom (無線)", mark: "FCC ID", testing: "⚠️ 條件要求。所有 RF 發射器必須於 FCC 列名認可之合格實驗室測試。" }
+        ],
+        agent: "⚠️ 強制要求 (FCC)。FCC 認證必須指定一名位於美國境內的聯絡人 (US Local Agent) 以處理潛在的合規與召回信件。",
+        process: ["NRTL 安規：提交申請 → 產品測試 → 首次工廠檢查 (FII) → 發證與每季例行廠檢。", "FCC 射頻：於 FCC 註冊實驗室測試 → 準備技術卷宗提交 TCB 審核 → 取得 FCC ID 號碼，並標示於銘牌。"],
+        docs: ["英文手冊、詳細線路圖 (Schematics)、方塊圖與操作描述 (Operational Description)。", "SDoC 符合性聲明檔案及美國代理商 (US Agent) 授權信。"]
+      },
+      "CA": {
+        title: "🇨🇦 加拿大 (Canada)",
+        desc: "安規由 SCC 認可機構負責 (如 cULus)；通訊及射頻受創新、科學及經濟發展部 (ISED) 監管，常與 FCC 同時執行。",
+        electrical: { voltage: "120V / 60Hz", plug: "Type A, B (美規平行與接地)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SCC 認可標誌", testing: "❌ 不強制。與美國相同，可於全球合規 NRTL 實驗室進行測試。" },
+          { type: "EMC (電磁相容)", mark: "ISED (ICES)", testing: "❌ 不強制。接受符合 ISED 要求之海外實驗室報告。" },
+          { type: "RF/Telecom (無線)", mark: "ISED (IC ID)", testing: "❌ 不強制。接受與 ISED 簽署 MRA 國家的合格實驗室報告 (多與 FCC 報告共用)。" }
+        ],
+        agent: "⚠️ 強制要求。ISED 認證必須指派一名加拿大當地代表 (Canadian Representative)。",
+        process: ["進行測試 (常與 FCC 規範整併，產出 FCC/ISED 雙標準報告)。", "指定加拿大當地代表並簽署授權。", "提交申請並在加拿大官方 REL (無線電設備清單) 資料庫中註冊設備。", "產品標示 IC ID 號碼與 HVIN 模型號碼。"],
+        docs: ["英/法雙語的安全警語及使用說明 (加拿大法規對雙語要求嚴格)。", "加拿大代表的授權信 (Letter of Attestation)。"]
+      },
+      "BR": {
+        title: "🇧🇷 巴西 (Brazil)",
+        desc: "INMETRO 管制家電、IT電源與醫療設備之安規；國家電信局 (ANATEL) 則嚴格管制電信與無線通訊產品。",
+        electrical: { voltage: "127V / 220V, 60Hz (依州別不同)", plug: "Type N (巴西特有三圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "INMETRO", testing: "⚠️ 嚴格強制。大部分列管產品必須將樣品寄送至巴西境內的認可實驗室進行當地實測，並強制查廠。" },
+          { type: "EMC (電磁相容)", mark: "ANATEL/INMETRO", testing: "⚠️ 嚴格強制。必須在巴西當地實驗室測試。" },
+          { type: "RF/Telecom (無線)", mark: "ANATEL", testing: "⚠️ 嚴格強制。射頻功能同樣必須在巴西境內完成測試，不接受海外報告。" }
+        ],
+        agent: "⚠️ 嚴格強制。必須由在巴西合法註冊的公司 (CNPJ 號碼) 作為申請人與持證者。",
+        process: ["聯絡巴西代理商，將實機樣品寄至巴西實驗室進行當地測試。", "安規需安排 ISO 9001 與工廠稽核。", "提交測試結果至發證機構 (OCD) 審核，取得 ANATEL/INMETRO 證書。", "證書多有 1~2 年效期限制，需定期重新在巴西測試與續證。"],
+        docs: ["葡萄牙文的使用手冊、技術規格與產品外部標籤。", "工廠 ISO 9001 證書、當地代理商的營業登記資料 (CNPJ)。"]
+      },
+      "MX": {
+        title: "🇲🇽 墨西哥 (Mexico)",
+        desc: "電氣與電子安全適用 NOM 認證 (能效與安規)，電信與無線射頻受聯邦電信協會 IFETEL (IFT) 嚴格管制。",
+        electrical: { voltage: "127V / 60Hz", plug: "Type A, B (美規平行與接地)" },
+        categories: [
+          { type: "Safety (安規)", mark: "NOM", testing: "⚠️ 嚴格強制。實務上絕大多數產品必須在墨西哥當地認可實驗室測試 (雖官方有美加 MRA 等效協議，但適用門檻極高)。" },
+          { type: "EMC (電磁相容)", mark: "NOM", testing: "⚠️ 嚴格強制。須在墨西哥境內實機測試。" },
+          { type: "RF/Telecom (無線)", mark: "IFETEL", testing: "⚠️ 嚴格強制。必須在墨西哥境內完成射頻與電信介面測試，不接受海外 FCC/CE 報告。" }
+        ],
+        agent: "⚠️ 嚴格強制。證書持有人必須是墨西哥當地的註冊公司或進口商，證書不可轉讓給其他進口商。",
+        process: ["透過當地進口商提交申請，並寄送樣品至墨西哥實驗室測試。", "安規審查通過後取得 NOM 證書；無線審核後取得 IFETEL 證書。", "獲發證書後，產品方可通關進口，並需打上 NOM 標誌與 IFT 號碼。"],
+        docs: ["西班牙文的手冊、包裝標示設計與保固卡 (Warranty Card)。", "進口商之 RFC (稅務註冊碼) 及相關法務文件。"]
+      },
+      "AR": {
+        title: "🇦🇷 阿根廷 (Argentina)",
+        desc: "產品安全由 IRAM 等機構發放 S-Mark；無線射頻產品由國家通訊局 ENACOM 管制。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type C, I (八字扁平或歐規雙圓)" },
+        categories: [
+          { type: "Safety (安規)", mark: "S-Mark", testing: "⚠️ 嚴格強制。安規認證必須將樣品送至阿根廷境內實驗室進行實測，並分為標誌認證(查廠)與型式認證。" },
+          { type: "EMC (電磁相容)", mark: "ENACOM", testing: "⚠️ 嚴格強制。EMC 通常也需在境內測試。" },
+          { type: "RF/Telecom (無線)", mark: "ENACOM", testing: "⚠️ 嚴格強制。射頻功能必須在阿根廷當地實驗室完成測試，不接受 FCC/CE 報告。" }
+        ],
+        agent: "⚠️ 強制要求。必須指定阿根廷當地進口商 (具 CUIT 號碼) 作為證書持有人 (申請者)。",
+        process: ["將樣品清關送至阿根廷當地實驗室測試。", "通過測試後向主管機關提交申請。", "獲發證書後 (通常 3 年效期)，於產品印上 ENACOM ID (含 CNC 號碼) 與 S-Mark。"],
+        docs: ["西班牙文使用者手冊、內部外部高畫質照片。", "阿根廷進口商之營業註冊資料 (CUIT)。"]
+      },
+      "CL": {
+        title: "🇨🇱 智利 (Chile)",
+        desc: "電氣安全及能效由 SEC (電力及燃料監管局) 負責監管；無線與電信由 SUBTEL 掌管。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type C, L (歐規雙圓與智利特有三圓平排)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SEC", testing: "⚠️ 嚴格強制。SEC 強制要求樣品送至智利當地測試，或是抵達海關時由當地機構執行批次驗貨。" },
+          { type: "EMC (電磁相容)", mark: "SUBTEL/SEC", testing: "⚠️ 條件強制。視屬性可能需當地測試。" },
+          { type: "RF/Telecom (無線)", mark: "SUBTEL", testing: "❌ 不強制。SUBTEL 通常接受海外合格之 FCC 或 CE 報告進行書面審查。" }
+        ],
+        agent: "⚠️ 強制要求。證書必須由智利當地的進口商或註冊公司持有。",
+        process: ["確認 SEC 管制清單，將樣品送至智利實驗室測試，或於海外查廠。", "無線部分將 FCC 報告提交 SUBTEL 進行書面審查。", "取得 SEC 專屬 QR 碼標籤與 SUBTEL 標誌，必須黏貼於產品上。"],
+        docs: ["西班牙文操作手冊、技術規格書。", "當地進口商相關法務文件。"]
+      },
+      "CO": {
+        title: "🇨🇴 哥倫比亞 (Colombia)",
+        desc: "電氣安全(含特定家電/工業設備)須符合 RETIE 規範；電信與網通設備由 CRC 掌管。",
+        electrical: { voltage: "110V-120V / 60Hz", plug: "Type A, B (美規平行與接地)" },
+        categories: [
+          { type: "Safety (安規)", mark: "RETIE", testing: "❌ 不強制。通常接受具備 ILAC/MRA 資格之海外實驗室報告，結合工廠檢查。" },
+          { type: "EMC (電磁相容)", mark: "CRC", testing: "❌ 不強制。接受海外報告。" },
+          { type: "RF/Telecom (無線)", mark: "CRC", testing: "❌ 不強制。接受海外之 FCC 報告進行審查轉證，若含手機功能則需綁定 IMEI。" }
+        ],
+        agent: "⚠️ 強制要求。需由哥倫比亞當地的註冊公司進行申請與註冊。",
+        process: ["哥倫比亞進口商向 CRC 提交 FCC 報告與相關技術文件。", "RETIE 產品需委託認證機構審查文件與查廠。", "發放 CRC 許可信或 RETIE 證書，CRC 通常無特殊專用標誌。"],
+        docs: ["西班牙文手冊、FCC 報告與授權信件。", "當地申請商的營業證明與商業發票。"]
+      },
+      "PE": {
+        title: "🇵🇪 秘魯 (Peru)",
+        desc: "通訊及無線電設備必須取得交通通訊部 (MTC) 的型式認可；安規較無嚴格單一認證體系。",
+        electrical: { voltage: "220V / 60Hz", plug: "Type A, B, C (美規與歐規混合)" },
+        categories: [
+          { type: "Safety (安規)", mark: "N/A", testing: "❌ 消費電子安規管制較寬鬆，通常憑 CE/CB 即可通關，無強制當地標誌。" },
+          { type: "EMC (電磁相容)", mark: "MTC", testing: "❌ 不強制。接受 FCC 或 CE 的測試報告。" },
+          { type: "RF/Telecom (無線)", mark: "MTC", testing: "❌ 不強制。MTC 直接採用 FCC 或 CE 報告進行書面審查，免實測。" }
+        ],
+        agent: "⚠️ 強制要求。必須由秘魯當地的註冊公司 (擁有 RUC 稅號) 擔任申請人。",
+        process: ["準備完整的 FCC 或 CE 報告及技術文件。", "由秘魯當地代理人向 MTC 提出 VUCE 線上系統註冊。", "取得型式認可證書 (Homologation Certificate，無限期有效)。"],
+        docs: ["技術規格書、英文/西班牙文手冊、FCC/CE 報告全文。", "當地代理商註冊資料 (RUC)。"]
+      },
+
+      // --- 歐洲與獨立國協 (Europe & CIS) ---
+      "EU": {
+        title: "🇪🇺 歐盟 (European Union)",
+        desc: "採取新方法指令 (New Approach Directives)，製造商需確保產品符合低電壓(LVD)、電磁相容(EMC)、無線(RED)及能效環保(RoHS/ErP)等指令。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, E, F (歐規雙圓柱 / 法國帶突起 / 德國 Schuko)" },
+        categories: [
+          { type: "Safety (安規)", mark: "CE (LVD)", testing: "❌ 不強制當地。多數產品可於全球任何合格實驗室測試並進行自我宣告。" },
+          { type: "EMC (電磁相容)", mark: "CE (EMC)", testing: "❌ 不強制當地。接受海外實驗室測試。" },
+          { type: "RF/Telecom (無線)", mark: "CE (RED)", testing: "❌ 不強制當地。接受海外測試，僅特定高風險產品(無協調標準時)才須提交 Notified Body (公告機構) 審查。" }
+        ],
+        agent: "⚠️ 嚴格強制。境外製造商必須依法指定一名位於歐盟境內的授權代表 (Authorized Representative, AR)，且產品或包裝上必須標示 AR 的名稱與地址。",
+        process: ["鑑別適用的所有歐盟指令與最新 EN 協調標準，並執行測試。", "編製完整技術架構文件 (Technical Construction File, TCF)。", "指定歐盟 AR，製造商簽署符合性聲明 (EU DoC)。", "於產品上標示 CE 標誌與 AR 聯絡資訊。"],
+        docs: ["技術架構文件 (TCF) 依法需保存 10 年備查。", "風險評估報告 (Risk Assessment) 與 EU DoC。", "多國語言版之使用者手冊 (依銷售目的國而定)。"]
+      },
+      "UK": {
+        title: "🇬🇧 英國 (United Kingdom)",
+        desc: "脫歐後大不列顛地區導入 UKCA 標誌取代 CE 標誌，法規高度參照歐盟指令，但測試報告必須引用英國當地 BS 標準名稱。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "UKCA", testing: "❌ 不強制。一般可直接利用 CE LVD 測試數據，轉換為 BS 標準報告。" },
+          { type: "EMC (電磁相容)", mark: "UKCA", testing: "❌ 不強制。接受 CE EMC 測試數據。" },
+          { type: "RF/Telecom (無線)", mark: "UKCA", testing: "❌ 不強制。高風險需透過 UK Approved Body 評估，否則自我宣告即可。" }
+        ],
+        agent: "⚠️ 嚴格強制。境外製造商必須指定位於英國境內的授權代表 (UK Rep) 或當地進口商負責合規，且標示其聯絡地址。",
+        process: ["確認對應的英國法規與 BS 標準 (如 Radio Equipment Regulations 2017)。", "準備測試報告與技術文件。", "簽署英國符合性聲明 (UK DoC)，並於產品貼附 UKCA 標誌。"],
+        docs: ["英國符合性聲明 (UK DoC)。", "英國授權代表或進口商之聯絡資訊與保存 10 年的技術文件。"]
+      },
+      "RU": {
+        title: "🇷🇺 俄羅斯/EAEU (Russia/EAEU)",
+        desc: "歐亞經濟聯盟 (包含俄羅斯/白俄/哈薩克等) 使用 EAC 標誌統一管制安全/EMC/RoHS；而俄羅斯境內的 RF/Telecom 另受 FAC 管制。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, F (歐規雙圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "EAC (TR CU)", testing: "⚠️ 條件強制。高風險產品 (Certification 類) 強烈要求境內實地測試，且專家必須實施海外工廠檢查。" },
+          { type: "EMC (電磁相容)", mark: "EAC (TR CU)", testing: "⚠️ 條件強制。同樣視產品類別，部分需境內實測。" },
+          { type: "RF/Telecom (無線)", mark: "FAC / FSS", testing: "⚠️ 嚴格強制。包含加密(FSS)與通信設備(FAC)強制要求於俄羅斯當地實驗室測試。" }
+        ],
+        agent: "⚠️ 嚴格強制。所有 EAC 與 FAC 認證，必須由設立於歐亞經濟聯盟 (EAEU) 境內的當地法人公司作為申請人 (Applicant)。",
+        process: ["由 EAEU 當地申請人提交資料，安排樣品清關。", "執行境內測試或由聯盟專家進行工廠檢查。", "登錄於聯邦憑證系統 (FSA)，產品貼附 EAC 標誌。"],
+        docs: ["俄文版 (或聯盟成員國語言) 使用手冊、安全理由書 (Safety Justification, GOST 標準要求)。", "當地申請人代表的商業與授權合約文件。"]
+      },
+      "UA": {
+        title: "🇺🇦 烏克蘭 (Ukraine)",
+        desc: "烏克蘭技術法規 (TR) 體系與歐盟指令高度相似，採用 UkrSEPRO 系統規範，產品需貼附烏克蘭三叉戟形狀的 TR 標誌。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, F (歐規雙圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "TR Mark", testing: "❌ 不強制當地。多數情況下可直接採認現有的 CE LVD 測試報告轉證。" },
+          { type: "EMC (電磁相容)", mark: "TR Mark", testing: "❌ 不強制。接受 CE EMC 測試報告。" },
+          { type: "RF/Telecom (無線)", mark: "TR Mark", testing: "❌ 不強制。接受 CE RED 測試報告進行轉證宣告。" }
+        ],
+        agent: "⚠️ 嚴格強制。國外製造商必須依法指定一名位於烏克蘭境內的授權代表 (Authorized Representative)。",
+        process: ["委託當地代表向烏克蘭認證機構提交 CE 報告與技術文件。", "由製造商/代表簽署烏克蘭版符合性聲明 (DoC)。", "產品加貼烏克蘭 TR 標誌 (需附上評估機構代碼)。"],
+        docs: ["烏克蘭文的操作手冊、警語與技術文件。", "烏克蘭境內代表授權書與烏克蘭文 DoC。"]
+      },
+      "RS": {
+        title: "🇷🇸 塞爾維亞 (Serbia)",
+        desc: "塞爾維亞法規已與歐盟接軌 (AAA/Kvalitet 標誌)，主要管制 LVD, EMC 及無線射頻 (RiTT)。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, F (歐規雙圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "AAA", testing: "❌ 不強制。完全接受有效的歐盟 CE 報告 (EN 標準)。" },
+          { type: "EMC (電磁相容)", mark: "AAA", testing: "❌ 不強制。接受 CE 報告。" },
+          { type: "RF/Telecom (無線)", mark: "AAA (RATEL)", testing: "❌ 不強制。接受 CE 報告向當地電信機關 (RATEL) 註冊。" }
+        ],
+        agent: "⚠️ 強制要求。必須由塞爾維亞當地的法人公司或進口商提出申請。",
+        process: ["將 CE 報告與 DoC 交付給塞爾維亞代理商。", "向當地主管機關申請型式審查與註冊。", "取得憑證效期後，在產品印製三個 'A' 字型的 AAA 標誌。"],
+        docs: ["完整 CE 測試報告、歐盟 DoC。", "塞爾維亞文的使用說明、當地代理商登記資料。"]
+      },
+
+      // --- 中東與非洲 (MEA) ---
+      "SA": {
+        title: "🇸🇦 沙烏地阿拉伯 (Saudi Arabia)",
+        desc: "SASO 透過 SABER 線上系統管理進口產品的安規、能效與 EMC；通訊設備則由 CST (原 CITC) 管理。",
+        electrical: { voltage: "230V / 60Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SASO (SABER)", testing: "❌ 不強制當地。接受具備 ISO 17025 資格之實驗室發出的 CB 報告或合格測試報告。" },
+          { type: "EMC (電磁相容)", mark: "SASO (SABER)", testing: "❌ 不強制。接受海外合格 EMC 報告。" },
+          { type: "RF/Telecom (無線)", mark: "CST", testing: "❌ 不強制。接受 CE RED 報告進行審查與發證。" }
+        ],
+        agent: "⚠️ 嚴格強制。必須由沙烏地阿拉伯境內的進口商透過 SABER 系統發起申請，境外製造商無法獨立申請。",
+        process: ["沙國進口商登入 SABER 系統登錄產品資訊。", "向 SASO 認可的驗證機構 (CB) 申請產品符合性證書 (PCoC, 效期 1 年)。", "每次出貨前，在系統中申請批次符合性證書 (SCoC) 以供海關清關。"],
+        docs: ["阿拉伯文及英文的使用說明書與安全警告。", "必須提供含有「原產地標示 (Made in...)」的產品清晰照片與包裝照片。"]
+      },
+      "AE": {
+        title: "🇦🇪 阿拉伯聯合大公國 (UAE)",
+        desc: "工業與先進技術部 (MoIAT) 管制安規、能效與 EMC (發放 ECAS / EQM 證書)；TDRA 管制無線與通訊。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "ECAS (CoC)", testing: "❌ 不強制當地。一般接受 3 年內完整有效的 CB 測試報告。" },
+          { type: "EMC (電磁相容)", mark: "ECAS", testing: "❌ 不強制。接受海外合格 EMC 報告。" },
+          { type: "RF/Telecom (無線)", mark: "TDRA", testing: "❌ 不強制。接受 CE 或 FCC 測試報告向 TDRA 辦理型式核准。" }
+        ],
+        agent: "⚠️ 嚴格強制。必須由持有阿聯酋有效營業執照 (Trade License) 之當地註冊公司作為申請商。",
+        process: ["由當地進口商向 MoIAT 提交 CB 報告等技術文件進行審查。", "核發 ECAS 符合性證書 (CoC, 效期 1 年)。", "若是無線設備，另向 TDRA 註冊並於產品標示 TDRA 號碼。"],
+        docs: ["有效之 CB 證書與測試報告、RoHS 報告。", "阿拉伯文/英文的使用手冊、當地代理商營業執照。"]
+      },
+      "ZA": {
+        title: "🇿🇦 南非 (South Africa)",
+        desc: "國家標準局 (NRCS) 管制電氣安全 (發放 LOA)；獨立通訊局 (ICASA) 嚴格管制無線射頻與 EMC。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, M, N (南非特有大圓柱型為主)" },
+        categories: [
+          { type: "Safety (安規)", mark: "NRCS LOA", testing: "❌ 不強制當地。通常接受 3 年有效期內的 CB 報告進行文件審查轉證。" },
+          { type: "EMC (電磁相容)", mark: "ICASA", testing: "❌ 不強制當地。接受海外實驗室報告，但實驗室必須具備明確的 ILAC-MRA 認可資格，審核非常嚴格，不需寄送實機。" },
+          { type: "RF/Telecom (無線)", mark: "ICASA", testing: "❌ 不強制當地。同 EMC，接受具備 ILAC 資格之海外 CE 射頻測試報告，無須寄送實機至南非當地測試。" }
+        ],
+        agent: "⚠️ 嚴格強制。必須由南非當地註冊之公司 (進口商/代理商) 進行申請並持有證書。",
+        process: ["向 NRCS 提交 CB 報告申請 LOA (官方處理時間極長，可能達 4~6 個月)。", "由南非代理商向 ICASA 提交 RF/EMC 報告申請註冊。", "取得許可後，產品必須貼附 ICASA 標籤。"],
+        docs: ["CB 測試報告 (含南非電壓與插頭國家差異)、CE 射頻報告。", "南非代理商的註冊文件與授權書。"]
+      },
+      "EG": {
+        title: "🇪🇬 埃及 (Egypt)",
+        desc: "進出口管制局 (GOEIC) 掌管進出口安全(強制工廠白名單註冊)；國家電信監管局 (NTRA) 管制無線網通設備。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type C, F (歐規雙圓柱型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "GOEIC", testing: "❌ 不強制當地。通常依賴國際發證機構(如 TUV/SGS)簽發的 VoC 報告。" },
+          { type: "EMC (電磁相容)", mark: "NTRA", testing: "❌ 不強制。接受四大機構簽發的 VoC。" },
+          { type: "RF/Telecom (無線)", mark: "NTRA", testing: "❌ 不強制當地。憑 CE 報告委託認可機構出具 NTRA VoC (符合性驗證)。" }
+        ],
+        agent: "⚠️ 強制要求。必須由埃及當地進口商負責向主管機關進行通報與海關清關。",
+        process: ["製造商需準備公證文件，在 GOEIC 系統進行白名單工廠註冊 (耗時極長)。", "將 CE 報告交給指定認可機構審核，取得 NTRA VoC (符合性驗證證書)。", "憑 VoC 由埃及進口商辦理進口。"],
+        docs: ["CE 測試報告、ISO 9001 工廠證書。", "阿拉伯文手冊、商會與埃及領事館公證之工廠授權文件。"]
+      },
+      "IL": {
+        title: "🇮🇱 以色列 (Israel)",
+        desc: "以色列標準局 (SII) 負責安全與 EMC 審查及驗貨；通訊部 (MoC) 管理無線與電信。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type C, H, M (以色列特有 Type H 三圓/扁頭)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SII", testing: "⚠️ 條件強制。高風險安全產品強制要求樣品送至 SII 進行當地測試，且抵達海關時需進行批次驗貨。" },
+          { type: "EMC (電磁相容)", mark: "SII", testing: "⚠️ 條件強制。SII 在驗貨時亦可能要求抽驗測試 EMC。" },
+          { type: "RF/Telecom (無線)", mark: "MoC", testing: "❌ 不強制當地。MoC 通常接受 CE 報告進行通訊許可審查。" }
+        ],
+        agent: "⚠️ 嚴格強制。所有 SII 許可與 MoC 證書必須由以色列當地進口商持有與申請。",
+        process: ["進口商向 MoC 申請通訊許可 (提交 CE 報告)。", "進口商向 SII 申請安全測試或文件預審 (Type Approval)。", "貨物抵達以色列海關時，SII 將依法進行批次抽驗與放行。"],
+        docs: ["希伯來文的安全警語與使用手冊。", "當地進口商的註冊文件與產品 CB/CE 報告。"]
+      },
+      "KW": {
+        title: "🇰🇼 科威特 (Kuwait)",
+        desc: "科威特採用 KUCAS 計劃 (TIR 報告) 管制進口產品安全；通訊管理局 (CITRA) 管制無線與資通訊產品。",
+        electrical: { voltage: "240V / 50Hz", plug: "Type C, G (英規大三角方扁型為主)" },
+        categories: [
+          { type: "Safety (安規)", mark: "KUCAS (TIR)", testing: "❌ 不強制當地。完全接受來自 ILAC 認可實驗室出具之 CB 報告。" },
+          { type: "EMC (電磁相容)", mark: "KUCAS", testing: "❌ 不強制當地。接受海外報告。" },
+          { type: "RF/Telecom (無線)", mark: "CITRA", testing: "❌ 不強制當地。接受 CE 或 FCC 報告申請型式認可信。" }
+        ],
+        agent: "❌ 不強制代理持證。但須由進口商於清關時出示 TIR (Technical Inspection Report) 憑證。",
+        process: ["向 TUV/Intertek 等驗證機構提交測試報告與出貨發票。", "申請核發 TIR 作為清關依據。", "若為無線設備，需事前向 CITRA 提交 CE 報告申請型式認可。"],
+        docs: ["完整 CB/CE 測試報告、商業發票、裝箱單。", "阿拉伯文與英文版標籤照片。"]
+      },
+      "NG": {
+        title: "🇳🇬 奈及利亞 (Nigeria)",
+        desc: "進口電子產品須通過標準局 SONCAP 計劃 (PC 與 SC 證書)；無線產品受通訊委員會 (NCC) 註冊管制。",
+        electrical: { voltage: "230V / 50Hz", plug: "Type D, G (英規大三角或圓柱)" },
+        categories: [
+          { type: "Safety (安規)", mark: "SONCAP", testing: "❌ 不強制當地。接受海外合格實驗室出具的測試報告 (如 CE)。" },
+          { type: "EMC (電磁相容)", mark: "SONCAP", testing: "❌ 不強制。接受海外報告。" },
+          { type: "RF/Telecom (無線)", mark: "NCC", testing: "❌ 不強制當地。接受海外 CE 報告進行審查發證。" }
+        ],
+        agent: "⚠️ 條件要求。SONCAP 無嚴格限制，但 NCC 證書必須由奈及利亞當地註冊之代表或進口商申請。",
+        process: ["將報告交由認可驗證機構審查，核發產品證書 (Product Certificate, PC)。", "進口商辦理 Form M，並於出貨前申請 SONCAP 證書 (SC) 供海關清關。", "當地進口商持 RF 報告向 NCC 完成註冊。"],
+        docs: ["海外測試報告 (如 CE)。", "Form M (奈及利亞進口通報表) 及商業發票、PC 證書。"]
+      },
+      "KE": {
+        title: "🇰🇪 肯亞 (Kenya)",
+        desc: "進口商品需遵循 PVoC (出口前符合性驗證) 計劃；通訊管理局 (CAK) 負責無線射頻設備核准。",
+        electrical: { voltage: "240V / 50Hz", plug: "Type G (英規大三角方扁型)" },
+        categories: [
+          { type: "Safety (安規)", mark: "PVoC (CoC)", testing: "❌ 不強制當地。但嚴格要求在原產國(出口國)進行出貨前的實體驗貨 (Pre-shipment Inspection)。" },
+          { type: "EMC (電磁相容)", mark: "PVoC", testing: "❌ 不強制。同上。" },
+          { type: "RF/Telecom (無線)", mark: "CAK", testing: "❌ 不強制當地。接受 CE 報告向 CAK 申請型式認可。" }
+        ],
+        agent: "⚠️ 強制要求。CAK 型式認可必須由肯亞當地註冊之進口商提出申請。",
+        process: ["提交測試報告給認可驗證機構 (如 SGS, TUV)。", "安排貨物出運前於出口地進行實體驗貨 (PVoC)。", "核發 CoC (Certificate of Conformity) 供肯亞海關清關。"],
+        docs: ["IDF (進口聲明表)、Proforma Invoice (預估發票)。", "英文版測試報告與裝箱單。"]
+      },
+      "MA": {
+        title: "🇲🇦 摩洛哥 (Morocco)",
+        desc: "安規與 EMC 採用與歐盟 CE 幾乎一致的 CMIM 標誌規範；國家電信管理局 (ANRT) 管理無線產品。",
+        electrical: { voltage: "220V / 50Hz", plug: "Type C, E (歐規與法規)" },
+        categories: [
+          { type: "Safety (安規)", mark: "CMIM", testing: "❌ 不強制當地。完全接受歐盟 CE (LVD) 的測試報告。" },
+          { type: "EMC (電磁相容)", mark: "CMIM", testing: "❌ 不強制當地。完全接受歐盟 CE (EMC) 的測試報告。" },
+          { type: "RF/Telecom (無線)", mark: "ANRT", testing: "❌ 不強制當地。進口商憑 CE 報告即可向 ANRT 提交線上審核。" }
+        ],
+        agent: "⚠️ 強制要求。需由摩洛哥當地註冊之進口商負責確保合規，並聲明加貼 CMIM 標誌。",
+        process: ["製造商準備好 CE 報告，並簽署摩洛哥版 DoC。", "進口商於產品或包裝貼上 CMIM 標誌。", "無線設備由進口商向 ANRT 提交線上申請與核准。"],
+        docs: ["摩洛哥符合性聲明 (Declaration of Conformity)。", "CE 測試報告與法語或阿拉伯語的使用手冊。"]
+      }
+    };
+
+    function updateDashboard() {
+      const select = document.getElementById("countrySelect");
+      const code = select.value;
+      const emptyState = document.getElementById("emptyState");
+      const dashboard = document.getElementById("resultDashboard");
+
+      if (!code) {
+        emptyState.style.display = "block";
+        dashboard.style.display = "none";
+        return;
+      }
+
+      const data = gmaData[code];
+
+      // 更新標題、簡介與電氣規格
+      document.getElementById("countryTitle").innerText = data.title;
+      document.getElementById("countryDesc").innerText = data.desc;
+      document.getElementById("localVoltage").innerText = data.electrical.voltage;
+      document.getElementById("localPlug").innerText = data.electrical.plug;
+
+      // 更新分類卡片 (Safety / EMC / RF)
+      const catContainer = document.getElementById("categoriesContainer");
+      catContainer.innerHTML = "";
+      
+      data.categories.forEach(cat => {
+        let bgClass, iconSvg, titleColor, markBg;
+        
+        // 依據類別設定專屬顏色與圖示
+        if (cat.type.includes("Safety") || cat.type.includes("安規")) {
+          bgClass = "bg-red-50 border-red-100";
+          titleColor = "text-red-700";
+          markBg = "text-red-800 bg-white border-red-200";
+          iconSvg = `<svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`;
+        } else if (cat.type.includes("EMC") || cat.type.includes("電磁")) {
+          bgClass = "bg-amber-50 border-amber-100";
+          titleColor = "text-amber-700";
+          markBg = "text-amber-800 bg-white border-amber-200";
+          iconSvg = `<svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`;
+        } else if (cat.type.includes("RF") || cat.type.includes("無線") || cat.type.includes("電信")) {
+          bgClass = "bg-blue-50 border-blue-100";
+          titleColor = "text-blue-700";
+          markBg = "text-blue-800 bg-white border-blue-200";
+          iconSvg = `<svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>`;
+        } else {
+          bgClass = "bg-green-50 border-green-100";
+          titleColor = "text-green-700";
+          markBg = "text-green-800 bg-white border-green-200";
+          iconSvg = `<svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`;
+        }
+
+        const card = document.createElement("div");
+        card.className = `p-6 rounded-3xl border ${bgClass} flex flex-col h-full shadow-sm hover:shadow-md transition-shadow`;
+        card.innerHTML = `
+          <div class="flex items-center gap-2 mb-4 border-b border-black/5 pb-3">
+            ${iconSvg}
+            <span class="font-bold ${titleColor} text-base uppercase tracking-wider">${cat.type}</span>
+          </div>
+          <div class="mb-5">
+            <span class="inline-block px-4 py-1.5 ${markBg} rounded-xl text-sm font-black shadow-sm border">${cat.mark}</span>
+          </div>
+          <p class="text-[15px] text-slate-700 leading-relaxed mt-auto font-medium">
+            <span class="font-bold block mb-1.5 opacity-80 ${titleColor}">🔬 測試要求與查廠：</span>
+            ${cat.testing}
+          </p>
+        `;
+        catContainer.appendChild(card);
+      });
+
+      // 更新當地代理商
+      document.getElementById("localAgent").innerText = data.agent;
+
+      // 更新申請流程
+      const processList = document.getElementById("processList");
+      processList.innerHTML = "";
+      data.process.forEach((step, index) => {
+        const li = document.createElement("li");
+        li.className = "flex gap-4 items-start";
+        li.innerHTML = `
+          <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-sm font-black mt-0.5 shadow-sm">${index + 1}</span>
+          <span class="pt-0.5">${step}</span>
+        `;
+        processList.appendChild(li);
+      });
+
+      // 更新技術文件
+      const docList = document.getElementById("docList");
+      docList.innerHTML = "";
+      data.docs.forEach(doc => {
+        const li = document.createElement("li");
+        li.innerText = doc;
+        docList.appendChild(li);
+      });
+
+      // UI 切換與動畫
+      emptyState.style.display = "none";
+      dashboard.style.display = "block";
+      
+      dashboard.classList.remove("fade-in");
+      void dashboard.offsetWidth;
+      dashboard.classList.add("fade-in");
+    }
+  </script>
+</body>
+</html>
