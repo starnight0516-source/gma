@@ -18,6 +18,27 @@
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    /* AI Loader Animation */
+    .loader {
+      border: 3px solid #f3f4f6;
+      border-top: 3px solid #8b5cf6;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      animation: spin 1s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    /* Markdown Styles for AI Output */
+    .ai-content h3 { font-size: 1.25rem; font-weight: 700; color: #1e3a8a; margin-top: 1rem; margin-bottom: 0.5rem; }
+    .ai-content h4 { font-size: 1.1rem; font-weight: 700; color: #3b82f6; margin-top: 0.75rem; margin-bottom: 0.5rem; }
+    .ai-content p { margin-bottom: 0.75rem; line-height: 1.6; }
+    .ai-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+    .ai-content li { margin-bottom: 0.25rem; }
+    .ai-content strong { color: #1e40af; }
+    
     optgroup { font-weight: 700; color: #1e3a8a; background-color: #e2e8f0; }
     option { font-weight: 500; color: #334155; background-color: #ffffff; }
   </style>
@@ -44,7 +65,6 @@
       <div class="relative">
         <select id="countrySelect" onchange="updateDashboard()" class="block w-full appearance-none bg-slate-50 border-2 border-slate-200 text-slate-800 py-4 px-5 pr-8 rounded-2xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-lg font-medium cursor-pointer">
           <option value="">-- 點擊展開全球市場清單 --</option>
-          
           <optgroup label="🌏 亞洲與大洋洲 (APAC)">
             <option value="TW">🇹🇼 台灣 (Taiwan)</option>
             <option value="CN">🇨🇳 中國大陸 (China)</option>
@@ -60,7 +80,6 @@
             <option value="ID">🇮🇩 印尼 (Indonesia)</option>
             <option value="PH">🇵🇭 菲律賓 (Philippines)</option>
           </optgroup>
-
           <optgroup label="🌎 美洲地區 (Americas)">
             <option value="US">🇺🇸 美國 (United States)</option>
             <option value="CA">🇨🇦 加拿大 (Canada)</option>
@@ -71,7 +90,6 @@
             <option value="CO">🇨🇴 哥倫比亞 (Colombia)</option>
             <option value="PE">🇵🇪 秘魯 (Peru)</option>
           </optgroup>
-
           <optgroup label="🌍 歐洲與獨立國協 (Europe & CIS)">
             <option value="EU">🇪🇺 歐盟 (European Union)</option>
             <option value="UK">🇬🇧 英國 (United Kingdom)</option>
@@ -79,7 +97,6 @@
             <option value="UA">🇺🇦 烏克蘭 (Ukraine)</option>
             <option value="RS">🇷🇸 塞爾維亞 (Serbia)</option>
           </optgroup>
-
           <optgroup label="🏜️ 中東與非洲 (MEA)">
             <option value="SA">🇸🇦 沙烏地阿拉伯 (Saudi Arabia)</option>
             <option value="AE">🇦🇪 阿拉伯聯合大公國 (UAE)</option>
@@ -112,6 +129,38 @@
     <!-- 結果展示區塊 -->
     <div id="resultDashboard" class="hidden fade-in space-y-6">
       
+      <!-- AI 產品分析區塊 (GEMINI API 整合) -->
+      <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-3xl p-6 md:p-8 shadow-sm border border-purple-200">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="p-2.5 bg-purple-600 text-white rounded-xl shadow-md">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 class="text-2xl font-black text-purple-900">AI 合規顧問：產品專屬風險分析</h3>
+        </div>
+        <p class="text-purple-800 font-medium mb-4">告訴我您準備出口的產品，AI 將結合 <span id="aiCountryName" class="font-bold underline"></span> 的當地法規，為您抓出專屬合規痛點與檢查清單。</p>
+        
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input type="text" id="productInput" placeholder="例如：具備 Wi-Fi 與藍牙功能的智慧掃地機器人" class="flex-1 px-4 py-3 rounded-xl border border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 bg-white text-slate-700 font-medium">
+          <button id="aiBtn" onclick="generateAIAnalysis()" class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl shadow-md transition-colors flex items-center justify-center gap-2 whitespace-nowrap">
+            <span>✨ 產生專屬分析</span>
+          </button>
+        </div>
+
+        <div id="aiError" class="hidden mt-4 p-4 bg-red-50 text-red-600 rounded-xl border border-red-200 text-sm font-medium"></div>
+        
+        <div id="aiResultContainer" class="hidden mt-6 bg-white rounded-2xl p-6 shadow-inner border border-purple-100">
+          <h4 class="text-lg font-bold text-purple-800 mb-3 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            AI 智能分析結果
+          </h4>
+          <div id="aiOutput" class="ai-content text-slate-700"></div>
+        </div>
+      </div>
+
       <!-- 國家標題與簡介 (含電氣規格) -->
       <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-2 h-full bg-blue-600"></div>
@@ -121,7 +170,7 @@
             <p id="countryDesc" class="text-slate-600 leading-relaxed text-lg font-medium"></p>
           </div>
           
-          <!-- 新增：電氣與插頭規格卡片 -->
+          <!-- 電氣與插頭規格卡片 -->
           <div class="flex-shrink-0 bg-blue-50/80 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row gap-6 min-w-[320px]">
             <div class="flex items-center gap-4">
               <div class="p-3 bg-white rounded-full shadow-sm text-yellow-500">
@@ -139,7 +188,6 @@
               <div class="p-3 bg-white rounded-full shadow-sm text-blue-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  <!-- 模擬插頭圖示 -->
                   <circle cx="9" cy="8" r="2" fill="currentColor"/>
                   <circle cx="15" cy="8" r="2" fill="currentColor"/>
                 </svg>
@@ -162,7 +210,6 @@
           各領域合規標誌與測試門檻
         </h3>
         <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <!-- JS 動態插入 Safety, EMC, RF 卡片 -->
         </div>
       </div>
 
@@ -181,7 +228,6 @@
 
       <!-- 申請流程與文件 -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- 申請流程 -->
         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
           <div class="flex items-center gap-3 mb-5">
             <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
@@ -194,7 +240,6 @@
           <ul id="processList" class="space-y-4 text-slate-700 list-none pl-1 font-medium"></ul>
         </div>
 
-        <!-- 文件與特殊要求 -->
         <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
           <div class="flex items-center gap-3 mb-5">
             <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
@@ -212,7 +257,11 @@
   </div>
 
   <script>
-    // 專業分類版資料庫：將「法規強制性 (Status)」與「當地測試要求 (Testing)」徹底分離
+    // --- Gemini API Configuration ---
+    const apiKey = ""; // API key is handled by the execution environment
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+    // --- Data Base ---
     const gmaData = {
       // --- 亞洲與大洋洲 (APAC) ---
       "TW": {
@@ -683,6 +732,11 @@
       const code = select.value;
       const emptyState = document.getElementById("emptyState");
       const dashboard = document.getElementById("resultDashboard");
+      
+      // Reset AI section
+      document.getElementById("aiResultContainer").classList.add("hidden");
+      document.getElementById("aiError").classList.add("hidden");
+      document.getElementById("productInput").value = "";
 
       if (!code) {
         emptyState.style.display = "block";
@@ -691,6 +745,9 @@
       }
 
       const data = gmaData[code];
+
+      // 更新 AI 區域的國家名稱
+      document.getElementById("aiCountryName").innerText = data.title;
 
       // 更新標題、簡介與電氣規格
       document.getElementById("countryTitle").innerText = data.title;
@@ -728,7 +785,6 @@
           iconSvg = `<svg class="w-6 h-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>`;
         }
 
-        // 依據法規強制性 (Status) 動態變色
         let statusBadgeClass = cat.status.includes("強制認證") 
           ? "bg-red-100 text-red-700 border-red-200" 
           : cat.status.includes("自願") 
@@ -790,6 +846,113 @@
       dashboard.classList.remove("fade-in");
       void dashboard.offsetWidth;
       dashboard.classList.add("fade-in");
+    }
+
+    // --- Utility: Simple Markdown to HTML parser ---
+    function parseMarkdown(md) {
+      let html = md;
+      // Headers
+      html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+      html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^# (.*$)/gim, '<h3>$1</h3>');
+      // Bold
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      // Lists (Unordered)
+      html = html.replace(/^\* (.*$)/gim, '<li>$1</li>');
+      html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
+      // Wrap lists
+      html = html.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
+      html = html.replace(/<\/ul>\n<ul>/gim, '');
+      // Paragraphs
+      html = html.replace(/^(?!<h|<ul|<li)(.*$)/gim, '<p>$1</p>');
+      return html.trim();
+    }
+
+    // --- Wrapper for API call with Exponential Backoff ---
+    async function fetchWithRetry(url, options, maxRetries = 5) {
+      const delays = [1000, 2000, 4000, 8000, 16000];
+      for (let i = 0; i < maxRetries; i++) {
+        try {
+          const response = await fetch(url, options);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return await response.json();
+        } catch (error) {
+          if (i === maxRetries - 1) throw error;
+          await new Promise(resolve => setTimeout(resolve, delays[i]));
+        }
+      }
+    }
+
+    // --- AI Feature Implementation ---
+    async function generateAIAnalysis() {
+      const product = document.getElementById("productInput").value.trim();
+      const code = document.getElementById("countrySelect").value;
+      const errorDiv = document.getElementById("aiError");
+      const resultContainer = document.getElementById("aiResultContainer");
+      const outputDiv = document.getElementById("aiOutput");
+      const btn = document.getElementById("aiBtn");
+
+      if (!product) {
+        errorDiv.innerText = "請輸入您的產品描述！(例如：藍牙耳機)";
+        errorDiv.classList.remove("hidden");
+        return;
+      }
+      if (!code || !gmaData[code]) return;
+
+      // Update UI for loading state
+      errorDiv.classList.add("hidden");
+      resultContainer.classList.add("hidden");
+      btn.disabled = true;
+      btn.innerHTML = `<span class="loader"></span> <span>AI 分析中...</span>`;
+      btn.classList.add("opacity-70", "cursor-not-allowed");
+
+      const countryData = gmaData[code];
+      
+      const systemPrompt = `你是一位資深的「全球市場准入 (GMA) 合規顧問」。你的任務是協助硬體製造商評估其產品進入特定國家的法規風險。
+請根據使用者提供的「目標國家法規資料」以及「使用者產品描述」，進行交叉分析，並輸出繁體中文的專業報告。
+報告架構建議：
+1. **產品特性判定**：判斷該產品是否落入安規、EMC 或 RF 領域（例如：若有 Wi-Fi 必定落入 RF）。
+2. **專屬合規痛點**：基於法規資料，指出該產品進入該國最困難的門檻（如當地測試、當地代理商等）。
+3. **客製化檢查清單**：提供 3-5 點針對該產品的行動建議。
+語氣請專業、實用，並善用 Markdown 排版。`;
+
+      const userPrompt = `
+目標國家：${countryData.title}
+國家法規重點資料庫：${JSON.stringify(countryData)}
+使用者準備出口的產品描述：${product}
+請為此產品產出一份進入該國市場的合規建議與重點清單。`;
+
+      const payload = {
+        contents: [{ parts: [{ text: userPrompt }] }],
+        systemInstruction: { parts: [{ text: systemPrompt }] }
+      };
+
+      try {
+        const data = await fetchWithRetry(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+        
+        if (text) {
+          outputDiv.innerHTML = parseMarkdown(text);
+          resultContainer.classList.remove("hidden");
+        } else {
+          throw new Error("API 回應格式異常");
+        }
+      } catch (error) {
+        errorDiv.innerText = "AI 伺服器目前繁忙或發生錯誤，請稍後再試。";
+        errorDiv.classList.remove("hidden");
+      } finally {
+        // Reset UI
+        btn.disabled = false;
+        btn.innerHTML = `<span>✨ 產生專屬分析</span>`;
+        btn.classList.remove("opacity-70", "cursor-not-allowed");
+      }
     }
   </script>
 </body>
