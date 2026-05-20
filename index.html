@@ -317,7 +317,6 @@
   <script>
     // --- Local Storage API Key Management (BYOK) ---
     function getStoredApiKey() {
-      // 嘗試從 localStorage 取得使用者設定的金鑰
       return localStorage.getItem('gma_gemini_api_key') || "";
     }
 
@@ -386,7 +385,7 @@
           { type: "RF/Telecom (無線)", mark: "SRRC / NAL", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。必須送交工信部 (MIIT) 指定之境內實驗室測試。" }
         ],
         agent: "⚠️ 條件性要求。辦理 CCC 時境外製造商可作為申請人，但諸多註冊作業與進網許可 (NAL) 申請往往需要境內授權代理或設立境內公司作為責任主體。",
-        process: ["向 CQC 或其他指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗。", "測試合格後，機構將派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書後 (效期通常為 5 年)，必須合法購買或印製 CCC 標誌，並每年接受後續監督查廠。"],
+        process: ["向 CQC 或其他指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗。", "測指標合格後，機構將派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書後 (效期通常為 5 年)，必須合法購買或印製 CCC 標誌，並每年接受後續監督查廠。"],
         docs: ["全簡體中文的技術規格書、使用者手冊與產品銘牌。", "關鍵零組件清單 (CDF)、電路佈局圖、工廠調查表 (FQI)。", "對於 SRRC 需要提供天線增益與射頻規格申報書。"]
       },
       "JP": {
@@ -433,9 +432,9 @@
         desc: "澳洲將安規 (ERAC - 依風險分三級) 與 EMC/無線 (ACMA) 的合規要求，統一整合於一個單一的 RCM (Regulatory Compliance Mark) 標誌之下。",
         electrical: { voltage: "230V / 50Hz", plug: "Type I (八字扁平型)" },
         categories: [
-          { type: "Safety (安規)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證。完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
-          { type: "EMC (電磁相容)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告。接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
-          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告。接受海外測試，但須確保使用頻段嚴格符合澳洲 ACMA 的本地規範。" }
+          { type: "Safety (安規)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證. 完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
+          { type: "EMC (電磁相容)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
+          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受海外測試，但須確保使用頻段嚴格符合澳洲 ACMA 的本地規範。" }
         ],
         agent: "⚠️ 嚴格強制。境外製造商不能直接持有 RCM 證書。必須由澳洲當地的合法供應商/進口商 (Local Supplier) 登錄為負責任方，並在國家資料庫 (NRS) 註冊。",
         process: ["於海外取得符合 AS/NZS 與 ACMA 要求的測試報告。", "若為 Level 3 (高風險安全產品)，需額外申請澳洲安全核准證書 (Certificate of Approval)。", "由當地進口商登入國家資料庫 (EESS/NRS) 註冊成為供應商並綁定產品。", "產品標示 RCM 標誌 (無須標示號碼，認標不認號)。"],
@@ -476,7 +475,7 @@
           { type: "EMC (電磁相容)", mark: "SIRIM", status: "🔴 強制認證", testing: "✅ 接受海外報告。通常接受合格的 CE EMC 測試報告轉證 (須具 ILAC 資格)。" },
           { type: "RF/Telecom (無線)", mark: "SIRIM", status: "🔴 強制認證", testing: "⚠️ 條件性強制當地實測。一般 BT/Wi-Fi 可用海外 CE 報告；但 5G、VoLTE 或 IPv6 設備強制送大馬當地實測。" }
         ],
-        agent: "⚠️ 嚴格強制。ST 與 SIRIM 的申請商必須是馬來西亞當地註冊的法人公司 (通常為進口商或分銷商)。",
+        agent: "⚠️ 嚴格強制。ST 與 SIRIM 的申請商必須是馬來西亞當地註冊的法人公司 (通常為進口商 or 分銷商)。",
         process: ["由當地代理商透過官方線上系統 (e-ComM 或 e-Permit) 提交申請。", "依規定安排書面審查或送樣測試。", "獲發證書 (通常 1 年效期，需年審)，必須向主管機關購買 SIRIM / ST 專屬標籤貼紙並黏貼於產品上。"],
         docs: ["完整 CB 測試報告與 CE 報告。", "馬來西亞代理商的授權書 (LoA) 與公司註冊文件 (SSM)。"]
       },
@@ -515,12 +514,12 @@
           { type: "EMC (電磁相容)", mark: "SDPPI", status: "🔴 強制認證", testing: "⚠️ 條件接受轉證。若測試實驗室列於官方「HKI 海外認可名單」則可憑報告轉證；否則強制印尼實測。" },
           { type: "RF/Telecom (無線)", mark: "SDPPI", status: "🔴 強制認證", testing: "⚠️ 條件接受轉證。同 EMC，依賴官方 HKI 認可實驗室名單，若不在名單內則強制印尼當地實機測試。" }
         ],
-        agent: "⚠️ 嚴格強制。申請商必須是印尼境內註冊的進口商、分銷商或官方代表，且須持有 NIB 號碼。",
+        agent: "⚠️ 嚴格強制。申請商必須是印尼境內註冊的進口商、分銷商 or 官方代表，且須持有 NIB 號碼。",
         process: ["當地進口商提交申請，並安排樣品進口至印尼實驗室。", "針對 SNI，印尼官方驗證機構會派員至海外工廠執行查核。", "測試與審查通過後，核發證書 (通常 3 年效期)，產品必須印製 SNI 標誌與 SDPPI 證書編號。"],
         docs: ["當地申請人的 NIB (商業登記證) 與 NPWP (稅號)。", "印尼文版說明書、外部照片、當地測試報告與工廠品質手冊。"]
       },
       "PH": {
-        title: "🇵🇭 菲律宾 (Philippines)",
+        title: "🇵🇭 菲律賓 (Philippines)",
         desc: "貿工部 BPS 掌管安規 (發放 PS 或 ICC 標誌)；國家電信委員會 (NTC) 管制無線與電信產品。",
         electrical: { voltage: "220V / 60Hz", plug: "Type A, B, C (美規平行與歐規雙圓)" },
         categories: [
@@ -813,7 +812,7 @@
       },
       "MA": {
         title: "🇲🇦 摩洛哥 (Morocco)",
-        desc: "安規與 EMC 採用與歐盟 CE 幾乎一致的 CMIM 標誌規範；國家電信管理局 (ANRT) 管理無線產品。",
+        desc: "安規與 EMC 採用與歐盟 CE 幾乎一致 of CMIM 標誌規範；國家電信管理局 (ANRT) 管理無線產品。",
         electrical: { voltage: "220V / 50Hz", plug: "Type C, E (歐規與法規)" },
         categories: [
           { type: "Safety (安規)", mark: "CMIM", status: "🔴 強制認證", testing: "✅ 接受海外轉證。完全接受歐盟 CE (LVD) 的測試報告宣告。" },
@@ -826,19 +825,147 @@
       }
     };
 
-    // ... (rest of the javascript functions below) ...
+    // --- UI Dashboard Update Function ---
+    function updateDashboard() {
+      const select = document.getElementById("countrySelect");
+      const code = select.value;
+      const emptyState = document.getElementById("emptyState");
+      const dashboard = document.getElementById("resultDashboard");
+      
+      // 重設 AI 區塊
+      document.getElementById("aiResultContainer").classList.add("hidden");
+      document.getElementById("aiError").classList.add("hidden");
+      document.getElementById("productInput").value = "";
+      document.getElementById("qaInput").value = "";
 
+      if (!code) {
+        emptyState.style.display = "block";
+        dashboard.style.display = "none";
+        return;
+      }
+
+      const data = gmaData[code];
+
+      // 更新 AI 區塊對應的國家
+      document.getElementById("qaCountryName").innerText = data.title;
+
+      // 更新主要標題、描述、電氣參數
+      document.getElementById("countryTitle").innerText = data.title;
+      document.getElementById("countryDesc").innerText = data.desc;
+      document.getElementById("localVoltage").innerText = data.electrical.voltage;
+      document.getElementById("localPlug").innerText = data.electrical.plug;
+
+      // 重繪 3 大領域卡片 (安規 / EMC / RF)
+      const catContainer = document.getElementById("categoriesContainer");
+      catContainer.innerHTML = "";
+      
+      data.categories.forEach(cat => {
+        let bgClass, iconSvg, titleColor, markBg;
+        
+        if (cat.type.includes("Safety") || cat.type.includes("安規")) {
+          bgClass = "bg-red-50 border-red-100";
+          titleColor = "text-red-700";
+          markBg = "text-red-800 bg-white border-red-200";
+          iconSvg = `<svg class="w-6 h-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>`;
+        } else if (cat.type.includes("EMC") || cat.type.includes("電磁")) {
+          bgClass = "bg-amber-50 border-amber-100";
+          titleColor = "text-amber-700";
+          markBg = "text-amber-800 bg-white border-amber-200";
+          iconSvg = `<svg class="w-6 h-6 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>`;
+        } else {
+          bgClass = "bg-blue-50 border-blue-100";
+          titleColor = "text-blue-700";
+          markBg = "text-blue-800 bg-white border-blue-200";
+          iconSvg = `<svg class="w-6 h-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>`;
+        }
+
+        let statusBadgeClass = cat.status.includes("強制認證") 
+          ? "bg-red-100 text-red-700 border-red-200" 
+          : cat.status.includes("自願") 
+            ? "bg-blue-100 text-blue-700 border-blue-200" 
+            : "bg-orange-100 text-orange-700 border-orange-200";
+
+        const card = document.createElement("div");
+        card.className = `p-6 rounded-3xl border ${bgClass} flex flex-col h-full shadow-sm hover:shadow-md transition-shadow`;
+        card.innerHTML = `
+          <div class="flex items-center justify-between mb-4 border-b border-black/5 pb-3">
+            <div class="flex items-center gap-2">
+              ${iconSvg}
+              <span class="font-bold ${titleColor} text-base uppercase tracking-wider">${cat.type}</span>
+            </div>
+          </div>
+          <div class="mb-5 flex flex-wrap gap-2 items-center">
+            <span class="inline-block px-4 py-1.5 ${markBg} rounded-xl text-sm font-black shadow-sm border">${cat.mark}</span>
+            <span class="inline-block px-3 py-1 ${statusBadgeClass} rounded-lg text-xs font-bold border">${cat.status}</span>
+          </div>
+          <p class="text-[15px] text-slate-700 leading-relaxed mt-auto font-medium">
+            <span class="font-bold block mb-1.5 opacity-80 ${titleColor}">🔬 測試規定 (Testing)：</span>
+            ${cat.testing}
+          </p>
+        `;
+        catContainer.appendChild(card);
+      });
+
+      // 更新當地代理商規範
+      document.getElementById("localAgent").innerText = data.agent;
+
+      // 更新流程清單
+      const processList = document.getElementById("processList");
+      processList.innerHTML = "";
+      data.process.forEach((step, index) => {
+        const li = document.createElement("li");
+        li.className = "flex gap-4 items-start";
+        li.innerHTML = `
+          <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-sm font-black mt-0.5 shadow-sm">${index + 1}</span>
+          <span class="pt-0.5">${step}</span>
+        `;
+        processList.appendChild(li);
+      });
+
+      // 更新應備文件
+      const docList = document.getElementById("docList");
+      docList.innerHTML = "";
+      data.docs.forEach(doc => {
+        const li = document.createElement("li");
+        li.className = "mb-1";
+        li.innerText = doc;
+        docList.appendChild(li);
+      });
+
+      // 切換為顯示狀態，觸發動畫
+      emptyState.style.display = "none";
+      dashboard.style.display = "block";
+      
+      dashboard.classList.remove("fade-in");
+      void dashboard.offsetWidth; // 強制瀏覽器重繪
+      dashboard.classList.add("fade-in");
+    }
+
+    // --- Utility: Markdown to HTML ---
+    function parseMarkdown(md) {
+      let html = md;
+      html = html.replace(/^### (.*$)/gim, '<h4>$1</h4>');
+      html = html.replace(/^## (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/^# (.*$)/gim, '<h3>$1</h3>');
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
+      html = html.replace(/^\* (.*$)/gim, '<li>$1</li>');
+      html = html.replace(/^- (.*$)/gim, '<li>$1</li>');
+      html = html.replace(/(<li>.*<\/li>)/gim, '<ul>$1</ul>');
+      html = html.replace(/<\/ul>\n<ul>/gim, '');
+      html = html.replace(/^(?!<h|<ul|<li)(.*$)/gim, '<p>$1</p>');
+      return html.trim();
+    }
+
+    // --- API Request Wrapper with Exponential Backoff ---
     async function fetchWithRetry(url, options, maxRetries = 5) {
-      // 在每次呼叫前，動態抓取最新的 User API Key
       const userKey = getStoredApiKey();
       if (!userKey) {
         throw new Error("Missing_API_Key");
       }
       
-      // 更新 URL 中的金鑰
       const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userKey}`;
-
       const delays = [1000, 2000, 4000, 8000, 16000];
+      
       for (let i = 0; i < maxRetries; i++) {
         try {
           const controller = new AbortController();
@@ -851,14 +978,14 @@
           
           if (!response.ok) {
             if (response.status === 400 || response.status === 403) {
-                throw new Error("Invalid_API_Key");
+              throw new Error("Invalid_API_Key");
             }
             throw new Error(`HTTP_Error_${response.status}`);
           }
           return await response.json();
         } catch (error) {
           if (error.message === "Invalid_API_Key" || error.message === "Missing_API_Key") {
-              throw error; // 不需重試金鑰錯誤
+            throw error;
           }
           console.warn(`Attempt ${i + 1} failed:`, error.message);
           if (i === maxRetries - 1) throw error;
@@ -907,7 +1034,7 @@
       };
 
       try {
-        const data = await fetchWithRetry("", { // URL handled in fetchWithRetry
+        const data = await fetchWithRetry("", { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -922,12 +1049,12 @@
         }
       } catch (error) {
         if (error.message === "Missing_API_Key") {
-            errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
-            openApiKeyModal();
+          errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
+          openApiKeyModal();
         } else if (error.message === "Invalid_API_Key") {
-            errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
+          errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
         } else {
-            errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
+          errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
         }
         errorDiv.classList.remove("hidden");
       } finally {
@@ -973,7 +1100,7 @@
       };
 
       try {
-        const data = await fetchWithRetry("", { // URL handled in fetchWithRetry
+        const data = await fetchWithRetry("", { 
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
@@ -988,12 +1115,12 @@
         }
       } catch (error) {
         if (error.message === "Missing_API_Key") {
-            errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
-            openApiKeyModal();
+          errorDiv.innerHTML = `⚠️ 請先點擊右上角「設定 API 金鑰」填入您的 Gemini API Key。`;
+          openApiKeyModal();
         } else if (error.message === "Invalid_API_Key") {
-            errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
+          errorDiv.innerHTML = `❌ 您輸入的 API 金鑰無效或被拒絕 (400/403)。請重新確認。`;
         } else {
-            errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
+          errorDiv.innerText = `AI 伺服器連線失敗。請稍後再試。 (${error.message})`;
         }
         errorDiv.classList.remove("hidden");
       } finally {
