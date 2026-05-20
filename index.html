@@ -315,6 +315,23 @@
   </div>
 
   <script>
+    // --- Gemini API Configuration ---
+    // 💡 提示：在 Canvas 預覽環境中，平台會自動把 "" 替換為有效密鑰。
+    // 在您個人的 GitHub Pages 部署環境中，網頁會自動提示您使用右上角的金鑰設定功能，兼顧雙向相容與安全性！
+    const apiKey = "";
+
+    function getModelName() {
+      const hostname = window.location.hostname;
+      // 偵測是否在平台的系統預覽環境（通常網域含有 .goog 或為本地測試 sandbox）
+      if (hostname.includes("usercontent.goog") || hostname === "" || (hostname.includes("localhost") && !getStoredApiKey())) {
+        // 平台預覽環境：使用指定的 preview 模型以符合平台規範
+        return "gemini-2.5-flash-preview-09-2025";
+      } else {
+        // GitHub Pages 或一般外部部署環境：使用公眾開放、高相容性的標準生產模型，避免 403 權限錯誤
+        return "gemini-1.5-flash";
+      }
+    }
+
     // --- Local Storage API Key Management (BYOK) ---
     function getStoredApiKey() {
       return localStorage.getItem('gma_gemini_api_key') || "";
@@ -360,7 +377,7 @@
       checkApiKeyStatus();
     });
 
-    // --- Data Base ---
+    // --- Data Base (全 34 國完整法規資料庫) ---
     const gmaData = {
       "TW": {
         title: "🇹🇼 台灣 (Taiwan)",
@@ -385,7 +402,7 @@
           { type: "RF/Telecom (無線)", mark: "SRRC / NAL", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。必須送交工信部 (MIIT) 指定之境內實驗室測試。" }
         ],
         agent: "⚠️ 條件性要求。辦理 CCC 時境外製造商可作為申請人，但諸多註冊作業與進網許可 (NAL) 申請往往需要境內授權代理或設立境內公司作為責任主體。",
-        process: ["向 CQC 或其他指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗。", "測指標合格後，機構將派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書後 (效期通常為 5 年)，必須合法購買或印製 CCC 標誌，並每年接受後續監督查廠。"],
+        process: ["向 CQC 或其他指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗。", "測試及審查合格後，機構將派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書後 (效期通常為 5 年)，必須合法購買或印製 CCC 標誌，並每年接受後續監督查廠。"],
         docs: ["全簡體中文的技術規格書、使用者手冊與產品銘牌。", "關鍵零組件清單 (CDF)、電路佈局圖、工廠調查表 (FQI)。", "對於 SRRC 需要提供天線增益與射頻規格申報書。"]
       },
       "JP": {
@@ -410,7 +427,7 @@
           { type: "EMC (電磁相容)", mark: "KC EMC", status: "🔴 強制認證", testing: "⚠️ 強烈要求當地實測。除特定簽署 MRA 國家的實驗室外，絕大多數 EMC 必須送至韓國境內的合格實驗室實測。" },
           { type: "RF/Telecom (無線)", mark: "KC RF", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。RF 射頻測試幾乎皆被要求必須在韓國當地的 RRA 認可實驗室進行。" }
         ],
-        agent: "⚠️ 強制要求。國外製造商若無韓國分公司，必須依法指定一名韓國境內的代理商或進口商 (In-country Representative) 作為證書責任方。",
+        agent: "⚠️ 強制要求. 國外製造商若無韓國分公司，必須依法指定一名韓國境內的代理商或進口商 (In-country Representative) 作為證書責任方。",
         process: ["確認安全認證級別 (Safety Certification 需查廠 / Registration 僅測試 / SDOC 自我宣告)。", "安排樣品寄送至韓國，執行 KC EMC 與 RF 測試。", "針對高風險安全產品執行首次工廠檢查。", "審核通過後，於產品標籤上印製 KC 標誌及對應的認證號碼。"],
         docs: ["韓文使用手冊、韓文產品警語與 KC 標籤設計圖。", "CB 測試報告(安全)、BOM 表、電路圖。"]
       },
@@ -432,9 +449,9 @@
         desc: "澳洲將安規 (ERAC - 依風險分三級) 與 EMC/無線 (ACMA) 的合規要求，統一整合於一個單一的 RCM (Regulatory Compliance Mark) 標誌之下。",
         electrical: { voltage: "230V / 50Hz", plug: "Type I (八字扁平型)" },
         categories: [
-          { type: "Safety (安規)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證. 完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
-          { type: "EMC (電磁相容)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
-          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受海外測試，但須確保使用頻段裝嚴格符合澳洲 ACMA 的本地規範。" }
+          { type: "Safety (安規)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證。完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
+          { type: "EMC (電磁相容)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告。接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
+          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告。接受海外測試，但須確保使用頻段裝嚴格符合澳洲 ACMA 的本地規範。" }
         ],
         agent: "⚠️ 嚴格強制。境外製造商不能直接持有 RCM 證書。必須由澳洲當地的合法供應商/進口商 (Local Supplier) 登錄為負責任方，並在國家資料庫 (NRS) 註冊。",
         process: ["於海外取得符合 AS/NZS 與 ACMA 要求的測試報告。", "若為 Level 3 (高風險安全產品)，需額外申請澳洲安全核准證書 (Certificate of Approval)。", "由當地進口商登入國家資料庫 (EESS/NRS) 註冊成為供應商並綁定產品。", "產品標示 RCM 標誌 (無須標示號碼，認標不認號)。"],
@@ -527,7 +544,7 @@
           { type: "EMC (電磁相容)", mark: "NTC", status: "🔴 強制認證", testing: "✅ 接受海外報告。接受海外之 CE 或 FCC 報告轉證。" },
           { type: "RF/Telecom (無線)", mark: "NTC", status: "🔴 強制認證", testing: "✅ 接受海外報告。一般接受海外具資格實驗室發出的 RF 報告進行書面審查轉證。" }
         ],
-        agent: "⚠️ 強制要求。必須由菲律賓當地的法人公司、經銷商或進口商作為申請者 (Applicant)。",
+        agent: "⚠️ 強制要求。必須由菲律賓當地的法人公司、經銷商 or 進口商作為申請者 (Applicant)。",
         process: ["備齊海外測試報告 (如 CE/CB/FCC)。", "由菲律賓進口商向 NTC / BPS 提交文件審查。", "若屬強制安規清單， BPS 可能會執行抵港批次驗貨 (ICC) 或工廠查核 (PS 標誌)。", "取得證書後於產品標示對應標誌與號碼。"],
         docs: ["英文手冊、技術規格書與天線增益圖。", "菲律賓進口商營業執照 (SEC/DTI) 及授權信。"]
       },
@@ -605,7 +622,7 @@
           { type: "EMC (電磁相容)", mark: "SUBTEL/SEC", status: "🔴 強制認證", testing: "⚠️ 條件要求當地實測。視屬性可能需當地測試。" },
           { type: "RF/Telecom (無線)", mark: "SUBTEL", status: "🔴 強制認證", testing: "✅ 接受海外報告。SUBTEL 通常接受海外合格之 FCC 或 CE 報告進行書面審查轉證。" }
         ],
-        agent: "⚠️ 強制要求。證書必須由智利當地的進口商或註冊公司持有。",
+        agent: "⚠️ 強制要求。證書必須由智利當地的進口商 or 註冊公司持有。",
         process: ["確認 SEC 管制清單，將樣品送至智利實驗室測試，或於海外查廠。", "無線部分將 FCC 報告提交 SUBTEL 進行書面審查。", "取得 SEC 專屬 QR 碼標籤與 SUBTEL 標誌，必須黏貼於產品上。"],
         docs: ["西班牙文操作手冊、技術規格書。", "當地進口商相關法務文件。"]
       },
@@ -813,11 +830,11 @@
         desc: "安規與 EMC 採用與歐盟 CE 幾乎一致 of CMIM 標誌規範；國家電信管理局 (ANRT) 管理無線產品。",
         electrical: { voltage: "220V / 50Hz", plug: "Type C, E (歐規與法規)" },
         categories: [
-          { type: "Safety (安規)", mark: "CMIM", status: "🔴 強制認證", testing: "✅ 接受海外轉證。完全接受歐盟 CE (LVD) 的測試報告宣告。" },
-          { type: "EMC (電磁相容)", mark: "CMIM", status: "🔴 強制認證", testing: "✅ 接受海外轉證。完全接受歐盟 CE (EMC) 的測試報告宣告。" },
-          { type: "RF/Telecom (無線)", mark: "ANRT", status: "🔴 強制認證", testing: "✅ 接受海外轉證。進口商憑 CE 報告即可向 ANRT 提交線上審核。" }
+          { type: "Safety (安規)", mark: "CMIM", status: "🔴 強制認證", testing: "✅ 接受海外轉證. 完全接受歐盟 CE (LVD) 的測試報告宣告。" },
+          { type: "EMC (電磁相容)", mark: "CMIM", status: "🔴 強制認證", testing: "✅ 接受海外轉證. 完全接受歐盟 CE (EMC) 的測試報告宣告。" },
+          { type: "RF/Telecom (無線)", mark: "ANRT", status: "🔴 強制認證", testing: "✅ 接受海外轉證. 進口商憑 CE 報告即可向 ANRT 提交線上審核。" }
         ],
-        agent: "⚠️ 強制要求。需由摩洛哥當地註冊之進口商負責確保合規，並聲明加貼 CMIM 標誌。",
+        agent: "⚠️ 強制要求. 需由摩洛哥當地註冊之進口商負責確保合規，並聲明加貼 CMIM 標誌。",
         process: ["製造商準備好 CE 報告，並簽署摩洛哥版 DoC。", "進口商於產品或包裝貼上 CMIM 標誌。", "無線設備由進口商向 ANRT 提交線上申請與核准。"],
         docs: ["摩洛哥符合性聲明 (Declaration of Conformity)。", "CE 測試報告與法語或阿拉伯語的使用手冊。"]
       }
@@ -975,7 +992,8 @@
         throw new Error("Missing_API_Key");
       }
       
-      const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
+      const modelName = getModelName();
+      const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${activeKey}`;
       const delays = [1000, 2000, 4000, 8000, 16000];
       
       for (let i = 0; i < maxRetries; i++) {
@@ -1141,11 +1159,6 @@
         btn.classList.remove("opacity-70", "cursor-not-allowed");
       }
     }
-
-    // 聲明由平台在預覽時自動注入的金鑰變數
-    // 💡 提示：在 Canvas 預覽環境中，平台會自動把 "" 替換為有效密鑰。
-    // 在您個人的 GitHub Pages 部署環境中，網頁會自動偵測並提示您使用右上角的金鑰設定功能，兼顧雙向相容與安全性！
-    const apiKey = "";
   </script>
 </body>
 </html>
