@@ -187,7 +187,7 @@
           </div>
           <h3 class="text-2xl font-black tracking-wide">📦 組合屬性解析：強制界限與特例</h3>
         </div>
-        <div id="categorySpecificRule" class="text-slate-200 font-medium text-base md:text-lg leading-relaxed bg-slate-800/50 p-5 rounded-2xl border border-slate-600 space-y-3">
+        <div id="categorySpecificRule" class="text-slate-200 font-medium text-base md:text-lg leading-relaxed bg-slate-800/50 p-5 rounded-2xl border border-slate-600 space-y-4">
           <!-- 專屬文字動態注入區 -->
         </div>
       </div>
@@ -212,7 +212,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <h3 class="text-2xl font-black text-slate-800">🏢 當地代理商 (Local Representative) 規定</h3>
+          <h3 class="text-2xl font-black text-slate-800">🏢 當地進口商與代理 (Local Rep) 實務規定</h3>
         </div>
         <p id="localAgent" class="text-slate-700 bg-slate-50 p-5 rounded-2xl border border-slate-100 leading-relaxed font-medium text-lg"></p>
       </div>
@@ -266,9 +266,9 @@
       container.innerHTML = categoryOptions.map(opt => {
         const isActive = selectedCategories.includes(opt.id);
         const activeClasses = isActive 
-          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200" 
+          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200 scale-105" 
           : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-indigo-300";
-        return `<button onclick="toggleCategory('${opt.id}')" class="px-4 py-2.5 rounded-xl border-2 font-bold text-sm md:text-base transition-all ${activeClasses}">${opt.label}</button>`;
+        return `<button onclick="toggleCategory('${opt.id}')" class="px-4 py-2.5 rounded-xl border-2 font-bold text-sm md:text-base transition-all duration-200 ${activeClasses}">${opt.label}</button>`;
       }).join("");
     }
 
@@ -288,10 +288,10 @@
       updateDashboard();
     }
 
-    // 在 DOM 載入時初始化按鈕
     document.addEventListener("DOMContentLoaded", initCategoryToggles);
 
     // --- Data Base (全 34 國完整法規與產品分類規則) ---
+    // 💡 特別深度優化 TH (泰國) 實務細節
     const gmaData = {
       "TW": {
         title: "🇹🇼 台灣 (Taiwan)",
@@ -315,6 +315,28 @@
         process: ["判定產品落入 BSMI (RPC/TABI) 或 NCC 管制範圍，確認適用之 CNS/LP0002/PLMN 標準。", "委託國內外合格實驗室進行安規、EMC、射頻或電信測試。", "備齊繁體中文文件，提交當地代理商 (持證者) 資料供機構審查。", "獲發證書後，將 BSMI 商品檢驗標識與 NCC 審驗合格標籤永久標示於產品外觀。"],
         docs: ["繁體中文使用說明書、繁體中文警語與產品銘牌標籤 (Rating Label)。", "產品內部/外部高解析度照片、BOM表、電路圖與方塊圖。", "當地代理商之公司登記證明與授權信。"]
       },
+      "TH": {
+        title: "🇹🇭 泰國 (Thailand)",
+        desc: "東南亞最複雜的市場之一。安規由 TISI 掌管，具有極度嚴格的插頭標準與海外查廠制度；電信/無線由 NBTC 實施三級管制制度。",
+        electrical: { voltage: "220V / 50Hz", plug: "⚠️ 高度管制：TIS 166-2549 (Type O 帶接地 / 特製雙圓柱)" },
+        categories: [
+          { type: "Safety (安規)", mark: "TISI", status: "🔴 強制認證 (列管名單內)", testing: "⚠️ 嚴格當地實測與查廠。必須寄樣至泰國當地 TISI 認可實驗室測試，並強制執行海外工廠檢查 (或提供認可之 CIG023 報告)。" },
+          { type: "EMC (電磁相容)", mark: "TISI / NBTC", status: "🔴 強制認證", testing: "⚠️ 若產品屬 TISI 範圍，EMC 亦須在泰國境內實驗室測試。" },
+          { type: "RF/Telecom (電信射頻)", mark: "NBTC (Class A/B/SDoC)", status: "🔴 強制認證", testing: "✅ 依級別而定。多數接受合格之 CE/FCC 報告轉證；少數高頻或特殊電信產品需在泰國當地實機測試。" }
+        ],
+        categoryRules: {
+          HOME_APP: "⚡ 一般家電：微波爐、冰箱、洗衣機、空調等屬於 TISI 強制安全名單。⚠️ 致命門檻：隨機插頭與電源線必須絕對符合泰國特有的 **TIS 166-2549** 國家插頭標準，否則直接退件退關！",
+          IT_POWER: "💻 IT 與電源：AC 適配器與充電器屬 TISI 強制管轄，必須有 TISI 標章。一般 IT 設備 (如筆電) 若無無線功能，主機本身的安規多為自願性，但插頭線材仍須符合 TIS 166-2549。",
+          WIRELESS: "📡 無線網通：依發射功率與技術分級。例如藍牙/Wi-Fi 通常為 SDoC（當地進口商自我宣告）；若功率較高或有特定發射器，則屬 Class A/B 需向 NBTC 正式申請認可。",
+          BATTERY: "🔋 電池：可充電鋰電池包與行動電源 (Power Bank) 屬 TISI 強制標準 (TIS 2214 / TIS 2879)，必須在泰國實地測試並驗廠。",
+          IND_TELECOM: "🏭 工業網通：工業交換機/路由器若無射頻功能且非一般消費電源，可能免除 TISI。但若含電信介面，則受 NBTC 嚴格審驗。",
+          CELLULAR: "📱 4G/5G 設備：嚴格受 NBTC Class B 管制！需由當地進口商提交測試報告申請，並需確保符合泰國當地特有的頻段配置 (如 B28, B40)。",
+          ALL: "全產品總覽：這是一個不能投機的市場。TISI 嚴查插頭規格 (TIS 166-2549) 與工廠品質系統；NBTC 將無線通訊細分為 SDoC / Class A / Class B 三級。"
+        },
+        agent: "⚠️ 嚴格的「不共享」原則：TISI 證書是綁定「當地進口商」的。如果您在泰國有 3 個代理商，他們不能共用同一張證書，必須由各家代理商「分別獨立」提出申請並持有自己的 TISI 證書！",
+        process: ["插頭設計必須符合 TIS 166-2549 (送樣前務必檢查！)。", "當地進口商向 TISI 提出申請，送樣至泰國實測，並安排 TISI 官員赴原廠查驗 (或提供有效 CIG 報告)。", "無線設備依 NBTC 分類，由進口商提交 CE/FCC 報告申請 Class B 認證或 SDoC 備案。", "取得認證後，產品必須印製附有「專屬 QR Code」的新版 TISI 標誌與 NBTC 合格標籤。"],
+        docs: ["泰文版使用手冊與包裝標籤設計稿 (必須包含進口商資訊與 TISI QR Code)。", "工廠 ISO 9001 證書、CIG023 查廠報告、當地進口商的營業執照 (DBD)。"]
+      },
       "CN": {
         title: "🇨🇳 中國大陸 (China)",
         desc: "CCC 涵蓋安規與 EMC，並要求嚴格的「工廠檢查」。網通設備由 SRRC (無線) 與 NAL (進網) 管制，是全球對「當地實測」要求最嚴苛的市場之一。",
@@ -325,12 +347,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "SRRC / NAL", status: "🔴 強制認證", testing: "⚠️ 嚴格當地實測。必須送交工信部 (MIIT) 指定之境內實驗室進行無線與電信實測。" }
         ],
         categoryRules: {
-          HOME_APP: "多數低壓電器、家用和類似用途設備、音視頻設備必須申請 CCC 認證 (強制當地測試與工廠檢查)。",
-          IT_POWER: "資訊技術設備 (顯示器、印表機、主機) 與電源適配器，只要工作電壓在交流 50V~1000V 之間，均強制 CCC 安規與 EMC 認證。",
-          WIRELESS: "所有具備 Wi-Fi、藍牙、2G-5G 微功率無線發射模組之電子產品強制 SRRC 認證 (無須進網許可)。",
-          BATTERY: "自 2023 年起，可攜式電子產品用鋰離子電池、電池組及行動電源正式全面納入 CCC 強制認證目錄。",
-          IND_TELECOM: "企業級路由器、交換機、防火牆等若接入公用電信網，嚴格強制申請「NAL 進網許可」，且測試極其繁瑣，必須於境內電信實驗室完成。",
-          CELLULAR: "三重強制管制！必須同時取得 SRRC (發射設備型號核准)、NAL (進網許可) 以及 CCC 認證，全數要求在中國實地測試。",
+          HOME_APP: "⚡ 一般家電：多數低壓電器、家用和類似用途設備、音視頻設備必須申請 CCC 認證 (強制當地測試與工廠檢查)。",
+          IT_POWER: "💻 IT 與電源：資訊技術設備 (顯示器、印表機、主機) 與電源適配器，只要工作電壓在交流 50V~1000V 之間，均強制 CCC 安規與 EMC 認證。",
+          WIRELESS: "📡 無線消費品：所有具備 Wi-Fi、藍牙、2G-5G 微功率無線發射模組之電子產品強制 SRRC 認證 (無須進網許可)。",
+          BATTERY: "🔋 電池：自 2023 年起，可攜式電子產品用鋰離子電池、電池組及行動電源正式全面納入 CCC 強制認證目錄。",
+          IND_TELECOM: "🏭 工業網通產品：企業級路由器、交換機、防火牆等若接入公用電信網，嚴格強制申請「NAL 進網許可」，且測試極其繁瑣，必須於境內電信實驗室完成。",
+          CELLULAR: "📱 4G LTE / 5G NR 產品：三重強制管制！必須同時取得 SRRC (發射設備型號核准)、NAL (進網許可) 以及 CCC 認證，全數要求在中國實地測試。",
           ALL: "依據 CCC (安規/EMC)、SRRC (射頻)、NAL (電信進網) 進行分類，絕大多數均嚴格強制要求樣品寄送至中國境內實地測試。"
         },
         agent: "⚠️ 條件性要求。辦理 CCC 時境外製造商可作為申請人，但諸多註冊作業與進網許可 (NAL) 申請往往需要境內授權代理或設立境內公司作為責任主體。",
@@ -347,12 +369,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "MIC / JATE", status: "🔴 強制認證", testing: "✅ 接受海外合格實驗室出具報告，並交由 RCB (認可機構) 進行審核發證。" }
         ],
         categoryRules: {
-          HOME_APP: "大多落入菱形 PSE (特定電氣用品) 或圓形 PSE (如一般電熱器具)。適用於 AC 100V~300V 的設備。",
-          IT_POWER: "AC 適配器與充電器多屬「菱形 PSE」，強制要求第三方機構發證與查廠。IT 主機本身多由 VCCI 自願性把關 EMC。",
-          WIRELESS: "所有無線電波發射裝置（Bluetooth、Wi-Fi、LTE、UWB等），不論功率大小，一律強制 MIC (Giteki / 電波法) 認證。",
-          BATTERY: "可攜式鋰離子蓄電池 (能量密度達 400 Wh/L 以上者) 落入「圓形 PSE」管制，須符合別表第九並貼附圓形 PSE 標誌。",
-          IND_TELECOM: "若設備將連接至日本公共電信網路 (如 NTT、KDDI 網路)，除 EMC 外，強制必須申請 JATE (電氣通信事業法) 認證。",
-          CELLULAR: "雙重強制法規！行動通訊設備必須同時通過 MIC (電波法 - 驗證射頻頻段) 以及 JATE (電氣通信事業法 - 驗證通信網絡互通性)。",
+          HOME_APP: "⚡ 一般家電：大多落入菱形 PSE (特定電氣用品，如高危加熱器) 或圓形 PSE (如一般家電)。適用於 AC 100V~300V 的設備。",
+          IT_POWER: "💻 IT 與電源：AC 適配器與充電器屬「菱形 PSE」，強制要求第三方機構發證與查廠。IT 主機本身多由 VCCI 自願性把關 EMC。",
+          WIRELESS: "📡 無線消費品：所有無線電波發射裝置（Bluetooth、Wi-Fi、LTE等），不論功率大小，一律強制 MIC (Giteki / 電波法) 認證。",
+          BATTERY: "🔋 電池：可攜式鋰離子蓄電池 (能量密度達 400 Wh/L 以上者) 落入「圓形 PSE」管制，須符合別表第九並貼附圓形 PSE 標誌。",
+          IND_TELECOM: "🏭 工業網通產品：若設備將連接至日本公共電信網路 (如 NTT、KDDI 網路)，除 EMC 外，強制必須申請 JATE (電氣通信事業法) 認證。",
+          CELLULAR: "📱 4G/5G 設備：雙重強制法規！行動通訊設備必須同時通過 MIC (電波法 - 驗證射頻頻段) 以及 JATE (電氣通信事業法 - 驗證網路互通性)。",
           ALL: "高風險電源受菱形 PSE 管制。無線產品強制 MIC 電波法，接網/通訊設備則額外強制 JATE 電信法認證。"
         },
         agent: "⚠️ 嚴格強制。PSE 法規嚴格要求必須由日本境內註冊的「輸入事業者」(日本進口商) 負責向經濟產業省 (METI) 進行事業屆出備案，並承擔最終法律與召回責任。",
@@ -369,12 +391,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "KC RF", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。RF/Telecom 射頻測試幾乎皆被要求必須在韓國當地的 RRA 認可實驗室進行。" }
         ],
         categoryRules: {
-          HOME_APP: "大多屬「安全確認 (Safety Confirmation)」級別，可直接以 CB 報告轉證安規，免查廠；但 EMC 須送至韓國實機測試。",
-          IT_POWER: "電源適配器等高危部件屬「安全認證」，強制要求當地測試與每年工廠檢查；IT 周邊多為自我宣告 (SDoC)。",
-          WIRELESS: "凡具備主動發射無線電波之設備，皆必須將樣品寄至韓國 RRA 認可實驗室執行 RF 與 EMC 測試，並於銘牌標示 KC ID。",
-          BATTERY: "特定的可充電鋰電池包與電芯受 KC 安全確認管制，通常可利用 CB 報告 (IEC 62133) 轉證，若容量/應用特殊可能需抽驗。",
-          IND_TELECOM: "工業級網通產品即便免除家用安全法規，仍嚴格受限於 KC EMC 以及廣播通信設備的合格登錄 (Registration) 要求，須境內實測。",
-          CELLULAR: "極其嚴格！所有蜂窩網絡通訊產品強制送往韓國當地進行 RF、EMC 以及 SAR 測試，且韓國頻段劃分特殊，退件率高。",
+          HOME_APP: "⚡ 一般家電：大多屬「安全確認」級別，可直接以 CB 報告轉證安規，免查廠；但 EMC 須送至韓國實機測試。",
+          IT_POWER: "💻 IT 與電源：電源適配器等高危部件屬「安全認證」，強制要求當地測試與每年工廠檢查；IT 周邊多為自我宣告 (SDoC)。",
+          WIRELESS: "📡 無線消費品：凡具備主動發射無線電波之設備，皆必須將樣品寄至韓國 RRA 認可實驗室執行 RF 與 EMC 測試，並於銘牌標示 KC ID。",
+          BATTERY: "🔋 電池：特定的可充電鋰電池包與電芯受 KC 安全確認管制，通常可利用 CB 報告 (IEC 62133) 轉證，若容量/應用特殊可能需抽驗。",
+          IND_TELECOM: "🏭 工業網通產品：工業級網通產品即便免除家用安全法規，仍嚴格受限於 KC EMC 以及廣播通信設備的合格登錄 (Registration) 要求，須境內實測。",
+          CELLULAR: "📱 4G/5G 設備：極其嚴格！所有蜂窩網絡通訊產品強制送往韓國當地進行 RF、EMC 以及 SAR 測試，且韓國頻段劃分特殊，退件率高。",
           ALL: "依風險分為安全認證(查廠)、安全確認與自我宣告。EMC、RF、Cellular 產品均高度要求將樣品送至韓國境內實地測試。"
         },
         agent: "⚠️ 強制要求。國外製造商若無韓國分公司，必須依法指定一名韓國境內的代理商或進口商 (In-country Representative) 作為證書責任方。",
@@ -391,12 +413,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "WPC / TEC", status: "🔴 強制認證", testing: "⚠️ 依領域而異。WPC (純藍牙/Wi-Fi) 可接受海外 CE 報告；TEC (電信/Cellular) 則強制印度境內實測。" }
         ],
         categoryRules: {
-          HOME_APP: "多數 LED 燈具與智慧家電被列入 BIS CRS 目錄，必須將樣品寄送至印度當地實驗室測試，方可取得 BIS 註冊號碼。",
-          IT_POWER: "筆記型電腦、平板、以及所有外接電源適配器/充電器，皆嚴格強制於印度境內實驗室執行 BIS 測試。",
-          WIRELESS: "純 Wi-Fi/藍牙設備在免授權頻段可憑 CE/FCC 報告申請 WPC (ETA) 核准。但若具有 RJ45 等電信介面，則落入 TEC，強制境內實測。",
-          BATTERY: "可攜式鋰電池電芯與電池包均在 BIS CRS 強制目錄內，必須送至印度實地測試並登錄。",
-          IND_TELECOM: "受 TEC (MTCTE 制度) 嚴苛監管！乙太網交換機、路由器、防火牆、IP 網路相機等，強制要求於印度境內進行安全與 EMI/EMC 測試。",
-          CELLULAR: "最高難度市場之一。手機與蜂窩終端需同時應付 BIS (安全)、WPC (射頻) 以及極其繁瑣的 TEC MTCTE (進網與資安) 印度當地測試。",
+          HOME_APP: "⚡ 一般家電：多數 LED 燈具與智慧家電被列入 BIS CRS 目錄，必須將樣品寄送至印度當地實驗室測試，方可取得 BIS 註冊號碼。",
+          IT_POWER: "💻 IT 與電源：筆記型電腦、平板、以及所有外接電源適配器/充電器，皆嚴格強制於印度境內實驗室執行 BIS 測試。",
+          WIRELESS: "📡 無線消費品：純 Wi-Fi/藍牙設備在免授權頻段可憑 CE/FCC 報告申請 WPC (ETA) 核准。但若具有 RJ45 等電信介面，則落入 TEC，強制境內實測。",
+          BATTERY: "🔋 電池：可攜式鋰電池電芯與電池包均在 BIS CRS 強制目錄內，必須送至印度實地測試並登錄。",
+          IND_TELECOM: "🏭 工業網通產品：受 TEC (MTCTE 制度) 嚴苛監管！乙太網交換機、路由器、防火牆、IP 網路相機等，強制要求於印度境內進行安全與 EMI/EMC 測試。",
+          CELLULAR: "📱 4G/5G 設備：最高難度市場之一。手機與蜂窩終端需同時應付 BIS (安全)、WPC (射頻) 以及極其繁瑣的 TEC MTCTE (進網與資安) 印度當地測試。",
           ALL: "多數消費性電子與電池被 BIS CRS 強制要求於印度當地實測。網通與 Cellular 產品受 TEC 管制，是全球認證成本最昂貴的項目之一。"
         },
         agent: "⚠️ 嚴格強制。所有認證 (BIS/WPC/TEC) 皆強制必須與印度當地的註冊公司簽署合約，指定其為授權代表 (AIR)。",
@@ -413,12 +435,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "FCC ID / PTCRB", status: "🔴 強制認證", testing: "✅ 接受認可實驗室測試。所有 RF/Cellular 發射器必須於 FCC 列名認可之合格實驗室測試。" }
         ],
         categoryRules: {
-          HOME_APP: "聯邦未強制要求所有家電貼附安全標章，但各州消防法規與大賣場 (Walmart, BestBuy 等) 「實質強制」要求具備 NRTL 安全標誌。",
-          IT_POWER: "產生高頻訊號之 IT 設備強制適用 FCC Part 15B (SDoC)。加州銷售須註冊 CEC 能效，聯邦受 DOE 節能法規管制。",
-          WIRELESS: "所有 intentional radiators (Wi-Fi, Bluetooth 等) 強制執行 FCC Part 15C 測試，並向 TCB 申請核發 FCC ID 註冊碼。",
-          BATTERY: "具備充電系統的成品受 DOE 與 CEC 能效強制管制。鋰電池本身業界高度依賴 UL 1642 / 2054 等 NRTL 認證以規避法律風險。",
-          IND_TELECOM: "接入傳統電信網路之設備須符合 FCC Part 68；一般工業級交換機須確保符合 FCC Part 15 Class A (工業環境 EMC) 標準。",
-          CELLULAR: "除需申請 FCC Part 22/24/27 與 SAR 測試取得 FCC ID 外，實務上強制必須通過 PTCRB 認證以及各大電信營運商 (Carrier Approval) 的准入測試。",
+          HOME_APP: "⚡ 一般家電：聯邦未強制要求家電貼附安全標章，但各州消防法規與大賣場 (Walmart, BestBuy 等) 「實質強制」要求具備 NRTL 安全標誌。",
+          IT_POWER: "💻 IT 與電源：產生高頻訊號之 IT 設備強制適用 FCC Part 15B (SDoC)。加州銷售須註冊 CEC 能效，聯邦受 DOE 節能法規管制。",
+          WIRELESS: "📡 無線消費品：所有 intentional radiators (Wi-Fi, Bluetooth 等) 強制執行 FCC Part 15C 測試，並向 TCB 申請核發 FCC ID 註冊碼。",
+          BATTERY: "🔋 電池：具備充電系統的成品受 DOE 與 CEC 能效強制管制。鋰電池本身業界高度依賴 UL 1642 / 2054 等 NRTL 認證以規避法律風險。",
+          IND_TELECOM: "🏭 工業網通產品：接入傳統電信網路之設備須符合 FCC Part 68；一般工業級交換機須確保符合 FCC Part 15 Class A (工業環境 EMC) 標準。",
+          CELLULAR: "📱 4G/5G 設備：除需申請 FCC Part 22/24/27 與 SAR 測試取得 FCC ID 外，實務上強制必須通過 PTCRB 認證以及各大電信營運商 (Carrier Approval) 的准入測試。",
           ALL: "電子產品皆受 FCC 嚴格監管其電磁波。Cellular 產品面臨高昂的 PTCRB 測試費。安全(NRTL)雖為自願性但商業實務上等同強制。"
         },
         agent: "⚠️ 強制要求 (FCC)。FCC 認證必須指定一名位於美國境內的聯絡人 (US Local Agent) 以處理潛在的合規與召回信件。",
@@ -435,12 +457,12 @@
           { type: "RF/Telecom (電信射頻)", mark: "CE (RED)", status: "🔴 強制認證", testing: "✅ 接受海外測試。依循 EN 301 908 等協調標準，無標準時才須 Notified Body 審查。" }
         ],
         categoryRules: {
-          HOME_APP: "強制符合低電壓指令 (LVD, AC 50V~1000V) 與 EMC 指令。另須符合 ErP 能效生態設計指令，並貼附 CE 標誌。",
-          IT_POWER: "AC 適配器、螢幕與電腦設備均強制符合 LVD 與 EMC。其中電源適配器在 ErP 具備極其嚴格的空載與平均能效要求。",
-          WIRELESS: "任何使用無線電波的成品，一律強制無線電設備指令 (RED)。RED 啟動即自動豁免 LVD 電壓下限 (0V 起便強制安規評估)。",
-          BATTERY: "強制受歐盟新電池法 (EU Battery Regulation) 管制，需評估重金屬含量、碳足跡、數位電池護照(特定容量以上)與回收機制。",
-          IND_TELECOM: "工業級網通產品受 CE EMC/LVD (或 RED) 管制。工業環境可適用更寬鬆之 EN 61000-6-2 (Emissions) 與 Immunity 協調標準。",
-          CELLULAR: "強制適用 CE RED 指令，需依據 EN 301 908 系列標準完成射頻、EMC 以及人體健康曝露 (EN 50360/EN 50566 SAR) 測試。",
+          HOME_APP: "⚡ 一般家電：強制符合低電壓指令 (LVD, AC 50V~1000V) 與 EMC 指令。另須符合 ErP 能效生態設計指令，並貼附 CE 標誌。",
+          IT_POWER: "💻 IT 與電源：AC 適配器、螢幕與電腦設備均強制符合 LVD 與 EMC。其中電源適配器在 ErP 具備極其嚴格的空載與平均能效要求。",
+          WIRELESS: "📡 無線消費品：任何使用無線電波的成品，一律強制無線電設備指令 (RED)。RED 啟動即自動豁免 LVD 電壓下限 (0V 起便強制安規評估)。",
+          BATTERY: "🔋 電池：強制受歐盟新電池法 (EU Battery Regulation) 管制，需評估重金屬含量、碳足跡、數位電池護照(特定容量以上)與回收機制。",
+          IND_TELECOM: "🏭 工業網通產品：工業級網通產品受 CE EMC/LVD (或 RED) 管制。工業環境可適用更寬鬆之 EN 61000-6-2 (Emissions) 與 Immunity 協調標準。",
+          CELLULAR: "📱 4G/5G 設備：強制適用 CE RED 指令，需依據 EN 301 908 系列標準完成射頻、EMC 以及人體健康曝露 (EN 50360/EN 50566 SAR) 測試。",
           ALL: "CE 標誌是進入歐盟的絕對通行證。集齊所有適用的指令(LVD, EMC, RED, RoHS, ErP)後，製造商可開立 EU DoC 進行自我宣告並自行印製 CE 標誌。"
         },
         agent: "⚠️ 嚴格強制。境外製造商必須依法指定一名位於歐盟境內的授權代表 (Authorized Representative, AR)，且產品或包裝上必須標示 AR 的名稱與地址。",
@@ -457,23 +479,22 @@
           { type: "RF/Telecom (電信射頻)", mark: "ANATEL", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。射頻/通訊功能必須在巴西境內完成測試，不接受海外 FCC/CE 報告轉證。" }
         ],
         categoryRules: {
-          HOME_APP: "微波爐、電磁爐、熱水器、特定家電成品與節能照明產品，列於 INMETRO 強制目錄，必須於巴西實機測試安規並驗廠。",
-          IT_POWER: "插頭、插座、開關、AC電線電纜均受 INMETRO 嚴格強制管制。",
-          WIRELESS: "所有具備 Wi-Fi、Bluetooth 模組或成品，強制進行巴西境內測試與 OCD (合規指定機構) 核准。",
-          BATTERY: "手機電池、充電寶等供通訊終端使用的電池，高度受限於 ANATEL 的嚴格管制，必須送巴西實地測試其容量與安全性。",
-          IND_TELECOM: "交換機、路由器、光纖設備等只要涉及資料傳輸或接入網路，強制落入 ANATEL 範疇，必須在巴西實驗室執行繁重的 EMC 與網路互通性實測。",
-          CELLULAR: "最高管制級別！屬 ANATEL Category I 設備，強制要求「每年」在巴西當地重新實測與更新證書，包含 IPv6、SAR 與資安法規測試。",
+          HOME_APP: "⚡ 一般家電：微波爐、電磁爐、熱水器、特定家電成品與節能照明產品，列於 INMETRO 強制目錄，必須於巴西實機測試安規並驗廠。",
+          IT_POWER: "💻 IT 與電源：插頭、插座、開關、AC電線電纜均受 INMETRO 嚴格強制管制。",
+          WIRELESS: "📡 無線消費品：所有具備 Wi-Fi、Bluetooth 模組或成品，強制進行巴西境內測試與 OCD (合規指定機構) 核准。",
+          BATTERY: "🔋 電池：手機電池、充電寶等供通訊終端使用的電池，高度受限於 ANATEL 的嚴格管制，必須送巴西實地測試其容量與安全性。",
+          IND_TELECOM: "🏭 工業網通產品：交換機、路由器、光纖設備等只要涉及資料傳輸或接入網路，強制落入 ANATEL 範疇，必須在巴西實驗室執行繁重的 EMC 與網路互通性實測。",
+          CELLULAR: "📱 4G/5G 設備：最高管制級別！屬 ANATEL Category I 設備，強制要求「每年」在巴西當地重新實測與更新證書，包含 IPv6、SAR 與資安法規測試。",
           ALL: "南美最嚴格的市場。只要受 ANATEL (通訊/無線) 或 INMETRO (家電/電源) 管制，99% 均強制要求將樣品送至巴西境內實地進行測試與驗廠。"
         },
         agent: "⚠️ 嚴格強制。必須由在巴西合法註冊的公司 (CNPJ 號碼) 作為申請人與持證者。",
         process: ["聯絡巴西代理商，將實機樣品寄至巴西實驗室進行當地測試。", "安規需安排 ISO 9001 與工廠稽核。", "提交測試結果至發證機構 (OCD) 審核，取得 ANATEL/INMETRO 證書。", "證書多有 1~2 年效期限制，需定期重新在巴西測試與續證。"],
         docs: ["葡萄牙文的使用手冊、技術規格與產品外部標籤。", "工廠 ISO 9001 證書、當地代理商的營業登記資料 (CNPJ)。"]
       }
-      // 注意：為確保對話回應順暢，其餘國家比照上方寫法動態生成或維持 placeholder，此處展示美、亞、歐等最重點指標國家的完整屬性矩陣。
     };
 
     // 其他國家數據簡化代入，維持 34 國結構框架
-    const extraCountries = ["CA", "UK", "RU", "UA", "RS", "SA", "AE", "ZA", "EG", "IL", "KW", "NG", "KE", "MA", "AU", "NZ", "SG", "MY", "TH", "VN", "ID", "PH", "AR", "CL", "CO", "PE"];
+    const extraCountries = ["CA", "UK", "RU", "UA", "RS", "SA", "AE", "ZA", "EG", "IL", "KW", "NG", "KE", "MA", "AU", "NZ", "SG", "MY", "VN", "ID", "PH", "AR", "CL", "CO", "PE"];
     extraCountries.forEach(code => {
       if(!gmaData[code]) {
         gmaData[code] = {
@@ -487,12 +508,12 @@
           ],
           categoryRules: {
             ALL: "全產品總覽：這是一個佔位符範例，真實環境中將載入對應之 34 國詳細多維度法規判定資料。",
-            HOME_APP: "家用電器：大多強制執行 LVD 等效安全要求。",
-            IT_POWER: "IT 設備：交流供電設備通常須取得當地安全許可。",
-            WIRELESS: "無線設備：具有射頻發射單元者強制當地電信局核准。",
-            BATTERY: "電池儲能：視產品容量及應用面臨基礎或進階安全檢驗。",
-            IND_TELECOM: "工業網通：通常強制該國當地之電信法規與高抗擾度 EMC 測試。",
-            CELLULAR: "4G/5G 行動通訊：全球最高風險列管對象，各國皆強制當地註冊、SAR 驗證與 IMEI 登記。"
+            HOME_APP: "⚡ 家用電器：大多強制執行 LVD 等效安全要求。",
+            IT_POWER: "💻 IT 設備：交流供電設備通常須取得當地安全許可。",
+            WIRELESS: "📡 無線設備：具有射頻發射單元者強制當地電信局核准。",
+            BATTERY: "🔋 電池儲能：視產品容量及應用面臨基礎或進階安全檢驗。",
+            IND_TELECOM: "🏭 工業網通：通常強制該國當地之電信法規與高抗擾度 EMC 測試。",
+            CELLULAR: "📱 4G LTE / 5G NR：全球最高風險列管對象，各國皆強制當地註冊、SAR 驗證與 IMEI 登記。"
           },
           agent: "多數國家強制要求當地進口商持證。",
           process: ["提交技術文件或安排送樣", "執行海外或當地測試", "由官方機構發證"],
@@ -533,7 +554,7 @@
             if (data.categoryRules && data.categoryRules[catId]) {
                 rulesHtml += `
                   <div class="pb-3 mb-3 border-b border-slate-700/50 last:border-0 last:pb-0 last:mb-0">
-                    <span class="text-indigo-300 font-bold block mb-1">📌 ${catLabel} 屬性分析：</span>
+                    <span class="text-indigo-300 font-bold block mb-2">${catLabel} 屬性分析：</span>
                     ${data.categoryRules[catId]}
                   </div>`;
             }
