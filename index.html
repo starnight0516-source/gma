@@ -434,7 +434,7 @@
         categories: [
           { type: "Safety (安規)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證. 完全接受全球合規實驗室出具之 CB 報告或依據 AS/NZS 標準的測試報告。" },
           { type: "EMC (電磁相容)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受符合 ACMA 規定之海外 EMC 報告 (如 CE EN 標準)。" },
-          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受海外測試，但須確保使用頻段嚴格符合澳洲 ACMA 的本地規範。" }
+          { type: "RF/Telecom (無線)", mark: "RCM", status: "🔴 強制認證", testing: "✅ 接受海外報告. 接受海外測試，但須確保使用頻段裝嚴格符合澳洲 ACMA 的本地規範。" }
         ],
         agent: "⚠️ 嚴格強制。境外製造商不能直接持有 RCM 證書。必須由澳洲當地的合法供應商/進口商 (Local Supplier) 登錄為負責任方，並在國家資料庫 (NRS) 註冊。",
         process: ["於海外取得符合 AS/NZS 與 ACMA 要求的測試報告。", "若為 Level 3 (高風險安全產品)，需額外申請澳洲安全核准證書 (Certificate of Approval)。", "由當地進口商登入國家資料庫 (EESS/NRS) 註冊成為供應商並綁定產品。", "產品標示 RCM 標誌 (無須標示號碼，認標不認號)。"],
@@ -475,7 +475,7 @@
           { type: "EMC (電磁相容)", mark: "SIRIM", status: "🔴 強制認證", testing: "✅ 接受海外報告。通常接受合格的 CE EMC 測試報告轉證 (須具 ILAC 資格)。" },
           { type: "RF/Telecom (無線)", mark: "SIRIM", status: "🔴 強制認證", testing: "⚠️ 條件性強制當地實測。一般 BT/Wi-Fi 可用海外 CE 報告；但 5G、VoLTE 或 IPv6 設備強制送大馬當地實測。" }
         ],
-        agent: "⚠️ 嚴格強制。ST 與 SIRIM 的申請商必須是馬來西亞當地註冊的法人公司 (通常為進口商 or 分銷商)。",
+        agent: "⚠️ 嚴格強制。ST 與 SIRIM QAS 的申請商必須是馬來西亞當地註冊的法人公司 (通常為進口商 or 分銷商)。",
         process: ["由當地代理商透過官方線上系統 (e-ComM 或 e-Permit) 提交申請。", "依規定安排書面審查或送樣測試。", "獲發證書 (通常 1 年效期，需年審)，必須向主管機關購買 SIRIM / ST 專屬標籤貼紙並黏貼於產品上。"],
         docs: ["完整 CB 測試報告與 CE 報告。", "馬來西亞代理商的授權書 (LoA) 與公司註冊文件 (SSM)。"]
       },
@@ -528,11 +528,9 @@
           { type: "RF/Telecom (無線)", mark: "NTC", status: "🔴 強制認證", testing: "✅ 接受海外報告。一般接受海外具資格實驗室發出的 RF 報告進行書面審查轉證。" }
         ],
         agent: "⚠️ 強制要求。必須由菲律賓當地的法人公司、經銷商或進口商作為申請者 (Applicant)。",
-        process: ["備齊海外測試報告 (如 CE/CB/FCC)。", "由菲律賓進口商向 NTC / BPS 提交文件審查。", "若屬強制安規清單，BPS 可能會執行抵港批次驗貨 (ICC) 或工廠查核 (PS 標誌)。", "取得證書後於產品標示對應標誌與號碼。"],
+        process: ["備齊海外測試報告 (如 CE/CB/FCC)。", "由菲律賓進口商向 NTC / BPS 提交文件審查。", "若屬強制安規清單， BPS 可能會執行抵港批次驗貨 (ICC) 或工廠查核 (PS 標誌)。", "取得證書後於產品標示對應標誌與號碼。"],
         docs: ["英文手冊、技術規格書與天線增益圖。", "菲律賓進口商營業執照 (SEC/DTI) 及授權信。"]
       },
-
-      // --- 美洲地區 (Americas) ---
       "US": {
         title: "🇺🇸 美國 (United States)",
         desc: "安規為 OSHA 認可之 NRTL 把關；EMC 與無線則受聯邦通訊委員會 (FCC) 嚴格的聯邦法律強制管制。",
@@ -578,7 +576,7 @@
         electrical: { voltage: "127V / 60Hz", plug: "Type A, B (美規平行與接地)" },
         categories: [
           { type: "Safety (安規)", mark: "NOM", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。實務上絕大多數產品必須在墨西哥當地認可實驗室測試 (美加 MRA 等效協議適用門檻極高，通常仍需實測)。" },
-          { type: "EMC (電磁相容)", mark: "NOM", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。須在墨西哥境內實機測試。" },
+          { type: "EMC (電磁相容)", mark: "NOM", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測. 須在墨西哥境內實機測試。" },
           { type: "RF/Telecom (無線)", mark: "IFETEL", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。必須在墨西哥境內完成射頻與電信介面測試，不接受海外 FCC/CE 報告轉證。" }
         ],
         agent: "⚠️ 嚴格強制。證書持有人必須是墨西哥當地的註冊公司或進口商，證書不可轉讓給其他進口商。",
@@ -956,14 +954,28 @@
       return html.trim();
     }
 
+    // --- Local Storage & Platform Hybrid Key Handler (BYOK + Platform Autodetect) ---
+    function getActiveApiKey() {
+      // 1. 優先使用使用者在本機手動設定的金鑰 (解決 GitHub Pages 部署環境)
+      const localKey = getStoredApiKey();
+      if (localKey && localKey.trim() !== "") {
+        return localKey.trim();
+      }
+      // 2. 自動偵測：如果本機沒有設定，但系統在 Canvas 預覽環境中自動注入了 key (apiKey 不為空)
+      if (typeof apiKey !== 'undefined' && apiKey && apiKey.trim() !== "") {
+        return apiKey.trim();
+      }
+      return "";
+    }
+
     // --- API Request Wrapper with Exponential Backoff ---
     async function fetchWithRetry(url, options, maxRetries = 5) {
-      const userKey = getStoredApiKey();
-      if (!userKey) {
+      const activeKey = getActiveApiKey();
+      if (!activeKey) {
         throw new Error("Missing_API_Key");
       }
       
-      const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${userKey}`;
+      const finalUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${activeKey}`;
       const delays = [1000, 2000, 4000, 8000, 16000];
       
       for (let i = 0; i < maxRetries; i++) {
@@ -987,7 +999,7 @@
           if (error.message === "Invalid_API_Key" || error.message === "Missing_API_Key") {
             throw error;
           }
-          console.warn(`Attempt ${i + 1} failed:`, error.message);
+          // 不在主控台印出 retry 資訊以符合標準規則
           if (i === maxRetries - 1) throw error;
           await new Promise(resolve => setTimeout(resolve, delays[i]));
         }
@@ -1129,6 +1141,11 @@
         btn.classList.remove("opacity-70", "cursor-not-allowed");
       }
     }
+
+    // 聲明由平台在預覽時自動注入的金鑰變數
+    // 💡 提示：在 Canvas 預覽環境中，平台會自動把 "" 替換為有效密鑰。
+    // 在您個人的 GitHub Pages 部署環境中，網頁會自動偵測並提示您使用右上角的金鑰設定功能，兼顧雙向相容與安全性！
+    const apiKey = "";
   </script>
 </body>
 </html>
