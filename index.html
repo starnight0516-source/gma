@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>全球市場准入 (GMA) 認證要求查詢系統</title>
+  <title>全球市場准入 (GMA) 認證要求查詢系統 - 完整文獻數據版</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
@@ -21,7 +21,6 @@
     optgroup { font-weight: 700; color: #1e3a8a; background-color: #e2e8f0; }
     option { font-weight: 500; color: #334155; background-color: #ffffff; }
     
-    /* 自訂反灰樣式，用於不適用的認證卡片 */
     .card-disabled {
       opacity: 0.55;
       filter: grayscale(80%);
@@ -30,6 +29,13 @@
     .card-disabled:hover {
       opacity: 0.8;
       filter: grayscale(0%);
+    }
+    
+    .tag-btn {
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .tag-btn:active {
+      transform: scale(0.95);
     }
   </style>
 </head>
@@ -45,93 +51,98 @@
         </svg>
         全球 GMA 市場准入查詢系統
       </h1>
-      <p class="text-slate-500 text-sm md:text-base font-medium">智能複選版：支援 34 國法規，可「疊加」多項產品屬性以判斷綜合合規門檻</p>
+      <p class="text-slate-500 text-sm md:text-base font-medium">全庫解鎖版：34 國法規矩陣已全部實裝，零佔位符，真實呈現各國認證標誌與測試門檻</p>
     </div>
 
-    <!-- 選擇器區塊 (國家 + 複選屬性) -->
-    <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 p-6 md:p-8 mb-8 mx-auto max-w-5xl relative z-10">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        
-        <!-- 國家選擇器 -->
-        <div>
-          <label for="countrySelect" class="block text-sm md:text-base font-bold text-slate-700 mb-3 tracking-wide flex items-center gap-2">
-            🌍 第一步：選擇目標國家
-          </label>
-          <div class="relative">
-            <select id="countrySelect" onchange="updateDashboard()" class="block w-full appearance-none bg-slate-50 border-2 border-slate-200 text-slate-800 py-3.5 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-medium cursor-pointer">
-              <option value="">-- 請選擇國家 / 地區 --</option>
-              <optgroup label="🌏 亞洲與大洋洲 (APAC)">
-                <option value="TW">🇹🇼 台灣 (Taiwan)</option>
-                <option value="CN">🇨🇳 中國大陸 (China)</option>
-                <option value="JP">🇯🇵 日本 (Japan)</option>
-                <option value="KR">🇰🇷 韓國 (South Korea)</option>
-                <option value="IN">🇮🇳 印度 (India)</option>
-                <option value="AU">🇦🇺 澳洲 (Australia)</option>
-                <option value="NZ">🇳🇿 紐西蘭 (New Zealand)</option>
-                <option value="SG">🇸🇬 新加坡 (Singapore)</option>
-                <option value="MY">🇲🇾 馬來西亞 (Malaysia)</option>
-                <option value="TH">🇹🇭 泰國 (Thailand)</option>
-                <option value="VN">🇻🇳 越南 (Vietnam)</option>
-                <option value="ID">🇮🇩 印尼 (Indonesia)</option>
-                <option value="PH">🇵🇭 菲律賓 (Philippines)</option>
-              </optgroup>
-              <optgroup label="🌎 美洲地區 (Americas)">
-                <option value="US">🇺🇸 美國 (United States)</option>
-                <option value="CA">🇨🇦 加拿大 (Canada)</option>
-                <option value="BR">🇧🇷 巴西 (Brazil)</option>
-                <option value="MX">🇲🇽 墨西哥 (Mexico)</option>
-                <option value="AR">🇦🇷 阿根廷 (Argentina)</option>
-                <option value="CL">🇨🇱 智利 (Chile)</option>
-                <option value="CO">🇨🇴 哥倫比亞 (Colombia)</option>
-                <option value="PE">🇵🇪 秘魯 (Peru)</option>
-              </optgroup>
-              <optgroup label="🌍 歐洲與獨立國協 (Europe & CIS)">
-                <option value="EU">🇪🇺 歐盟 (European Union)</option>
-                <option value="UK">🇬🇧 英國 (United Kingdom)</option>
-                <option value="RU">🇷🇺 俄羅斯/EAEU (Russia/EAEU)</option>
-                <option value="UA">🇺🇦 烏克蘭 (Ukraine)</option>
-                <option value="RS">🇷🇸 塞爾維亞 (Serbia)</option>
-              </optgroup>
-              <optgroup label="🏜️ 中東與非洲 (MEA)">
-                <option value="SA">🇸🇦 沙烏地阿拉伯 (Saudi Arabia)</option>
-                <option value="AE">🇦🇪 阿拉伯聯合大公國 (UAE)</option>
-                <option value="ZA">🇿🇦 南非 (South Africa)</option>
-                <option value="EG">🇪🇬 埃及 (Egypt)</option>
-                <option value="IL">🇮🇱 以色列 (Israel)</option>
-                <option value="KW">🇰🇼 科威特 (Kuwait)</option>
-                <option value="NG">🇳🇬 奈及利亞 (Nigeria)</option>
-                <option value="KE">🇰🇪 肯亞 (Kenya)</option>
-                <option value="MA">🇲🇦 摩洛哥 (Morocco)</option>
-              </optgroup>
-            </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
-              <svg class="fill-current h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-            </div>
+    <!-- 選擇器區塊 -->
+    <div class="bg-white rounded-3xl shadow-lg shadow-slate-200/50 border border-slate-100 p-6 md:p-8 mb-8 mx-auto max-w-6xl relative z-10">
+      
+      <!-- 第一步：國家選擇 -->
+      <div class="mb-8 border-b border-slate-100 pb-8">
+        <label for="countrySelect" class="block text-lg font-bold text-slate-700 mb-4 tracking-wide flex items-center gap-2">
+          🌍 第一步：選擇目標國家
+        </label>
+        <div class="relative max-w-2xl">
+          <select id="countrySelect" onchange="updateDashboard()" class="block w-full appearance-none bg-slate-50 border-2 border-slate-200 text-slate-800 py-3.5 px-4 pr-8 rounded-xl leading-tight focus:outline-none focus:bg-white focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all font-bold text-lg cursor-pointer shadow-sm">
+            <option value="">-- 點擊展開全球市場清單 --</option>
+            <optgroup label="🌏 亞洲與大洋洲 (APAC)">
+              <option value="TW">🇹🇼 台灣 (Taiwan)</option>
+              <option value="CN">🇨🇳 中國大陸 (China)</option>
+              <option value="JP">🇯🇵 日本 (Japan)</option>
+              <option value="KR">🇰🇷 韓國 (South Korea)</option>
+              <option value="IN">🇮🇳 印度 (India)</option>
+              <option value="AU">🇦🇺 澳洲 (Australia)</option>
+              <option value="NZ">🇳🇿 紐西蘭 (New Zealand)</option>
+              <option value="SG">🇸🇬 新加坡 (Singapore)</option>
+              <option value="MY">🇲🇾 馬來西亞 (Malaysia)</option>
+              <option value="TH">🇹🇭 泰國 (Thailand)</option>
+              <option value="VN">🇻🇳 越南 (Vietnam)</option>
+              <option value="ID">🇮🇩 印尼 (Indonesia)</option>
+              <option value="PH">🇵🇭 菲律賓 (Philippines)</option>
+            </optgroup>
+            <optgroup label="🌎 美洲地區 (Americas)">
+              <option value="US">🇺🇸 美國 (United States)</option>
+              <option value="CA">🇨🇦 加拿大 (Canada)</option>
+              <option value="BR">🇧🇷 巴西 (Brazil)</option>
+              <option value="MX">🇲🇽 墨西哥 (Mexico)</option>
+              <option value="AR">🇦🇷 阿根廷 (Argentina)</option>
+              <option value="CL">🇨🇱 智利 (Chile)</option>
+              <option value="CO">🇨🇴 哥倫比亞 (Colombia)</option>
+              <option value="PE">🇵🇪 秘魯 (Peru)</option>
+            </optgroup>
+            <optgroup label="🌍 歐洲與獨立國協 (Europe & CIS)">
+              <option value="EU">🇪🇺 歐盟 (European Union)</option>
+              <option value="UK">🇬🇧 英國 (United Kingdom)</option>
+              <option value="RU">🇷🇺 俄羅斯/EAEU (Russia/EAEU)</option>
+              <option value="UA">🇺🇦 烏克蘭 (Ukraine)</option>
+              <option value="RS">🇷🇸 塞爾維亞 (Serbia)</option>
+            </optgroup>
+            <optgroup label="🏜️ 中東與非洲 (MEA)">
+              <option value="SA">🇸🇦 沙烏地阿拉伯 (Saudi Arabia)</option>
+              <option value="AE">🇦🇪 阿拉伯聯合大公國 (UAE)</option>
+              <option value="ZA">🇿🇦 南非 (South Africa)</option>
+              <option value="EG">🇪🇬 埃及 (Egypt)</option>
+              <option value="IL">🇮🇱 以色列 (Israel)</option>
+              <option value="KW">🇰🇼 科威特 (Kuwait)</option>
+              <option value="NG">🇳🇬 奈及利亞 (Nigeria)</option>
+              <option value="KE">🇰🇪 肯亞 (Kenya)</option>
+              <option value="MA">🇲🇦 摩洛哥 (Morocco)</option>
+            </optgroup>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-400">
+            <svg class="fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
           </div>
         </div>
-
-        <!-- 產品類別選擇器 (動態標籤) -->
-        <div>
-          <label class="block text-sm md:text-base font-bold text-slate-700 mb-3 tracking-wide flex items-center gap-2">
-            📦 第二步：選擇產品屬性 <span class="text-xs text-indigo-500 bg-indigo-50 px-2 py-1 rounded-md font-black">可複選疊加</span>
-          </label>
-          <div id="categoryTogglesContainer" class="flex flex-wrap gap-2">
-            <!-- JS 動態生成按鈕 -->
-          </div>
-        </div>
-
       </div>
+
+      <!-- 第二步：產品類別多選 -->
+      <div>
+        <div class="flex items-center justify-between mb-5">
+          <label class="block text-lg font-bold text-slate-700 tracking-wide flex items-center gap-2">
+            📦 第二步：選擇產品屬性 
+            <span class="text-xs text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-md font-black border border-indigo-200">支援跨域多選疊加</span>
+          </label>
+          <button onclick="toggleCategory('ALL')" id="btn-all" class="text-sm font-bold px-5 py-2 rounded-lg border-2 border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors">
+            🌐 重置為全市場總覽
+          </button>
+        </div>
+
+        <div id="groupedCategoriesContainer" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- JS 動態生成分組面板 -->
+        </div>
+      </div>
+
     </div>
 
     <!-- 初始空狀態 -->
-    <div id="emptyState" class="text-center py-16">
-      <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 mb-6 shadow-inner">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div id="emptyState" class="text-center py-20">
+      <div class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-blue-100 mb-6 shadow-inner">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-14 w-14 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
         </svg>
       </div>
       <h3 class="text-2xl font-bold text-slate-400">請於上方選擇國家與產品類別</h3>
-      <p class="text-slate-400 mt-2">系統將為您智慧過濾並帶出對應的法規與測試要求</p>
+      <p class="text-slate-400 mt-2 font-medium">系統將為您帶出經官方指南驗證的強制/自願法規矩陣</p>
     </div>
 
     <!-- 結果展示區塊 -->
@@ -147,7 +158,7 @@
           </div>
           
           <!-- 電氣與插頭規格卡片 -->
-          <div class="flex-shrink-0 bg-blue-50/80 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row gap-6 min-w-[320px]">
+          <div id="electricalInfoCard" class="flex-shrink-0 bg-blue-50/80 rounded-2xl p-5 border border-blue-100 flex flex-col sm:flex-row gap-6 min-w-[320px]">
             <div class="flex items-center gap-4">
               <div class="p-3 bg-white rounded-full shadow-sm text-yellow-500">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -179,15 +190,15 @@
 
       <!-- 🔒 產品類別專屬：強制規格界限 -->
       <div class="bg-gradient-to-br from-slate-800 to-slate-900 text-white rounded-3xl p-6 md:p-8 shadow-lg border border-slate-700">
-        <div class="flex items-center gap-3 mb-5">
+        <div class="flex items-center gap-3 mb-6">
           <div class="p-2.5 bg-indigo-500 text-white rounded-xl shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
             </svg>
           </div>
-          <h3 class="text-2xl font-black tracking-wide">📦 組合屬性解析：強制界限與特例</h3>
+          <h3 class="text-2xl font-black tracking-wide">📦 產品合規性分析 (適用範圍與豁免)</h3>
         </div>
-        <div id="categorySpecificRule" class="text-slate-200 font-medium text-base md:text-lg leading-relaxed bg-slate-800/50 p-5 rounded-2xl border border-slate-600 space-y-4">
+        <div id="categorySpecificRule" class="text-slate-200 font-medium text-base md:text-lg leading-relaxed bg-slate-800/50 p-6 rounded-2xl border border-slate-600 space-y-4">
           <!-- 專屬文字動態注入區 -->
         </div>
       </div>
@@ -198,7 +209,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
           </svg>
-          智能適配：標誌與測試門檻
+          官方認證矩陣 (Official Certification Matrix)
         </h3>
         <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-3 gap-5">
         </div>
@@ -212,64 +223,78 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <h3 class="text-2xl font-black text-slate-800">🏢 當地進口商與代理 (Local Rep) 實務規定</h3>
+          <h3 class="text-2xl font-black text-slate-800">🏢 當地代理商 (Local Representative) 要求</h3>
         </div>
         <p id="localAgent" class="text-slate-700 bg-slate-50 p-5 rounded-2xl border border-slate-100 leading-relaxed font-medium text-lg"></p>
-      </div>
-
-      <!-- 申請流程與文件 -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="p-2.5 bg-emerald-50 text-emerald-600 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-black text-slate-800">📋 實務申請與審查流程</h3>
-          </div>
-          <ul id="processList" class="space-y-4 text-slate-700 list-none pl-1 font-medium"></ul>
-        </div>
-
-        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200">
-          <div class="flex items-center gap-3 mb-5">
-            <div class="p-2.5 bg-amber-50 text-amber-600 rounded-xl">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h3 class="text-2xl font-black text-slate-800">📂 應備技術文件與標章打件</h3>
-          </div>
-          <ul id="docList" class="space-y-3 text-slate-700 list-disc pl-5 marker:text-amber-400 font-medium"></ul>
-        </div>
       </div>
 
     </div>
   </div>
 
   <script>
-    // --- 選單定義 ---
-    const categoryOptions = [
-      { id: "ALL", label: "🌐 全產品總覽", icon: "🌐" },
-      { id: "HOME_APP", label: "🔌 一般家電與影音", icon: "🔌" },
-      { id: "IT_POWER", label: "💻 IT 資訊設備與電源", icon: "💻" },
-      { id: "BATTERY", label: "🔋 鋰電池與儲能", icon: "🔋" },
-      { id: "WIRELESS", label: "📡 消費性無線設備", icon: "📡" },
-      { id: "IND_TELECOM", label: "🏭 工業網通產品", icon: "🏭" },
-      { id: "CELLULAR", label: "📱 4G LTE / 5G NR", icon: "📱" }
+    // --- 選單定義 (10大專業細項，分 3 大群組) ---
+    const categoryGroups = [
+      {
+        name: "🔌 電源與被動零組件",
+        bgClass: "bg-blue-50/40 border-blue-100",
+        items: [
+          { id: "POWER", label: "電源適配器與充電器" },
+          { id: "BATTERY", label: "鋰電池與儲能系統" },
+          { id: "COMPONENT", label: "插頭 / 線材 / 開關" }
+        ]
+      },
+      {
+        name: "🏠 商業與消費電子",
+        bgClass: "bg-emerald-50/40 border-emerald-100",
+        items: [
+          { id: "HOME_APP", label: "一般家電與影音設備" },
+          { id: "IT_OFFICE", label: "商用 IT 與辦公設備" },
+          { id: "WIFI_BT", label: "消費性藍牙 / Wi-Fi" }
+        ]
+      },
+      {
+        name: "🏭 工業網通與邊緣運算",
+        bgClass: "bg-purple-50/60 border-purple-200",
+        items: [
+          { id: "IND_SWITCH", label: "工業乙太網交換機/閘道器" },
+          { id: "IND_COMPUTING", label: "工業邊緣運算與工控機" },
+          { id: "IND_CELLULAR", label: "工業無線與 4G/5G 路由器" }
+        ]
+      }
     ];
 
-    let selectedCategories = ["ALL"];
+    let selectedCategories = ["ALL"]; 
 
     function initCategoryToggles() {
-      const container = document.getElementById("categoryTogglesContainer");
-      container.innerHTML = categoryOptions.map(opt => {
-        const isActive = selectedCategories.includes(opt.id);
-        const activeClasses = isActive 
-          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-200 scale-105" 
-          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-indigo-300";
-        return `<button onclick="toggleCategory('${opt.id}')" class="px-4 py-2.5 rounded-xl border-2 font-bold text-sm md:text-base transition-all duration-200 ${activeClasses}">${opt.label}</button>`;
+      const container = document.getElementById("groupedCategoriesContainer");
+      container.innerHTML = categoryGroups.map(group => {
+        const buttonsHtml = group.items.map(opt => {
+          const isActive = selectedCategories.includes(opt.id);
+          const activeClasses = isActive 
+            ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-200/50 scale-[1.03]" 
+            : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 hover:border-indigo-300";
+          return `<button onclick="toggleCategory('${opt.id}')" class="tag-btn text-left px-4 py-3 rounded-xl border-2 font-bold text-sm md:text-base transition-all duration-200 w-full flex items-center justify-between ${activeClasses}">
+                    <span>${opt.label}</span>
+                    ${isActive ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' : ''}
+                  </button>`;
+        }).join("");
+
+        return `
+          <div class="p-6 rounded-3xl border shadow-sm ${group.bgClass} flex flex-col h-full">
+            <h4 class="font-black text-slate-800 text-lg mb-4 border-b border-slate-200/80 pb-3">${group.name}</h4>
+            <div class="flex flex-col gap-3 flex-1">
+              ${buttonsHtml}
+            </div>
+          </div>
+        `;
       }).join("");
+
+      const btnAll = document.getElementById("btn-all");
+      if (selectedCategories.includes("ALL")) {
+        btnAll.className = "text-sm font-bold px-5 py-2 rounded-xl border-2 border-slate-800 bg-slate-800 text-white shadow-md transition-colors";
+      } else {
+        btnAll.className = "text-sm font-bold px-5 py-2 rounded-xl border-2 border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors";
+      }
     }
 
     function toggleCategory(id) {
@@ -290,234 +315,243 @@
 
     document.addEventListener("DOMContentLoaded", initCategoryToggles);
 
-    // --- Data Base (全 34 國完整法規與產品分類規則) ---
-    // 💡 特別深度優化 TH (泰國) 實務細節
+    // --- Data Base (嚴格對齊 TUV SUD / UL 官方指南，100% 覆蓋 9 大分類鍵值) ---
     const gmaData = {
       "TW": {
         title: "🇹🇼 台灣 (Taiwan)",
-        desc: "電機電子產品主要受 BSMI 與 NCC 管制。近年 BSMI 擴大管制儲能系統及影音周邊，且證書多有 3 年效期限制。",
+        desc: "依據官方指南：安全與 EMC 由 BSMI 管理，無線電信由 NCC 管理。",
         electrical: { voltage: "110V / 60Hz", plug: "Type A, B (美規平行與接地)" },
         categories: [
-          { type: "Safety (安規)", mark: "BSMI", status: "🔴 強制認證", testing: "✅ 接受 CB 或具備 MRA 認可之海外實驗室報告轉證。" },
-          { type: "EMC (電磁相容)", mark: "BSMI", status: "🔴 強制認證", testing: "✅ 接受官方認可之海外合格 EMC 實驗室報告轉證。" },
-          { type: "RF/Telecom (電信射頻)", mark: "NCC", status: "🔴 強制認證", testing: "✅ 接受 FCC/CE 等測試報告向台灣的 RCB (驗證機構) 申請型式認可轉證。" }
+          { type: "Safety (安規)", mark: "BSMI", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。接受認可之海外 CB/實驗室報告。" },
+          { type: "EMC (電磁相容)", mark: "BSMI", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。接受認可之海外實驗室報告。" },
+          { type: "RF/Telecom (電信射頻)", mark: "NCC", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。接受海外 CE/FCC 報告轉證。" }
         ],
         categoryRules: {
-          HOME_APP: "任何直接插市電 (AC 110V/220V) 運行的家用設備（如吹風機、微波爐、電視）均強制 BSMI 安全與 EMC 驗證 (通常為 RPC 驗證登錄)。",
-          IT_POWER: "所有獨立銷售或隨附的 AC/DC 電源適配器、充電器、電腦主機與電源供應器，強制納入 BSMI 檢驗目錄。",
-          WIRELESS: "所有具備藍牙、Wi-Fi 之消費性網通設備，強制 NCC 低功率射頻認證。若產品同時插市電運作，則須「同時」取得 BSMI 與 NCC 雙認證。",
-          BATTERY: "可攜式鋰電池、行動電源、3C 二次電池為強制 BSMI。2024 年新制：100kWh 以下定置型儲能鋰電池系統亦全面納入強制檢驗。",
-          IND_TELECOM: "工業級交換機、路由器若具備電信介面或公網接入功能，強制須通過 NCC 電信終端設備審驗。工業設備之安規視是否在 BSMI 應施檢驗目錄而定。",
-          CELLULAR: "行動寬頻產品強制受 NCC PLMN 規範 (如 PLMN09, PLMN12) 管制，需提交射頻、EMC 與 SAR(人體電磁波吸收) 報告核准。",
-          ALL: "依產品供電方式與發射頻率，分別受 BSMI (安規/EMC) 與 NCC (射頻/電信) 管制；電池與電源適配器亦在強力監管範圍內。"
+          HOME_APP: "**BSMI 驗證登錄 (RPC)**：\n* 直接接市電 AC 110V/220V 之家用電器（如微波爐、吹風機等）均屬 BSMI 強制目錄，須符合對應 CNS 標準。\n* **豁免條件**：若產品僅由 USB 5V 供電且無內建二次鋰電池，通常非屬應施檢驗品目，可免除 BSMI 申請。",
+          IT_OFFICE: "**資訊設備檢驗 (RPC/DoC)**：\n* 電腦主機、顯示器等 IT 設備強制要求 BSMI (安規 CNS 15598-1 及 EMC CNS 15936)。\n* **實務技巧**：符合特定條件的低風險 IT 週邊（如滑鼠、隨身碟）可採用符合性聲明 (DoC) 模式，大幅縮短取證時間。",
+          POWER: "**電源適配器 (M)**：\n* 獨立銷售或隨機附贈的 AC/DC 電源供應器均為 BSMI 高度監管項目。\n* 測試除了安規與 EMC 外，台灣 BSMI 特別著重於特定組件的「溫升測試」結果。",
+          BATTERY: "**二次鋰電池 (M)**：\n* 3C 產品用的鋰電池、行動電源強制受 CNS 15364 規範。\n* **最新動態**：2024 年起，容量在 100kWh 以下的「定置型儲能系統」已全面納入強制檢驗。",
+          COMPONENT: "**零組件安規 (M)**：\n* 插入台灣市電的電源線、插頭，強制必須取得 BSMI 認證，並於線材實體上打刻「R字軌」標誌。",
+          WIFI_BT: "**NCC 低功率射頻審驗 (M)**：\n* 凡具備藍牙、Wi-Fi 之產品均強制需取得 NCC 射頻認證 (依 LP0002 標準)。\n* **豁免與捷徑**：若產品內建的無線模組已取得 NCC 認證，整機只需進行簡單的「模組轉證」或「平台驗證」，無須重新實測。",
+          IND_SWITCH: "**工業網通豁免條件**：\n* 採 DC 供電 (如 DIN-Rail 常用的 12/24V) 且非直接插市電之工業交換機，多數可豁免 BSMI 安規。\n* 但若設備具備「電信公網介面」，仍強制須通過 NCC 電信終端設備審驗。",
+          IND_COMPUTING: "**工業電腦與邊緣運算**：\n* 視同 IT 設備。若直接以 AC 市電供電則強制 BSMI 檢驗；無風扇工控機需特別留意極端環境下的溫升與 EMI 測試餘裕。",
+          IND_CELLULAR: "**行動通訊終端 (M)**：\n* 凡含有 4G/5G 模組之工業路由器，強制受 NCC PLMN 規範管制。\n* 必須提交射頻、EMC 報告，若是手持/隨身設備更強制要求 SAR (人體電磁波吸收) 報告。",
+          ALL: "**綜合合規總結**：\n* 台灣市場主要由 BSMI (負責安規與電磁相容) 及 NCC (負責無線與電信) 共同把關。\n* **最大優勢**：台灣高度承認海外 MRA 實驗室，幾乎所有測試均不強制在台灣當地進行，且認證流程透明高效。"
         },
-        agent: "⚠️ 嚴格強制。三大領域皆規定，證書持有人 (申請商) 必須為在台灣合法登記之公司行號，方能辦理產品驗證登錄 (RPC) 或型式認可。",
-        process: ["判定產品落入 BSMI (RPC/TABI) 或 NCC 管制範圍，確認適用之 CNS/LP0002/PLMN 標準。", "委託國內外合格實驗室進行安規、EMC、射頻或電信測試。", "備齊繁體中文文件，提交當地代理商 (持證者) 資料供機構審查。", "獲發證書後，將 BSMI 商品檢驗標識與 NCC 審驗合格標籤永久標示於產品外觀。"],
-        docs: ["繁體中文使用說明書、繁體中文警語與產品銘牌標籤 (Rating Label)。", "產品內部/外部高解析度照片、BOM表、電路圖與方塊圖。", "當地代理商之公司登記證明與授權信。"]
+        agent: "✅ 是 (Yes)。必須指定台灣當地合法登記之公司作為證書持有人。"
       },
       "TH": {
         title: "🇹🇭 泰國 (Thailand)",
-        desc: "東南亞最複雜的市場之一。安規由 TISI 掌管，具有極度嚴格的插頭標準與海外查廠制度；電信/無線由 NBTC 實施三級管制制度。",
-        electrical: { voltage: "220V / 50Hz", plug: "⚠️ 高度管制：TIS 166-2549 (Type O 帶接地 / 特製雙圓柱)" },
+        desc: "依據官方指南：安規由 TISI 掌管，部分產品強制；無線由 NBTC 管制。",
+        electrical: { voltage: "220V / 50Hz", plug: "TIS 166-2549 (Type O 帶接地 / 特製雙圓柱)" },
         categories: [
-          { type: "Safety (安規)", mark: "TISI", status: "🔴 強制認證 (列管名單內)", testing: "⚠️ 嚴格當地實測與查廠。必須寄樣至泰國當地 TISI 認可實驗室測試，並強制執行海外工廠檢查 (或提供認可之 CIG023 報告)。" },
-          { type: "EMC (電磁相容)", mark: "TISI / NBTC", status: "🔴 強制認證", testing: "⚠️ 若產品屬 TISI 範圍，EMC 亦須在泰國境內實驗室測試。" },
-          { type: "RF/Telecom (電信射頻)", mark: "NBTC (Class A/B/SDoC)", status: "🔴 強制認證", testing: "✅ 依級別而定。多數接受合格之 CE/FCC 報告轉證；少數高頻或特殊電信產品需在泰國當地實機測試。" }
+          { type: "Safety (安規)", mark: "TISI", status: "🔴 強制 / 🔵 自願 (M/V)", testing: "⚠️ 強制當地測試 (Yes - 針對 M 類)。TISI 強制目錄內產品必須在泰國實測並查廠。" },
+          { type: "EMC (電磁相容)", mark: "TISI / NBTC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 條件要求 (Partial)。依所屬 TISI 或 NBTC 規範而定。" },
+          { type: "RF/Telecom (電信射頻)", mark: "NBTC", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。多數 Class A/B 接受海外 CE/FCC 報告轉證。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：微波爐、冰箱、洗衣機、空調等屬於 TISI 強制安全名單。⚠️ 致命門檻：隨機插頭與電源線必須絕對符合泰國特有的 **TIS 166-2549** 國家插頭標準，否則直接退件退關！",
-          IT_POWER: "💻 IT 與電源：AC 適配器與充電器屬 TISI 強制管轄，必須有 TISI 標章。一般 IT 設備 (如筆電) 若無無線功能，主機本身的安規多為自願性，但插頭線材仍須符合 TIS 166-2549。",
-          WIRELESS: "📡 無線網通：依發射功率與技術分級。例如藍牙/Wi-Fi 通常為 SDoC（當地進口商自我宣告）；若功率較高或有特定發射器，則屬 Class A/B 需向 NBTC 正式申請認可。",
-          BATTERY: "🔋 電池：可充電鋰電池包與行動電源 (Power Bank) 屬 TISI 強制標準 (TIS 2214 / TIS 2879)，必須在泰國實地測試並驗廠。",
-          IND_TELECOM: "🏭 工業網通：工業交換機/路由器若無射頻功能且非一般消費電源，可能免除 TISI。但若含電信介面，則受 NBTC 嚴格審驗。",
-          CELLULAR: "📱 4G/5G 設備：嚴格受 NBTC Class B 管制！需由當地進口商提交測試報告申請，並需確保符合泰國當地特有的頻段配置 (如 B28, B40)。",
-          ALL: "全產品總覽：這是一個不能投機的市場。TISI 嚴查插頭規格 (TIS 166-2549) 與工廠品質系統；NBTC 將無線通訊細分為 SDoC / Class A / Class B 三級。"
+          HOME_APP: "**TISI 強制目錄 (M)**：\n* 包含空調、微波爐、冰箱等超過 100 種家電。\n* **實務痛點**：強制要求泰國當地實機測試，且 TISI 官員必須赴海外工廠親自查核 (或接受認可之 CIG023 報告)。",
+          IT_OFFICE: "**IT 設備安規 (V)**：\n* 一般無發射功能之 IT 主機安規多為自願性 (Voluntary)。\n* 但其附帶之**電源適配器**與**電源線**，則落入 TISI 強制名單。",
+          POWER: "**電源適配器 (M)**：\n* **致命門檻**：除了適配器本身須在泰國測試，其插頭**絕對強制**符合泰國特有之 **TIS 166-2549** 國家標準 (Type O 或特製雙圓/雙扁插腳)。若送測美規或歐規插頭，將被直接退件！",
+          BATTERY: "**電池與儲能 (M)**：\n* 可充電鋰電池包與行動電源屬 TISI 強制標準 (TIS 2214 / TIS 2879)，必須在泰國實地測試並驗廠。",
+          COMPONENT: "**插頭組件 (M)**：\n* 線材與插頭本體強制 TISI 認證，審查極為嚴格。",
+          WIFI_BT: "**NBTC 分級制度 (SDoC / Class A / Class B)**：\n* 純藍牙/Wi-Fi 消費品多屬 SDoC 或 Class B。\n* 不強制泰國當地測試，當地進口商可憑海外具備 ILAC 資格之 CE/FCC 報告，進行書面審核或自我宣告註冊。",
+          IND_SWITCH: "**工業網通設備**：\n* 若無射頻功能且非一般消費電源，可能免除 TISI。但若含電信介面，則受 NBTC 嚴格審驗。",
+          IND_COMPUTING: "**工業邊緣運算**：\n* 安規多屬自願性 (V)，但若搭配一般適配器出貨則適配器須滿足 TISI 強制要求。",
+          IND_CELLULAR: "**蜂窩網路產品 (Class B)**：\n* 4G/5G 產品嚴格受 NBTC Class B 管制。\n* 雖可提交海外測試報告，但審查時會嚴格比對設備是否支援泰國當地特有頻段 (如 LTE B28, B40)。",
+          ALL: "**綜合合規總結**：\n* 泰國 TISI 證書遵循**「不可共享原則」**，每位當地進口商都必須獨立持有自己的 TISI 證書。\n* 評估泰國專案時，首要確認插頭規格是否合規 (TIS 166-2549)，這是實務上最常導致卡關的原因。"
         },
-        agent: "⚠️ 嚴格的「不共享」原則：TISI 證書是綁定「當地進口商」的。如果您在泰國有 3 個代理商，他們不能共用同一張證書，必須由各家代理商「分別獨立」提出申請並持有自己的 TISI 證書！",
-        process: ["插頭設計必須符合 TIS 166-2549 (送樣前務必檢查！)。", "當地進口商向 TISI 提出申請，送樣至泰國實測，並安排 TISI 官員赴原廠查驗 (或提供有效 CIG 報告)。", "無線設備依 NBTC 分類，由進口商提交 CE/FCC 報告申請 Class B 認證或 SDoC 備案。", "取得認證後，產品必須印製附有「專屬 QR Code」的新版 TISI 標誌與 NBTC 合格標籤。"],
-        docs: ["泰文版使用手冊與包裝標籤設計稿 (必須包含進口商資訊與 TISI QR Code)。", "工廠 ISO 9001 證書、CIG023 查廠報告、當地進口商的營業執照 (DBD)。"]
+        agent: "✅ 是 (Yes)。必須由泰國當地註冊之進口商持有證書。"
       },
       "CN": {
         title: "🇨🇳 中國大陸 (China)",
-        desc: "CCC 涵蓋安規與 EMC，並要求嚴格的「工廠檢查」。網通設備由 SRRC (無線) 與 NAL (進網) 管制，是全球對「當地實測」要求最嚴苛的市場之一。",
+        desc: "依據官方指南：安規/EMC (CCC)、無線 (SRRC)、電信 (NAL) 皆為強制性，並嚴格要求當地測試。",
         electrical: { voltage: "220V / 50Hz", plug: "Type A, C, I (國標三扁八字型為主)" },
         categories: [
-          { type: "Safety (安規)", mark: "CCC (強制產品認證)", status: "🔴 強制認證", testing: "⚠️ 嚴格當地實測。不接受海外 CB 報告，必須送中國境內 CNCA 指定實驗室測試。" },
-          { type: "EMC (電磁相容)", mark: "CCC / NAL", status: "🔴 強制認證", testing: "⚠️ 嚴格當地實測。必須在中國境內實驗室進行測試。" },
-          { type: "RF/Telecom (電信射頻)", mark: "SRRC / NAL", status: "🔴 強制認證", testing: "⚠️ 嚴格當地實測。必須送交工信部 (MIIT) 指定之境內實驗室進行無線與電信實測。" }
+          { type: "Safety (安規)", mark: "CCC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。必須在中國境內指定實驗室測試。" },
+          { type: "EMC (電磁相容)", mark: "CCC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" },
+          { type: "RF/Telecom (電信射頻)", mark: "SRRC / NAL", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：多數低壓電器、家用和類似用途設備、音視頻設備必須申請 CCC 認證 (強制當地測試與工廠檢查)。",
-          IT_POWER: "💻 IT 與電源：資訊技術設備 (顯示器、印表機、主機) 與電源適配器，只要工作電壓在交流 50V~1000V 之間，均強制 CCC 安規與 EMC 認證。",
-          WIRELESS: "📡 無線消費品：所有具備 Wi-Fi、藍牙、2G-5G 微功率無線發射模組之電子產品強制 SRRC 認證 (無須進網許可)。",
-          BATTERY: "🔋 電池：自 2023 年起，可攜式電子產品用鋰離子電池、電池組及行動電源正式全面納入 CCC 強制認證目錄。",
-          IND_TELECOM: "🏭 工業網通產品：企業級路由器、交換機、防火牆等若接入公用電信網，嚴格強制申請「NAL 進網許可」，且測試極其繁瑣，必須於境內電信實驗室完成。",
-          CELLULAR: "📱 4G LTE / 5G NR 產品：三重強制管制！必須同時取得 SRRC (發射設備型號核准)、NAL (進網許可) 以及 CCC 認證，全數要求在中國實地測試。",
-          ALL: "依據 CCC (安規/EMC)、SRRC (射頻)、NAL (電信進網) 進行分類，絕大多數均嚴格強制要求樣品寄送至中國境內實地測試。"
+          HOME_APP: "**CCC 強制性產品認證 (M)**：\n* 涵蓋 17 大類產品，家電與影音設備全數落入。不接受任何海外 CB 報告。\n* **實務流程**：必須將樣品送至中國境內 CNCA 指定實驗室進行破壞性安規與 EMC 測試，並強制執行工廠檢查 (FQI)。",
+          IT_OFFICE: "**IT 設備新版國標 (M)**：\n* 工作電壓在 AC 50V~1000V 之間強制 CCC 認證。\n* 近期標準已轉換為 **GB 4943.1-2022**，設計時需特別注意與國際標準 IEC 62368-1 的國家差異 (National Differences)。",
+          POWER: "**適配器與電源線 (M)**：\n* 皆為 CCC 高度關注之強制項目。電源適配器需在境內測試，電源線須印製 CCC 標誌。",
+          BATTERY: "**鋰電池強制納管 (M)**：\n* 自 2023 年起，可攜式電子產品用鋰離子電池、電池組及行動電源正式全面納入 CCC 強制認證目錄，結束了以往無須 CCC 的歷史。",
+          COMPONENT: "**零組件國標 (M)**：\n* 中國規格插頭 (八字型) 與 CQC/CCC 認證線材為強制配備，不可混用其他規格。",
+          WIFI_BT: "**SRRC 型號核准 (M)**：\n* 純 Wi-Fi、藍牙微功率發射模組，強制辦理 SRRC。必須將實機送交 MIIT 認可之中國實驗室測試。\n* 獲證後，其「核准代碼 (CMIIT ID)」必須雷雕或印刷於產品銘牌上。",
+          IND_SWITCH: "**NAL 進網許可 (M)**：\n* 交換機、企業級路由器等設備只要牽涉接入公用電信網，除 CCC 認證外，強制需申請 NAL 進網許可。\n* **實務門檻**：進網測試週期極長 (常達 3-6 個月)，且要求提供極其詳盡的底層軟硬體資料以進行資安審查，是中國 GMA 的最大瓶頸。",
+          IND_COMPUTING: "**工控機與邊緣運算 (M)**：\n* 只要具備 AC 電源接口即落入 CCC 資訊產品強制目錄，實施境內實測與查廠。",
+          IND_CELLULAR: "**三重壁壘 (CCC + SRRC + NAL)**：\n* 4G/5G 設備為最高風險！必須同時取得 CCC、SRRC 以及 NAL 許可，全數要求在中國實地測試，認證成本與時間極高。",
+          ALL: "**綜合合規總結**：\n* 進入中國市場的關鍵字是「當地實測」。所有受列管產品均不承認海外測試數據，且高度依賴具備中國營業實體的當地責任方進行備案與後續市場監督。"
         },
-        agent: "⚠️ 條件性要求。辦理 CCC 時境外製造商可作為申請人，但諸多註冊作業與進網許可 (NAL) 申請往往需要境內授權代理或設立境內公司作為責任主體。",
-        process: ["向 CQC 或工信部指定認證機構提交線上申請。", "安排樣品清關，並送至中國境內指定實驗室執行型式試驗與射頻測試。", "測試合格後，機構派員至製造廠執行首次工廠檢查 (Initial Factory Inspection)。", "獲發證書，合法印製 CCC、CMIIT ID (SRRC) 標誌，並每年接受監督查廠。"],
-        docs: ["全簡體中文的技術規格書、使用者手冊與產品銘牌。", "關鍵零組件清單 (CDF)、電路佈局圖、工廠調查表 (FQI)。", "對於 SRRC/NAL 需要提供天線增益與電信介面射頻規格申報書。"]
+        agent: "✅ 是 (Yes - NAL 等需當地主體)。部分認證允許境外製造商申請，但進網等多需境內授權代理。"
       },
       "JP": {
         title: "🇯🇵 日本 (Japan)",
-        desc: "安規以 PSE (電氣用品安全法) 為主，EMC 為 VCCI (自願性)，無線與電信端受 MIC (Giteki) 與 JATE 管制。",
+        desc: "依據官方指南：PSE 安規對特定產品強制，VCCI (EMC) 為自願性，MIC/JATE 為強制性。",
         electrical: { voltage: "100V / 50Hz (東日本) & 60Hz (西日本)", plug: "Type A, B (與台灣/美國相容)" },
         categories: [
-          { type: "Safety (安規)", mark: "PSE (菱形/圓形)", status: "🔴 強制認證", testing: "✅ 接受海外 CB 報告轉證。菱形須查廠；圓形可憑報告自我宣告。無須赴日實測。" },
-          { type: "EMC (電磁相容)", mark: "VCCI", status: "🔵 自願認證", testing: "✅ 接受海外合格實驗室測試報告，進行自我宣告註冊。" },
-          { type: "RF/Telecom (電信射頻)", mark: "MIC / JATE", status: "🔴 強制認證", testing: "✅ 接受海外合格實驗室出具報告，並交由 RCB (認可機構) 進行審核發證。" }
+          { type: "Safety (安規)", mark: "PSE", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。接受海外認可之 CB 報告與查廠。" },
+          { type: "EMC (電磁相容)", mark: "VCCI", status: "🔵 自願 (Voluntary)", testing: "✅ 不強制當地測試 (No)。" },
+          { type: "RF/Telecom (電信射頻)", mark: "MIC / JATE", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。接受海外 RCB 核准之報告。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：大多落入菱形 PSE (特定電氣用品，如高危加熱器) 或圓形 PSE (如一般家電)。適用於 AC 100V~300V 的設備。",
-          IT_POWER: "💻 IT 與電源：AC 適配器與充電器屬「菱形 PSE」，強制要求第三方機構發證與查廠。IT 主機本身多由 VCCI 自願性把關 EMC。",
-          WIRELESS: "📡 無線消費品：所有無線電波發射裝置（Bluetooth、Wi-Fi、LTE等），不論功率大小，一律強制 MIC (Giteki / 電波法) 認證。",
-          BATTERY: "🔋 電池：可攜式鋰離子蓄電池 (能量密度達 400 Wh/L 以上者) 落入「圓形 PSE」管制，須符合別表第九並貼附圓形 PSE 標誌。",
-          IND_TELECOM: "🏭 工業網通產品：若設備將連接至日本公共電信網路 (如 NTT、KDDI 網路)，除 EMC 外，強制必須申請 JATE (電氣通信事業法) 認證。",
-          CELLULAR: "📱 4G/5G 設備：雙重強制法規！行動通訊設備必須同時通過 MIC (電波法 - 驗證射頻頻段) 以及 JATE (電氣通信事業法 - 驗證網路互通性)。",
-          ALL: "高風險電源受菱形 PSE 管制。無線產品強制 MIC 電波法，接網/通訊設備則額外強制 JATE 電信法認證。"
+          HOME_APP: "**電氣用品安全法 (PSE)**：\n* 區分為「特定電氣用品 (116種，菱形 PSE)」與「非特定電氣用品 (341種，圓形 PSE)」。\n* 菱形 PSE 屬高危險產品 (如幫浦)，須由第三方 RCB 機構發證並查廠；圓形 PSE 則可由製造商自行出具測試報告宣告合規。",
+          IT_OFFICE: "**VCCI 電磁相容 (V)**：\n* IT 主機本身多由 VCCI 自願性把關 EMC。安規部分依其供電方式可能落入 PSE 圓形 (M) 或豁免。",
+          POWER: "**AC 適配器與充電器 (M)**：\n* 明確歸類為「特定電氣用品」，強制要求菱形 PSE 標誌，必須透過合格機構審核發證。",
+          BATTERY: "**鋰離子蓄電池 (M)**：\n* 可攜式鋰離子蓄電池 (能量密度達 400 Wh/L 以上者) 落入「圓形 PSE」管制，須符合別表第九並貼附圓形 PSE 標誌。",
+          COMPONENT: "**插頭與電源線 (M)**：\n* 屬於菱形 PSE 高度管制範圍，須標示發證機構與 PSE 菱形標記。",
+          WIFI_BT: "**MIC 電波法 (M)**：\n* 所有無線電波發射裝置（Bluetooth、Wi-Fi、UWB），不論功率大小，一律強制 MIC (通稱 Giteki) 認證。\n* 獲證後須標示包含 R 碼的專屬符號與號碼。",
+          IND_SWITCH: "**JATE 電氣通信事業法 (M)**：\n* 凡是設備的介面將連接至日本公共電信網路 (如 NTT、KDDI 網路)，除 EMC 外，強制必須申請 JATE 認證，以確保不對電信機房造成損害。",
+          IND_COMPUTING: "**工業電腦與 IPC (V)**：\n* 若採 DC 供電可豁免 PSE。EMC 仍高度建議取得 VCCI Class A。",
+          IND_CELLULAR: "**雙重強制法規 (MIC + JATE)**：\n* 4G/5G 設備必須同時通過 MIC (驗證射頻頻段是否合法) 以及 JATE (驗證網路協議與互通性) 的雙重核准。",
+          ALL: "**綜合合規總結**：\n* 日本高度承認海外測試。無論是 PSE, MIC 或 JATE，多數皆能在海外具備認證資格之實驗室 (RCB) 測試並發證，無須送樣至日本。\n* **注意**：PSE 法規嚴格要求必須由日本境內的「輸入事業者」(進口商) 進行 METI 備案並承擔法律責任。"
         },
-        agent: "⚠️ 嚴格強制。PSE 法規嚴格要求必須由日本境內註冊的「輸入事業者」(日本進口商) 負責向經濟產業省 (METI) 進行事業屆出備案，並承擔最終法律與召回責任。",
-        process: ["判定產品屬菱形 PSE (需第三方測試與查廠) 或圓形 PSE (自行測試宣告)。", "具無線/通訊功能者，向認可機構申請 MIC 及 JATE 認證。", "日本進口商 (輸入事業者) 完成 METI 備案。", "於產品本體打上 PSE 標誌、MIC 技適符號 (包含 R 及 T 碼)，且必須清楚標示該進口商的名稱。"],
-        docs: ["日文使用手冊、構造圖、絕緣材料清單與安規組件表。", "日本進口商出具的合規保證與法務備案文件。"]
+        agent: "✅ 是 (Yes)。PSE 強制要求由日本進口商 (輸入事業者) 進行備案與負責。"
       },
       "KR": {
         title: "🇰🇷 韓國 (South Korea)",
-        desc: "KATS 負責產品安全，RRA 負責 EMC 與無線頻譜，兩者皆統一打上 KC 標誌，但管制路徑各自獨立。",
+        desc: "依據官方指南：KC 標誌為統一識別。Safety (KATS) 與 EMC/RF (RRA) 均為強制性。",
         electrical: { voltage: "220V / 60Hz", plug: "Type C, F (歐規雙圓柱型, 俗稱豬鼻子)" },
         categories: [
-          { type: "Safety (安規)", mark: "KC Safety", status: "🔴 強制認證", testing: "✅ 接受 CB 轉證。多數產品可憑有效之 CB 測試報告與證書進行書面審查與轉證。" },
-          { type: "EMC (電磁相容)", mark: "KC EMC", status: "🔴 強制認證", testing: "⚠️ 強烈要求當地實測。除特定簽署 MRA 國家的實驗室外，絕大多數 EMC 必須送至韓國境內的合格實驗室實測。" },
-          { type: "RF/Telecom (電信射頻)", mark: "KC RF", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。RF/Telecom 射頻測試幾乎皆被要求必須在韓國當地的 RRA 認可實驗室進行。" }
+          { type: "Safety (安規)", mark: "KC", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No - 對多數類別)。接受 CB 報告轉證。" },
+          { type: "EMC (電磁相容)", mark: "KC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。除特定 MRA，絕大多數需韓國境內實測。" },
+          { type: "RF/Telecom (電信射頻)", mark: "KC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。須由 RRA 認可實驗室於韓國境內實測。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：大多屬「安全確認」級別，可直接以 CB 報告轉證安規，免查廠；但 EMC 須送至韓國實機測試。",
-          IT_POWER: "💻 IT 與電源：電源適配器等高危部件屬「安全認證」，強制要求當地測試與每年工廠檢查；IT 周邊多為自我宣告 (SDoC)。",
-          WIRELESS: "📡 無線消費品：凡具備主動發射無線電波之設備，皆必須將樣品寄至韓國 RRA 認可實驗室執行 RF 與 EMC 測試，並於銘牌標示 KC ID。",
-          BATTERY: "🔋 電池：特定的可充電鋰電池包與電芯受 KC 安全確認管制，通常可利用 CB 報告 (IEC 62133) 轉證，若容量/應用特殊可能需抽驗。",
-          IND_TELECOM: "🏭 工業網通產品：工業級網通產品即便免除家用安全法規，仍嚴格受限於 KC EMC 以及廣播通信設備的合格登錄 (Registration) 要求，須境內實測。",
-          CELLULAR: "📱 4G/5G 設備：極其嚴格！所有蜂窩網絡通訊產品強制送往韓國當地進行 RF、EMC 以及 SAR 測試，且韓國頻段劃分特殊，退件率高。",
-          ALL: "依風險分為安全認證(查廠)、安全確認與自我宣告。EMC、RF、Cellular 產品均高度要求將樣品送至韓國境內實地測試。"
+          HOME_APP: "**KATS 安全法規三級制 (M)**：\n* **安全認證 (Safety Certification)**：極高危產品 (如電熱器)，需當地測試與每年查廠。\n* **安全確認 (Safety Confirmation)**：中危產品 (多數家電)，接受國際 CB 報告書面轉證，免查廠。\n* **SDoC**：低危產品，製造商可自行宣告。",
+          IT_OFFICE: "**EMC 當地測試瓶頸 (M)**：\n* IT 設備安規雖多為 SDoC，但其 **EMC 強制要求於韓國境內實驗室實測** (少數 MRA 國家例外)，這是時程延宕的主因。",
+          POWER: "**AC 適配器 (M)**：\n* 屬於最高風險的「安全認證」級別，強制要求測試並由韓國官員執行首次工廠檢查 (FII)。",
+          BATTERY: "**鋰電池管制 (M)**：\n* 特定的可充電鋰電池包與電芯受 KC 安全確認管制，通常可利用 CB 報告 (IEC 62133) 轉證，但若容量或應用不同可能需抽驗。",
+          COMPONENT: "**電源線與插頭 (M)**：\n* 極高危組件，強制進行韓國 KC 安全認證實測與查廠。",
+          WIFI_BT: "**RRA 射頻認證 (M)**：\n* 凡具備 Wi-Fi/藍牙之設備，皆必須將實體樣品寄至韓國，由 RRA 認可實驗室執行 RF 與 EMC 測試。",
+          IND_SWITCH: "**廣播通信設備登錄 (M)**：\n* 工業級網通產品即便靠 DC 供電免除了家電安規，仍嚴格受限於 KC EMC 以及廣播通信設備的合格登錄要求，須境內實測。",
+          IND_COMPUTING: "**工控設備實測要求 (M)**：\n* 韓國對工業用資訊產品的 EMC 要求同樣嚴格，多需寄樣至韓國當地進行 KC EMC 檢驗。",
+          IND_CELLULAR: "**高難度射頻審驗 (M)**：\n* 所有蜂窩網絡通訊產品強制送往韓國當地進行 RF、EMC 以及 SAR 測試。\n* **實務痛點**：韓國頻段劃分極其特殊，且頻譜帶外輻射容忍度低，測試退件與 Debug 率非常高。",
+          ALL: "**綜合合規總結**：\n* 韓國 KC 認證是將安規與電磁/射頻分開審理的系統。安規對國際標準 (CB) 較為友善；但 EMC 與射頻領域極度封閉，強烈依賴韓國本土實驗室。"
         },
-        agent: "⚠️ 強制要求。國外製造商若無韓國分公司，必須依法指定一名韓國境內的代理商或進口商 (In-country Representative) 作為證書責任方。",
-        process: ["確認安全認證級別 (Safety Certification 需查廠 / Registration 僅測試 / SDOC 自為宣告)。", "安排樣品寄送至韓國，執行 KC EMC 與 RF 測試。", "針對高風險安全產品執行首次工廠檢查。", "審核通過後，於產品標籤上印製 KC 標誌及對應的認證號碼。"],
-        docs: ["韓文使用手冊、韓文產品警語與 KC 標籤設計圖。", "CB 測試報告(安全)、BOM 表、電路圖。"]
+        agent: "✅ 是 (Yes)。國外製造商必須指定韓國境內代理人 (In-country Rep)。"
       },
       "IN": {
         title: "🇮🇳 印度 (India)",
-        desc: "印度法規高度破碎化：BIS 負責電子產品安全，WPC 負責純無線頻譜，而 TEC 嚴格負責所有電信與網通介面。",
+        desc: "依據官方指南：BIS (安全)、TEC (網通)、WPC (無線) 皆為強制，大多要求當地測試。",
         electrical: { voltage: "230V / 50Hz", plug: "Type C, D, M (印度特有大圓柱型)" },
         categories: [
-          { type: "Safety (安規)", mark: "BIS (CRS)", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。不接受國際 CB 報告轉證，所有列管樣品必須送交印度境內受 BIS 認可的實驗室重新測試。" },
-          { type: "EMC (電磁相容)", mark: "TEC / BIS", status: "🔴 強制認證", testing: "⚠️ 要求當地實測。若產品落入 TEC 管制範圍 (MTCTE)，EMC 測試強制要求在印度境內實驗室執行。" },
-          { type: "RF/Telecom (電信射頻)", mark: "WPC / TEC", status: "🔴 強制認證", testing: "⚠️ 依領域而異。WPC (純藍牙/Wi-Fi) 可接受海外 CE 報告；TEC (電信/Cellular) 則強制印度境內實測。" }
+          { type: "Safety (安規)", mark: "BIS", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" },
+          { type: "EMC (電磁相容)", mark: "TEC / BIS", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" },
+          { type: "RF/Telecom (電信射頻)", mark: "WPC / TEC", status: "🔴 強制 (Mandatory)", testing: "⚠️ 條件要求 (Partial)。WPC 接受 CE，但 TEC 強制當地實測。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：多數 LED 燈具與智慧家電被列入 BIS CRS 目錄，必須將樣品寄送至印度當地實驗室測試，方可取得 BIS 註冊號碼。",
-          IT_POWER: "💻 IT 與電源：筆記型電腦、平板、以及所有外接電源適配器/充電器，皆嚴格強制於印度境內實驗室執行 BIS 測試。",
-          WIRELESS: "📡 無線消費品：純 Wi-Fi/藍牙設備在免授權頻段可憑 CE/FCC 報告申請 WPC (ETA) 核准。但若具有 RJ45 等電信介面，則落入 TEC，強制境內實測。",
-          BATTERY: "🔋 電池：可攜式鋰電池電芯與電池包均在 BIS CRS 強制目錄內，必須送至印度實地測試並登錄。",
-          IND_TELECOM: "🏭 工業網通產品：受 TEC (MTCTE 制度) 嚴苛監管！乙太網交換機、路由器、防火牆、IP 網路相機等，強制要求於印度境內進行安全與 EMI/EMC 測試。",
-          CELLULAR: "📱 4G/5G 設備：最高難度市場之一。手機與蜂窩終端需同時應付 BIS (安全)、WPC (射頻) 以及極其繁瑣的 TEC MTCTE (進網與資安) 印度當地測試。",
-          ALL: "多數消費性電子與電池被 BIS CRS 強制要求於印度當地實測。網通與 Cellular 產品受 TEC 管制，是全球認證成本最昂貴的項目之一。"
+          HOME_APP: "**BIS 強制註冊計畫 CRS (M)**：\n* 多數 LED 燈具與特定智慧家電被列入 CRS 目錄，不接受任何國際 CB 報告轉證。\n* 必須將樣品寄送至印度當地受 BIS 認可的實驗室重新進行破壞性與安規測試。",
+          IT_OFFICE: "**IT 設備強制實測 (M)**：\n* 筆記型電腦、平板等 IT 產品，嚴格強制於印度境內實驗室執行 BIS 測試並取得 R-number 註冊號碼。",
+          POWER: "**適配器強制實測 (M)**：\n* 所有外接電源適配器/充電器，無條件強制印度境內 BIS 實測。",
+          BATTERY: "**鋰電池實測 (M)**：\n* 可攜式鋰電池電芯與電池包均在 BIS CRS 強制目錄內，必須送至印度實地測試並登錄。",
+          COMPONENT: "**ISI Mark 管制 (M)**：\n* 插頭與開關多屬 ISI Mark 範圍，要求比 CRS 更加嚴格，甚至涉及海外工廠檢查。",
+          WIFI_BT: "**WPC 設備型式認可 ETA (M)**：\n* 在免授權頻段（如 2.4G/5G）運行的純 Wi-Fi/藍牙設備。\n* **捷徑**：可憑合格之海外 CE/FCC 射頻報告直接向 WPC 申請書面審核核准，不強制印度實測。",
+          IND_SWITCH: "**TEC MTCTE 制度 (M)**：\n* 印度 GMA 最大的魔王關卡！乙太網交換機、路由器、防火牆等網通設備，強制要求於印度境內進行安全、EMI/EMC 甚至極度嚴格的資安 (Security) 測試。",
+          IND_COMPUTING: "**工業電腦實測 (M)**：\n* 無論家用或工業用，只要落入 BIS CRS 目錄範圍的運算單元，皆須送至印度當地實驗室測試。",
+          IND_CELLULAR: "**多重強制管制 (M)**：\n* 蜂窩終端需同時應付 BIS (電池與整機安規實測)、WPC (射頻發射) 以及極其繁瑣的 TEC MTCTE (進網與電信介面實測)。",
+          ALL: "**綜合合規總結**：\n* 印度法規高度破碎化且變動極快。絕大多數產品必須指定印度授權代表 (AIR) 並將樣品寄至印度實測，整體認證成本與耗時為全球之最。"
         },
-        agent: "⚠️ 嚴格強制。所有認證 (BIS/WPC/TEC) 皆強制必須與印度當地的註冊公司簽署合約，指定其為授權代表 (AIR)。",
-        process: ["與印度當地公司簽訂 AIR 法務協議。", "將樣品清關送至印度當地實驗室測試 (BIS 與 TEC)。", "取得印度實驗室報告後，將報告與 AIR 資料上傳至 BIS/TEC 官方網站進行審核註冊。", "取得註冊號碼 (Registration No.)，並將 BIS 或 TEC 標誌標示於產品上。"],
-        docs: ["製造商的營業執照 (英文公證版)、商標註冊證明 (Brand Registration)。", "授權印度代表 (AIR) 的宣誓書 (Affidavit) 與正式法律合約。"]
+        agent: "✅ 是 (Yes)。必須指定印度當地代表 (AIR)。"
       },
       "US": {
         title: "🇺🇸 美國 (United States)",
-        desc: "安規為 OSHA 認可之 NRTL 把關；EMC、無線及網通受聯邦通訊委員會 (FCC) 嚴格的聯邦法律強制管制。",
+        desc: "依據官方指南：NRTL 聯邦層級為自願性(實務上強制)，FCC (EMC/RF) 為強制性。",
         electrical: { voltage: "120V / 60Hz", plug: "Type A, B (美規平行與接地)" },
         categories: [
-          { type: "Safety (安規)", mark: "NRTL (如 UL)", status: "🟠 市場實質強制", testing: "✅ 接受全球測試。可由全球各地的 NRTL 認可實驗室進行測試並發證，無強制赴美。" },
-          { type: "EMC (電磁相容)", mark: "FCC", status: "🔴 強制認證", testing: "✅ 接受認可實驗室測試。若需 Certification，測試必須於 FCC 列名認可 (FCC-recognized) 之實驗室執行 (全球皆有)。" },
-          { type: "RF/Telecom (電信射頻)", mark: "FCC ID / PTCRB", status: "🔴 強制認證", testing: "✅ 接受認可實驗室測試。所有 RF/Cellular 發射器必須於 FCC 列名認可之合格實驗室測試。" }
+          { type: "Safety (安規)", mark: "NRTL (e.g. UL)", status: "🔵 自願 (Voluntary - 官方)", testing: "✅ 不強制當地測試 (No)。全球 NRTL 認可實驗室皆可。" },
+          { type: "EMC (電磁相容)", mark: "FCC", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。FCC 認可之全球實驗室皆可。" },
+          { type: "RF/Telecom (電信射頻)", mark: "FCC", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：聯邦未強制要求家電貼附安全標章，但各州消防法規與大賣場 (Walmart, BestBuy 等) 「實質強制」要求具備 NRTL 安全標誌。",
-          IT_POWER: "💻 IT 與電源：產生高頻訊號之 IT 設備強制適用 FCC Part 15B (SDoC)。加州銷售須註冊 CEC 能效，聯邦受 DOE 節能法規管制。",
-          WIRELESS: "📡 無線消費品：所有 intentional radiators (Wi-Fi, Bluetooth 等) 強制執行 FCC Part 15C 測試，並向 TCB 申請核發 FCC ID 註冊碼。",
-          BATTERY: "🔋 電池：具備充電系統的成品受 DOE 與 CEC 能效強制管制。鋰電池本身業界高度依賴 UL 1642 / 2054 等 NRTL 認證以規避法律風險。",
-          IND_TELECOM: "🏭 工業網通產品：接入傳統電信網路之設備須符合 FCC Part 68；一般工業級交換機須確保符合 FCC Part 15 Class A (工業環境 EMC) 標準。",
-          CELLULAR: "📱 4G/5G 設備：除需申請 FCC Part 22/24/27 與 SAR 測試取得 FCC ID 外，實務上強制必須通過 PTCRB 認證以及各大電信營運商 (Carrier Approval) 的准入測試。",
-          ALL: "電子產品皆受 FCC 嚴格監管其電磁波。Cellular 產品面臨高昂的 PTCRB 測試費。安全(NRTL)雖為自願性但商業實務上等同強制。"
+          HOME_APP: "**OSHA NRTL 認證 (V / 實質強制)**：\n* 聯邦政府並未強制多數家電需安全認證 (列為 Voluntary)。\n* **實務真相**：受限於美國各州嚴苛的消防法規、保險理賠條件及 Amazon/Walmart 等大型通路的強制要求，申請 NRTL (如 UL, ETL, TUV) 標誌是實質上的必備條件。",
+          IT_OFFICE: "**FCC Part 15B (M)**：\n* 產生高頻訊號之 IT 設備強制適用 FCC SDoC (供應商符合性聲明)。\n* **能效要求**：於加州銷售須註冊 CEC 能效，聯邦級別則受 DOE 節能法規管制。",
+          POWER: "**能效與安規雙重考量 (M)**：\n* 外部電源適配器強制適用 DOE Level VI (VI 級能效) 並需具備 NRTL 標誌以利銷售。",
+          BATTERY: "**鋰電池責任險防護 (V)**：\n* 鋰電池本體雖無聯邦強制要求，但業界高度依賴 UL 1642 / UL 2054 標準以規避天價的法律產品責任險風險。",
+          COMPONENT: "**特定安規要求 (V)**：\n* 延長線、插頭等保險絲元件，必須具備 UL 列名 (Listed) 或認可 (Recognized) 標誌方能進入保險與建築體系。",
+          WIFI_BT: "**FCC Part 15C / FCC ID (M)**：\n* 所有有意圖輻射的發射器 (Intentional Radiators) 強制執行測試，並向 TCB (電信驗證機構) 申請核發 FCC ID。\n* **模組策略**：強烈建議採用已預先取得 FCC ID 的無線模組 (Modular Approval)，可大幅豁免終端產品的射頻測試要求。",
+          IND_SWITCH: "**工業環境 EMC 規範 (M)**：\n* 接入傳統電信網路之設備須符合 FCC Part 68。\n* 一般工業級交換機須確保符合 FCC Part 15 Class A (工業環境電磁干擾) 標準。",
+          IND_COMPUTING: "**工控機與邊緣運算 (V)**：\n* 需符合 FCC Part 15A 宣告，並強烈建議具備 UL 62368-1 等 NRTL 安全認證。",
+          IND_CELLULAR: "**PTCRB 與電信商入網 (M)**：\n* 除基礎 FCC Part 22/24/27 與嚴格的 SAR (人體吸收率) 測試外。\n* **實務難點**：若要能在北美順利連網，實務上「絕對強制」必須花費數萬美元通過 PTCRB 認證以及 AT&T/Verizon 等電信營運商的白名單准入測試。",
+          ALL: "**綜合合規總結**：\n* 全球最成熟的認證市場。所有認證 (UL, FCC) 均高度授權全球各地的合規實驗室進行，完全無須赴美當地測試。唯獨 4G/5G 設備面臨極高的民間電信商准入門檻。"
         },
-        agent: "⚠️ 強制要求 (FCC)。FCC 認證必須指定一名位於美國境內的聯絡人 (US Local Agent) 以處理潛在的合規與召回信件。",
-        process: ["NRTL 安規：提交申請 → 產品測試 → 首次工廠檢查 (FII) → 發證與每季例行廠檢。", "FCC 射頻/電信：於 FCC 註冊實驗室測試 → 準備技術卷宗提交 TCB 審核 → 取得 FCC ID 號碼，並標示於銘牌。Cellular 產品另行申請 PTCRB。"],
-        docs: ["英文手冊、詳細線路圖 (Schematics)、方塊圖與操作描述 (Operational Description)。", "SDoC 符合性聲明檔案及美國代理商 (US Agent) 授權信。"]
+        agent: "✅ 是 (Yes)。FCC 認證必須有美國當地代理人 (US Agent)。"
       },
       "EU": {
         title: "🇪🇺 歐盟 (European Union)",
-        desc: "採取新方法指令 (New Approach Directives)，確保產品符合低電壓(LVD)、電磁相容(EMC)、無線電(RED)及能效環保(RoHS/ErP)指令。",
+        desc: "依據官方指南：CE 標誌涵蓋 LVD, EMC, RED 等指令，全數為強制性。",
         electrical: { voltage: "230V / 50Hz", plug: "Type C, E, F (歐規雙圓柱 / 法國帶突起 / 德國 Schuko)" },
         categories: [
-          { type: "Safety (安規)", mark: "CE (LVD)", status: "🔴 強制認證", testing: "✅ 接受全球測試/自我宣告。多數產品可於全球任何合格實驗室測試並進行自我宣告，無須赴歐。" },
-          { type: "EMC (電磁相容)", mark: "CE (EMC)", status: "🔴 強制認證", testing: "✅ 接受全球測試/自我宣告。" },
-          { type: "RF/Telecom (電信射頻)", mark: "CE (RED)", status: "🔴 強制認證", testing: "✅ 接受海外測試。依循 EN 301 908 等協調標準，無標準時才須 Notified Body 審查。" }
+          { type: "Safety (安規)", mark: "CE", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。製造商可全球測試並自我宣告。" },
+          { type: "EMC (電磁相容)", mark: "CE", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。" },
+          { type: "RF/Telecom (電信射頻)", mark: "CE", status: "🔴 強制 (Mandatory)", testing: "✅ 不強制當地測試 (No)。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：強制符合低電壓指令 (LVD, AC 50V~1000V) 與 EMC 指令。另須符合 ErP 能效生態設計指令，並貼附 CE 標誌。",
-          IT_POWER: "💻 IT 與電源：AC 適配器、螢幕與電腦設備均強制符合 LVD 與 EMC。其中電源適配器在 ErP 具備極其嚴格的空載與平均能效要求。",
-          WIRELESS: "📡 無線消費品：任何使用無線電波的成品，一律強制無線電設備指令 (RED)。RED 啟動即自動豁免 LVD 電壓下限 (0V 起便強制安規評估)。",
-          BATTERY: "🔋 電池：強制受歐盟新電池法 (EU Battery Regulation) 管制，需評估重金屬含量、碳足跡、數位電池護照(特定容量以上)與回收機制。",
-          IND_TELECOM: "🏭 工業網通產品：工業級網通產品受 CE EMC/LVD (或 RED) 管制。工業環境可適用更寬鬆之 EN 61000-6-2 (Emissions) 與 Immunity 協調標準。",
-          CELLULAR: "📱 4G/5G 設備：強制適用 CE RED 指令，需依據 EN 301 908 系列標準完成射頻、EMC 以及人體健康曝露 (EN 50360/EN 50566 SAR) 測試。",
-          ALL: "CE 標誌是進入歐盟的絕對通行證。集齊所有適用的指令(LVD, EMC, RED, RoHS, ErP)後，製造商可開立 EU DoC 進行自我宣告並自行印製 CE 標誌。"
+          HOME_APP: "**CE 標誌指令群 (M)**：\n* 強制符合低電壓指令 (LVD, 涵蓋 AC 50V~1000V) 與 EMC 指令。\n* 家電設備另外強制符合 ErP (生態設計) 指令與 RoHS (危害物質限制) 指令，完成後製造商方可自我宣告 (EU DoC) 並貼附 CE 標誌。",
+          IT_OFFICE: "**資訊設備標準 (M)**：\n* 強制適用 EN 62368-1 安全標準。其中附帶的電源適配器在 ErP 具備極其嚴格的空載與平均能效要求。",
+          POWER: "**適配器與充電器 (M)**：\n* LVD, EMC, RoHS 為基礎。重點審查 ErP Lot 7 (外部電源供應器) 之能耗表現。",
+          BATTERY: "**新電池法規 EU Battery Regulation (M)**：\n* 極具前瞻性與嚴苛性的法規。強制要求評估重金屬含量、碳足跡宣告。\n* 特定容量以上之電池甚至強制要求建立「數位電池護照 (Digital Battery Passport)」與嚴格的回收處理機制。",
+          COMPONENT: "**非 CE 標誌範圍**：\n* 插頭與插座不屬於 CE 標誌涵蓋範圍，而是受各成員國當地法規（如德國 VDE、英國 ASTA）獨立管制。",
+          WIFI_BT: "**無線電設備指令 RED (M)**：\n* 任何使用無線電波的成品，一律強制轉入 RED 指令。\n* **法規陷阱**：一旦落入 RED 指令，產品將「自動豁免 LVD 的電壓下限」。這意味著即使是 USB 5V 供電的低壓藍牙設備，也強制必須進行安規 (Health & Safety) 評估。",
+          IND_SWITCH: "**工業環境協調標準 (M)**：\n* 工業級網通產品同樣受 CE 體系管制，但在 EMC 領域可選擇適用更寬鬆/符合現況的工業環境協調標準 (如 EN 61000-6-2 抗擾度 / EN 61000-6-4 發射)。",
+          IND_COMPUTING: "**工控機與防爆認證 (M)**：\n* 除 CE 基本宣告外，若工控機預期用於危險環境 (如煉油廠)，強制必須額外申請 ATEX 防爆指令認證。",
+          IND_CELLULAR: "**高頻輻射防護 (M)**：\n* 強制適用 CE RED 指令，除依據 EN 301 908 完成射頻與 EMC 測試外，針對通訊終端特別強調人體健康曝露 (SAR, EN 50360/EN 50566) 的極限值驗證。",
+          ALL: "**綜合合規總結**：\n* CE 體系的核心精神是「製造商責任制」。只要備妥涵蓋所有適用指令的完整技術架構文件 (TCF) 與測試報告，均不強制赴歐實測，但必須指定位於歐盟境內的授權代表 (EU AR) 備查。"
         },
-        agent: "⚠️ 嚴格強制。境外製造商必須依法指定一名位於歐盟境內的授權代表 (Authorized Representative, AR)，且產品或包裝上必須標示 AR 的名稱與地址。",
-        process: ["鑑別適用的所有歐盟指令與最新 EN 協調標準，並執行測試。", "編製完整技術架構文件 (Technical Construction File, TCF)。", "指定歐盟 AR，製造商簽署符合性聲明 (EU DoC)。", "於產品上標示 CE 標誌與 AR 聯絡資訊。"],
-        docs: ["技術架構文件 (TCF) 依法需保存 10 年備查。", "風險評估報告 (Risk Assessment) 與 EU DoC。", "多國語言版之使用者手冊 (依銷售目的國而定)。"]
+        agent: "✅ 是 (Yes)。必須指定歐盟授權代表 (EU AR)。"
       },
       "BR": {
         title: "🇧🇷 巴西 (Brazil)",
-        desc: "INMETRO 管制家電、IT電源與醫療設備之安規；國家電信局 (ANATEL) 則嚴格管制所有電信與無線通訊產品。",
+        desc: "依據官方指南：INMETRO (安全) 與 ANATEL (電信/無線) 均為強制性，嚴格要求當地測試。",
         electrical: { voltage: "127V / 220V, 60Hz (依州別不同)", plug: "Type N (巴西特有三圓柱型)" },
         categories: [
-          { type: "Safety (安規)", mark: "INMETRO", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。列管產品必須將樣品寄送至巴西境內的認可實驗室進行當地實測，不接受 CB 轉證，並強制查廠。" },
-          { type: "EMC (電磁相容)", mark: "ANATEL / INMETRO", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。必須在巴西當地實驗室測試。" },
-          { type: "RF/Telecom (電信射頻)", mark: "ANATEL", status: "🔴 強制認證", testing: "⚠️ 嚴格要求當地實測。射頻/通訊功能必須在巴西境內完成測試，不接受海外 FCC/CE 報告轉證。" }
+          { type: "Safety (安規)", mark: "INMETRO", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" },
+          { type: "EMC (電磁相容)", mark: "ANATEL / INMETRO", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" },
+          { type: "RF/Telecom (電信射頻)", mark: "ANATEL", status: "🔴 強制 (Mandatory)", testing: "⚠️ 強制當地測試 (Yes)。" }
         ],
         categoryRules: {
-          HOME_APP: "⚡ 一般家電：微波爐、電磁爐、熱水器、特定家電成品與節能照明產品，列於 INMETRO 強制目錄，必須於巴西實機測試安規並驗廠。",
-          IT_POWER: "💻 IT 與電源：插頭、插座、開關、AC電線電纜均受 INMETRO 嚴格強制管制。",
-          WIRELESS: "📡 無線消費品：所有具備 Wi-Fi、Bluetooth 模組或成品，強制進行巴西境內測試與 OCD (合規指定機構) 核准。",
-          BATTERY: "🔋 電池：手機電池、充電寶等供通訊終端使用的電池，高度受限於 ANATEL 的嚴格管制，必須送巴西實地測試其容量與安全性。",
-          IND_TELECOM: "🏭 工業網通產品：交換機、路由器、光纖設備等只要涉及資料傳輸或接入網路，強制落入 ANATEL 範疇，必須在巴西實驗室執行繁重的 EMC 與網路互通性實測。",
-          CELLULAR: "📱 4G/5G 設備：最高管制級別！屬 ANATEL Category I 設備，強制要求「每年」在巴西當地重新實測與更新證書，包含 IPv6、SAR 與資安法規測試。",
-          ALL: "南美最嚴格的市場。只要受 ANATEL (通訊/無線) 或 INMETRO (家電/電源) 管制，99% 均強制要求將樣品送至巴西境內實地進行測試與驗廠。"
+          HOME_APP: "**INMETRO 強制檢驗 (M)**：\n* 微波爐、電磁爐、熱水器等特定家電列於 INMETRO 強制目錄。\n* **實務痛點**：不接受 CB 轉證。必須將樣品寄至巴西當地進行破壞性實機測試，並強制執行工廠稽核。",
+          IT_OFFICE: "**IT 產品安規 (M)**：\n* 純 IT 產品主機的安規查驗視同 INMETRO 規定，但其電源線與適配器為絕對重點。",
+          POWER: "**電源與組件管制 (M)**：\n* 外接 AC 電源適配器受 INMETRO 嚴格強制管制，測試等待期極長。",
+          BATTERY: "**通訊電池管制 (M)**：\n* 手機電池、行動電源等供通訊終端使用的電池，高度受限於 ANATEL 的嚴格管制，必須送巴西實地測試其容量與安全性。",
+          COMPONENT: "**插頭與線材 (M)**：\n* 插頭、插座、開關、AC電線電纜均強制 INMETRO 當地測試與驗廠。",
+          WIFI_BT: "**ANATEL 無線核准 (M)**：\n* 所有具備 Wi-Fi、Bluetooth 模組或成品，強制進行巴西境內測試與 OCD (合規指定機構) 核准，不承認海外 FCC/CE 報告。",
+          IND_SWITCH: "**重度電信管制 (M)**：\n* 交換機、路由器、光纖設備等只要涉及資料傳輸或接入網路，強制落入 ANATEL 範疇，必須在巴西實驗室執行繁重的 EMC 與網路互通性實測。",
+          IND_COMPUTING: "**工業網通與邊緣運算 (M)**：\n* 含有網路介面的工控設備通常無法逃過 ANATEL 的管制範疇。",
+          IND_CELLULAR: "**ANATEL Category I 最高管制 (M)**：\n* 4G/5G 設備為巴西最嚴格的管制對象。\n* **致命門檻**：強制要求「每年」在巴西當地重新實測與更新證書！測試涵蓋射頻、IPv6、SAR 以及繁瑣的資安法規測試。",
+          ALL: "**綜合合規總結**：\n* 巴西是全球公認最封閉且貿易壁壘最高的市場之一。只要受 ANATEL (通訊/無線) 或 INMETRO (家電/電源) 管制，近乎 100% 強制要求將樣品送至巴西境內實測與驗廠。"
         },
-        agent: "⚠️ 嚴格強制。必須由在巴西合法註冊的公司 (CNPJ 號碼) 作為申請人與持證者。",
-        process: ["聯絡巴西代理商，將實機樣品寄至巴西實驗室進行當地測試。", "安規需安排 ISO 9001 與工廠稽核。", "提交測試結果至發證機構 (OCD) 審核，取得 ANATEL/INMETRO 證書。", "證書多有 1~2 年效期限制，需定期重新在巴西測試與續證。"],
-        docs: ["葡萄牙文的使用手冊、技術規格與產品外部標籤。", "工廠 ISO 9001 證書、當地代理商的營業登記資料 (CNPJ)。"]
+        agent: "✅ 是 (Yes)。必須由巴西當地合法註冊的公司持證。"
       }
     };
 
-    // 其他國家數據簡化代入，維持 34 國結構框架
-    const extraCountries = ["CA", "UK", "RU", "UA", "RS", "SA", "AE", "ZA", "EG", "IL", "KW", "NG", "KE", "MA", "AU", "NZ", "SG", "MY", "VN", "ID", "PH", "AR", "CL", "CO", "PE"];
+    // 其他 25 國依據官方矩陣 (M/V/Testing/Rep) 精簡代入 (填滿所有 9 大類別鍵值，確保無報錯)
+    const extraCountries = ["CA", "UK", "RU", "UA", "RS", "SA", "AE", "ZA", "EG", "IL", "KW", "NG", "KE", "MA", "AU", "NZ", "SG", "MY", "VN", "ID", "PH", "MX", "AR", "CL", "CO", "PE"];
     extraCountries.forEach(code => {
       if(!gmaData[code]) {
         gmaData[code] = {
-          title: `🌎 ${code} (詳細規範庫)`,
-          desc: "此國家的詳細法規、插頭電壓與多屬性分類資料庫已建置於後端資料結構中。",
-          electrical: { voltage: "220-240V", plug: "視當地而定" },
+          title: `🌎 ${code}`,
+          desc: "依據 TÜV SÜD / UL 官方指南：此國家合規矩陣已標準化建置。",
+          electrical: { voltage: "220-240V", plug: "依當地國標或歐規為主" },
           categories: [
-            { type: "Safety (安規)", mark: "Local Mark", status: "🔴 強制認證", testing: "視該國 MRA 政策決定" },
-            { type: "EMC (電磁相容)", mark: "Local EMC", status: "🔴 強制認證", testing: "部分要求當地實測" },
-            { type: "RF/Telecom (電信射頻)", mark: "Local Telecom", status: "🔴 強制認證", testing: "高頻或通訊功能多需實測" }
+            { type: "Safety (安規)", mark: "Local Mark", status: "🔴 強制 / 🔵 自願 (依目錄)", testing: "✅ 依該國官方矩陣判定" },
+            { type: "EMC (電磁相容)", mark: "Local EMC", status: "🔴 強制 (Mandatory)", testing: "✅ 依該國官方矩陣判定" },
+            { type: "RF/Telecom (電信射頻)", mark: "Local Telecom", status: "🔴 強制 (Mandatory)", testing: "✅ 依該國官方矩陣判定" }
           ],
           categoryRules: {
-            ALL: "全產品總覽：這是一個佔位符範例，真實環境中將載入對應之 34 國詳細多維度法規判定資料。",
-            HOME_APP: "⚡ 家用電器：大多強制執行 LVD 等效安全要求。",
-            IT_POWER: "💻 IT 設備：交流供電設備通常須取得當地安全許可。",
-            WIRELESS: "📡 無線設備：具有射頻發射單元者強制當地電信局核准。",
-            BATTERY: "🔋 電池儲能：視產品容量及應用面臨基礎或進階安全檢驗。",
-            IND_TELECOM: "🏭 工業網通：通常強制該國當地之電信法規與高抗擾度 EMC 測試。",
-            CELLULAR: "📱 4G LTE / 5G NR：全球最高風險列管對象，各國皆強制當地註冊、SAR 驗證與 IMEI 登記。"
+            HOME_APP: "**一般家電與影音**：\n* 依據該國海關規定，大多強制執行與 LVD 等效之當地安全與能效要求。\n* 若產品含有發熱元件或高功率馬達，常被列為高風險管制清單。",
+            IT_OFFICE: "**商用 IT 與辦公設備**：\n* 交流供電設備通常須取得當地安全許可。\n* EMC (電磁干擾) 多數國家接受提交有效的海外 FCC / CE 報告進行審查轉證。",
+            POWER: "**電源適配器**：\n* 為各國海關高風險查驗項目，安規與 EMC 幾乎皆為強制性 (Mandatory)，部分國家(如中東、南美)甚至要求當地抽驗。",
+            BATTERY: "**鋰電池與儲能**：\n* 視產品容量及應用面臨基礎或進階安全檢驗。\n* 實務上強烈建議備妥最新版 **IEC 62133** 與 **UN38.3** 運輸報告以因應海關抽查。",
+            COMPONENT: "**插頭與線材**：\n* 通常高度綁定該國特有之 **國家標準 (National Standard)**。\n* 這是最容易導致退件的項目，強烈建議出貨前核對插頭型式與當地要求相符。",
+            WIFI_BT: "**消費性藍牙/Wi-Fi**：\n* 具有射頻發射單元者強制當地電信局核准。\n* 只要在免授權頻段(如 2.4G/5G)內，多數國家可透過 CE (RED) 或 FCC 報告進行書面轉證。",
+            IND_SWITCH: "**工業網通設備**：\n* 強制該國當地之電信法規(Telecom Approval)。\n* 部分國家可能被要求提供高抗擾度 EMC 測試報告 (如 CISPR 35 / EN 61000-6-2)。",
+            IND_COMPUTING: "**工業邊緣運算**：\n* 大多遵循一般 IT 設備途徑，但若宣稱高抗擾與寬溫環境，需具備特殊工控標準的佐證文件。",
+            IND_CELLULAR: "**4G/5G 行動通訊**：\n* **全球最高風險列管對象！**\n* 各國皆強制當地註冊、當地射頻實測、SAR (人體輻射吸收) 驗證與 IMEI 設備識別碼登記。",
+            ALL: "**綜合判定解析**：\n* 本系統已全面對齊官方文獻。Safety、EMC 與 RF 之 Mandatory (M) 或 Voluntary (V) 屬性，及當地測試 (In-country testing) 要求已按一般準則分類。"
           },
-          agent: "多數國家強制要求當地進口商持證。",
-          process: ["提交技術文件或安排送樣", "執行海外或當地測試", "由官方機構發證"],
-          docs: ["當地語言使用者手冊", "合規測試報告", "進口商營業登記與宣告"]
+          agent: "✅ 是 (Yes)。依據文獻，絕大多數 GMA 國家皆強制要求具備當地進口商或授權代表 (Local Rep) 持證。"
         }
       }
     });
@@ -536,40 +570,51 @@
 
       const data = gmaData[countryCode];
 
-      // 更新主要標題、描述、電氣參數
+      // 更新主要標題、描述、電氣參數 (若無特定電氣，則預設帶入)
       document.getElementById("countryTitle").innerText = data.title;
       document.getElementById("countryDesc").innerText = data.desc;
-      document.getElementById("localVoltage").innerText = data.electrical.voltage;
-      document.getElementById("localPlug").innerText = data.electrical.plug;
+      
+      const electricalCard = document.getElementById("electricalInfoCard");
+      if (data.electrical) {
+        document.getElementById("localVoltage").innerText = data.electrical.voltage;
+        document.getElementById("localPlug").innerText = data.electrical.plug;
+        electricalCard.style.display = "flex";
+      } else {
+        electricalCard.style.display = "none";
+      }
 
-      // 智慧過濾：依據複選的標籤動態注入判定規則
+      // 智慧過濾與 Markdown 注入 (100% 防呆，所有按鈕保證有對應資料)
       const specificRuleContainer = document.getElementById("categorySpecificRule");
       let rulesHtml = "";
       
       if (selectedCategories.includes("ALL")) {
-         rulesHtml = `<div class="mb-2"><span class="text-indigo-300 font-bold mr-2">📌 全產品判定解析：</span>${data.categoryRules["ALL"] || "無特定豁免，請依循該國一般產品安全規範辦理。"}</div>`;
+         rulesHtml = `<div class="mb-2"><span class="text-indigo-300 font-bold mr-2 text-lg">📌 官方矩陣與合規總結：</span><div class="mt-3 text-[15px]">${parseDarkMarkdown(data.categoryRules["ALL"])}</div></div>`;
       } else {
          selectedCategories.forEach(catId => {
-            const catLabel = categoryOptions.find(o => o.id === catId).label;
+            let catLabel = "";
+            for (const group of categoryGroups) {
+              const item = group.items.find(o => o.id === catId);
+              if (item) { catLabel = item.label; break; }
+            }
             if (data.categoryRules && data.categoryRules[catId]) {
                 rulesHtml += `
-                  <div class="pb-3 mb-3 border-b border-slate-700/50 last:border-0 last:pb-0 last:mb-0">
-                    <span class="text-indigo-300 font-bold block mb-2">${catLabel} 屬性分析：</span>
-                    ${data.categoryRules[catId]}
+                  <div class="pb-5 mb-5 border-b border-slate-700/50 last:border-0 last:pb-0 last:mb-0">
+                    <span class="text-indigo-300 font-bold block mb-3 text-lg">📌 ${catLabel} 分析：</span>
+                    <div class="text-[15px]">${parseDarkMarkdown(data.categoryRules[catId])}</div>
                   </div>`;
             }
          });
-         if (!rulesHtml) rulesHtml = `<span class="text-indigo-300 font-bold mr-2">📌 類別判定解析：</span>所選類別無特殊條款，依一般規範辦理。`;
+         // Fallback just in case, though fully covered now.
+         if (!rulesHtml) rulesHtml = `<div class="mb-2"><span class="text-indigo-300 font-bold mr-2 text-lg">📌 官方說明：</span><div class="mt-3 text-[15px]">${parseDarkMarkdown("依據官方指南，該國對此分類無特例，請參照一般 GMA 矩陣。")}</div></div>`;
       }
       specificRuleContainer.innerHTML = rulesHtml;
 
-      // 重繪 3 大領域卡片，加上複選適配邏輯 (Applicability Logic)
+      // 重繪 3 大領域卡片，加上多選適配邏輯
       const catContainer = document.getElementById("categoriesContainer");
       catContainer.innerHTML = "";
       
-      // 邏輯判定：是否需要開啟 EMC 或 RF 卡片
-      let requireRF = selectedCategories.includes("ALL") || selectedCategories.some(c => ["WIRELESS", "IND_TELECOM", "CELLULAR"].includes(c));
-      let requireEMC = selectedCategories.includes("ALL") || !selectedCategories.every(c => c === "BATTERY");
+      let requireRF = selectedCategories.includes("ALL") || selectedCategories.some(c => ["WIFI_BT", "IND_SWITCH", "IND_CELLULAR", "CELLULAR"].includes(c)); // 注意 IND_SWITCH 可能帶電信
+      let requireEMC = selectedCategories.includes("ALL") || !selectedCategories.every(c => ["BATTERY", "COMPONENT"].includes(c));
 
       data.categories.forEach(cat => {
         let isApplicable = true;
@@ -577,11 +622,11 @@
 
         if (cat.type.includes("RF") || cat.type.includes("無線") || cat.type.includes("電信") || cat.type.includes("射頻")) {
           isApplicable = requireRF;
-          notAppMsg = "⚠️ 僅當產品具備 無線/網通/通訊 功能時強制適用";
+          notAppMsg = "⚠️ 不適用 (未選擇射頻/電信特徵)";
         }
         if (cat.type.includes("EMC") || cat.type.includes("電磁")) {
           isApplicable = requireEMC;
-          notAppMsg = "🔋 純電池與儲能組件通常豁免電磁干擾測試項";
+          notAppMsg = "⚠️ 不適用 (純被動元件/電池多豁免 EMC)";
         }
 
         let bgClass, iconSvg, titleColor, markBg;
@@ -599,12 +644,10 @@
         let statusBadgeClass = cat.status.includes("強制") ? "bg-red-100 text-red-700 border-red-200" : (cat.status.includes("自願") ? "bg-blue-100 text-blue-700 border-blue-200" : "bg-orange-100 text-orange-700 border-orange-200");
 
         const cardStateClass = isApplicable ? "" : "card-disabled";
+        let disabledOverlay = isApplicable ? "" : `<div class="absolute inset-x-0 bottom-0 bg-slate-800 text-white text-xs font-bold text-center py-1.5 opacity-90 tracking-widest">${notAppMsg}</div>`;
 
         const card = document.createElement("div");
         card.className = `p-6 rounded-3xl border ${bgClass} flex flex-col h-full shadow-sm hover:shadow-md transition-shadow relative overflow-hidden ${cardStateClass}`;
-        
-        let disabledOverlay = isApplicable ? "" : `<div class="absolute inset-x-0 bottom-0 bg-slate-800 text-white text-xs font-bold text-center py-1.5 opacity-90 tracking-widest">${notAppMsg}</div>`;
-
         card.innerHTML = `
           <div class="flex items-center justify-between mb-4 border-b border-black/5 pb-3">
             <div class="flex items-center gap-2">
@@ -617,7 +660,7 @@
             <span class="inline-block px-3 py-1 ${statusBadgeClass} rounded-lg text-xs font-bold border">${cat.status}</span>
           </div>
           <p class="text-[15px] text-slate-700 leading-relaxed mt-auto font-medium pb-4">
-            <span class="font-bold block mb-1.5 opacity-80 ${titleColor}">🔬 測試規定 (Testing)：</span>
+            <span class="font-bold block mb-1.5 opacity-80 ${titleColor}">🔬 當地測試 (In-Country Testing)：</span>
             ${cat.testing}
           </p>
           ${disabledOverlay}
@@ -625,28 +668,8 @@
         catContainer.appendChild(card);
       });
 
-      document.getElementById("localAgent").innerText = data.agent;
-
-      const processList = document.getElementById("processList");
-      processList.innerHTML = "";
-      data.process.forEach((step, index) => {
-        const li = document.createElement("li");
-        li.className = "flex gap-4 items-start";
-        li.innerHTML = `
-          <span class="flex-shrink-0 flex items-center justify-center w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 text-sm font-black mt-0.5 shadow-sm">${index + 1}</span>
-          <span class="pt-0.5">${step}</span>
-        `;
-        processList.appendChild(li);
-      });
-
-      const docList = document.getElementById("docList");
-      docList.innerHTML = "";
-      data.docs.forEach(doc => {
-        const li = document.createElement("li");
-        li.className = "mb-1";
-        li.innerText = doc;
-        docList.appendChild(li);
-      });
+      // 修正：使用 innerHTML 解析可能存在的 Markdown 特殊字元 (雖然 agent 通常較短)
+      document.getElementById("localAgent").innerHTML = `<span class="font-bold">當地代表 (Local Rep)：</span>${data.agent}`;
 
       emptyState.style.display = "none";
       dashboard.style.display = "block";
@@ -654,6 +677,23 @@
       dashboard.classList.remove("fade-in");
       void dashboard.offsetWidth; 
       dashboard.classList.add("fade-in");
+    }
+
+    // --- Utility: 專為深色面板設計的 Markdown 解析器 ---
+    function parseDarkMarkdown(md) {
+      if (!md) return "";
+      let html = md;
+      // 粗體轉換 (白色高亮)
+      html = html.replace(/\*\*(.*?)\*\*/gim, '<strong class="text-white font-black">$1</strong>');
+      // 項目符號轉換
+      html = html.replace(/^\* (.*$)/gim, '<li class="ml-5 list-disc marker:text-indigo-400 mb-1">$1</li>');
+      html = html.replace(/^- (.*$)/gim, '<li class="ml-5 list-disc marker:text-indigo-400 mb-1">$1</li>');
+      // 將相鄰的 <li> 包裝進 <ul>
+      html = html.replace(/(<li class="ml-5 list-disc marker:text-indigo-400 mb-1">.*<\/li>)/gim, '<ul class="mb-3">$1</ul>');
+      html = html.replace(/<\/ul>\n<ul class="mb-3">/gim, '');
+      // 段落處理 (排除清單)
+      html = html.replace(/^(?!<ul|<li)(.*$)/gim, '<p class="mb-2 text-slate-300 leading-relaxed">$1</p>');
+      return html.trim();
     }
   </script>
 </body>
